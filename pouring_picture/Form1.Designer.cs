@@ -36,6 +36,8 @@
             this.labelRed = new System.Windows.Forms.Label();
             this.labelGreen = new System.Windows.Forms.Label();
             this.labelBlue = new System.Windows.Forms.Label();
+            this.buttonGetColor = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,11 +111,22 @@
             this.labelBlue.Size = new System.Drawing.Size(0, 13);
             this.labelBlue.TabIndex = 7;
             // 
+            // buttonGetColor
+            // 
+            this.buttonGetColor.Location = new System.Drawing.Point(531, 414);
+            this.buttonGetColor.Name = "buttonGetColor";
+            this.buttonGetColor.Size = new System.Drawing.Size(102, 23);
+            this.buttonGetColor.TabIndex = 8;
+            this.buttonGetColor.Text = "Get color";
+            this.buttonGetColor.UseVisualStyleBackColor = true;
+            this.buttonGetColor.Click += new System.EventHandler(this.buttonGetColor_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 479);
+            this.Controls.Add(this.buttonGetColor);
             this.Controls.Add(this.labelBlue);
             this.Controls.Add(this.labelGreen);
             this.Controls.Add(this.labelRed);
@@ -140,6 +153,8 @@
         private System.Windows.Forms.Label labelRed;
         private System.Windows.Forms.Label labelGreen;
         private System.Windows.Forms.Label labelBlue;
+        private System.Windows.Forms.Button buttonGetColor;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

@@ -31,15 +31,34 @@ namespace pouring_picture
             GetBitMap(coordinates);
         }
 
-        private void UploadImage()
+        private bool UploadImage()
         {
             OpenFileDialog open = new OpenFileDialog();
 
             open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
             if (open.ShowDialog() == DialogResult.OK)
             {
-                pictureBox1.Image = new Bitmap(open.FileName);
+                var image = new Bitmap(open.FileName);
+
+                if (VerifyImage(image))
+                {
+                    pictureBox1.Image = image;
+                    return true;
+                }
             }
+            return false;
+        }
+
+        private bool VerifyImage(Bitmap image)
+        {
+            var height = 510;
+            var width = 455;
+
+            var result = image.Size.Height < height && image.Size.Width < width;
+            if (!result)
+            MessageBox.Show("Size of your image have to be smaller then " + height + "/" + width, "Huge size error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return result;
         }
 
         private void GetBitMap(Point point)
@@ -47,14 +66,54 @@ namespace pouring_picture
             using (Bitmap bmp = new Bitmap(pictureBox1.Image))
             {
                 Color clr = bmp.GetPixel(point.X, point.Y);
-                int red = clr.R;
-                int green = clr.G;
-                int blue = clr.B;
 
-                labelRed.Text = red.ToString();
-                labelGreen.Text = green.ToString();
-                labelBlue.Text = blue.ToString();
+                labelRed.Text = clr.R.ToString();
+                labelGreen.Text = clr.G.ToString();
+                labelBlue.Text = clr.B.ToString();
+
+                PouringImage();
             }
+        }
+
+        private void PouringImage()
+        {
+            try
+            {
+                int red = Convert.ToInt32(labelRed.Text);
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
+
+                var setColor = Color.FromArgb(red, 0,0);
+                var bmp = new Bitmap(pictureBox1.Image);
+
+                for (int i = 0; i < bmp.Size.Height; i++)
+                    for (int j = 0; j < bmp.Size.Width; j++)
+                    {
+                        Color color = bmp.GetPixel(j, i);
+                        if (color.R == red && color.G == green && color.B == blue)
+                        {
+                            bmp.SetPixel(j, i, setColor);
+                        }
+                    }
+                pictureBox1.Image = bmp;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error in PouringImage()",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonGetColor_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+            var color = colorDialog1;
+
+            labelRed.Text = color.Color.R.ToString();
+            labelGreen.Text = color.Color.G.ToString();
+            labelBlue.Text = color.Color.B.ToString();
+
+            PouringImage();
         }
     }
 }
