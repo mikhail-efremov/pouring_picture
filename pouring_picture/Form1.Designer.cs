@@ -38,7 +38,9 @@
             this.labelBlue = new System.Windows.Forms.Label();
             this.buttonGetColor = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.pictureBoxPick = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -121,11 +123,20 @@
             this.buttonGetColor.UseVisualStyleBackColor = true;
             this.buttonGetColor.Click += new System.EventHandler(this.buttonGetColor_Click);
             // 
+            // pictureBoxPick
+            // 
+            this.pictureBoxPick.Location = new System.Drawing.Point(534, 114);
+            this.pictureBoxPick.Name = "pictureBoxPick";
+            this.pictureBoxPick.Size = new System.Drawing.Size(25, 25);
+            this.pictureBoxPick.TabIndex = 9;
+            this.pictureBoxPick.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 479);
+            this.Controls.Add(this.pictureBoxPick);
             this.Controls.Add(this.buttonGetColor);
             this.Controls.Add(this.labelBlue);
             this.Controls.Add(this.labelGreen);
@@ -138,6 +149,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,6 +167,7 @@
         private System.Windows.Forms.Label labelBlue;
         private System.Windows.Forms.Button buttonGetColor;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.PictureBox pictureBoxPick;
     }
 }
 

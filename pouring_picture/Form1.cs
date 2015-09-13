@@ -29,6 +29,17 @@ namespace pouring_picture
         {
             colorDialog1.ShowDialog();
             var color = colorDialog1;
+            
+            Bitmap flag = new Bitmap(30, 30);
+            Graphics flagGraphics = Graphics.FromImage(flag);
+            int iterator = 0;
+            while (iterator <= 30)
+            {
+                var myBrush = new SolidBrush(colorDialog1.Color);
+                flagGraphics.FillRectangle(myBrush, 0, iterator, 30, 30);
+                iterator++;
+            }
+            pictureBoxPick.Image = flag;
 
             labelRed.Text = color.Color.R.ToString();
             labelGreen.Text = color.Color.G.ToString();
