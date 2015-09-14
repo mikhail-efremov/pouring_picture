@@ -39,6 +39,7 @@
             this.buttonGetColor = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.pictureBoxPick = new System.Windows.Forms.PictureBox();
+            this.buttonSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -76,7 +77,7 @@
             this.infoLabelGreen.AutoSize = true;
             this.infoLabelGreen.Location = new System.Drawing.Point(531, 72);
             this.infoLabelGreen.Name = "infoLabelGreen";
-            this.infoLabelGreen.Size = new System.Drawing.Size(40, 13);
+            this.infoLabelGreen.Size = new System.Drawing.Size(39, 13);
             this.infoLabelGreen.TabIndex = 3;
             this.infoLabelGreen.Text = "Green:";
             // 
@@ -131,11 +132,22 @@
             this.pictureBoxPick.TabIndex = 9;
             this.pictureBoxPick.TabStop = false;
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Location = new System.Drawing.Point(639, 444);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 10;
+            this.buttonSave.Text = "Save image";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 479);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.pictureBoxPick);
             this.Controls.Add(this.buttonGetColor);
             this.Controls.Add(this.labelBlue);
@@ -168,6 +180,7 @@
         private System.Windows.Forms.Button buttonGetColor;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.PictureBox pictureBoxPick;
+        private System.Windows.Forms.Button buttonSave;
     }
 }
 

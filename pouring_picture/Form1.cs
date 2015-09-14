@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace pouring_picture
 {
     public partial class Form1 : Form
     {
+        private int maxHeight = 510;
+        private int maxWidth = 455;
+
         public Form1()
         {
             InitializeComponent();
@@ -23,6 +27,11 @@ namespace pouring_picture
             Point coordinates = me.Location;
 
             PouringImage(coordinates);
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveImage();
         }
 
         private void buttonGetColor_Click(object sender, EventArgs e)
@@ -66,12 +75,9 @@ namespace pouring_picture
 
         private bool VerifyImage(Bitmap image)
         {
-            var height = 510;
-            var width = 455;
-
-            var result = image.Size.Height < height && image.Size.Width < width;
+            var result = image.Size.Height < maxHeight && image.Size.Width < maxWidth;
             if (!result)
-            MessageBox.Show("Size of your image have to be smaller then " + height + "/" + width, "Huge size error",
+            MessageBox.Show("Size of your image have to be smaller then " + maxHeight + "/" + maxWidth, "Huge size error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return result;
         }
@@ -103,6 +109,47 @@ namespace pouring_picture
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Error in PouringImage()",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SaveImage()
+        {
+            try
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+                saveFileDialog1.Title = "Save an Image File";
+                saveFileDialog1.ShowDialog();
+
+                if (saveFileDialog1.FileName != "")
+                {
+                    System.IO.FileStream fs =
+                       (System.IO.FileStream)saveFileDialog1.OpenFile();
+                    switch (saveFileDialog1.FilterIndex)
+                    {
+                        case 1:
+                            pictureBox1.Image.Save(fs,
+                               System.Drawing.Imaging.ImageFormat.Jpeg);
+                            break;
+
+                        case 2:
+                            pictureBox1.Image.Save(fs,
+                               System.Drawing.Imaging.ImageFormat.Bmp);
+                            break;
+
+                        case 3:
+                            pictureBox1.Image.Save(fs,
+                               System.Drawing.Imaging.ImageFormat.Gif);
+                            break;
+                    }
+
+                    fs.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error in SaveImage()",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
