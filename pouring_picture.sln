@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pouring_picture", "pouring_picture\pouring_picture.csproj", "{BE6376D1-D8F1-4F7E-A7F7-F8B4DB9D8190}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{168D2AE1-C1C5-47EF-99DA-EE0D32D2B4D5}"
+	ProjectSection(SolutionItems) = preProject
+		Test_image.png = Test_image.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
