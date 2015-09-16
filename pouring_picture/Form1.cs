@@ -26,7 +26,62 @@ namespace pouring_picture
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
 
-            PouringImage(coordinates);
+            Rectangle myRectangle = new Rectangle();
+
+            myRectangle.Location = new Point(coordinates.X, coordinates.Y);
+
+            myRectangle.Size = new Size(5, 2);
+
+            var points = new System.Collections.Generic.List<Point>();
+
+            var bmp = new Bitmap(pictureBox1.Image);
+
+            for (int i = 0; i < bmp.Size.Height; i++)
+                for (int j = 0; j < bmp.Size.Width; j++)
+                {
+                    if (myRectangle.Contains(new Point(j, i)))
+                    {
+                        points.Add(new Point(j, i));
+                    }
+                }
+
+            PouringImageP(points);
+
+        //    PouringImage(coordinates);
+        }
+
+        private void PouringImageP(System.Collections.Generic.List<Point> points)
+        {
+            try
+            {
+                int red = Convert.ToInt32(labelRed.Text);
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
+
+                var setColor = Color.FromArgb(red, green, blue);
+                var bmp = new Bitmap(pictureBox1.Image);
+
+                foreach (var point in points)
+                {
+                    Color color = bmp.GetPixel(point.X, point.Y);
+
+                    for (int i = 0; i < bmp.Size.Height; i++)
+                        for (int j = 0; j < bmp.Size.Width; j++)
+                        {
+                            var _color = bmp.GetPixel(j, i);
+                            if (color.R == _color.R && color.G == _color.G && color.B == _color.B)
+                            {
+                                bmp.SetPixel(j, i, setColor);
+                            }
+                        }
+                }
+                pictureBox1.Image = bmp;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error in PouringImage()",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
