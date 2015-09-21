@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imegeUploadButton = new System.Windows.Forms.Button();
             this.infoLabelRed = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.pictureBoxPick = new System.Windows.Forms.PictureBox();
             this.buttonSave = new System.Windows.Forms.Button();
+            this.zedGraph = new ZedGraph.ZedGraphControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -145,11 +147,26 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
+            // zedGraph
+            // 
+            this.zedGraph.Location = new System.Drawing.Point(620, 12);
+            this.zedGraph.Name = "zedGraph";
+            this.zedGraph.ScrollGrace = 0D;
+            this.zedGraph.ScrollMaxX = 0D;
+            this.zedGraph.ScrollMaxY = 0D;
+            this.zedGraph.ScrollMaxY2 = 0D;
+            this.zedGraph.ScrollMinX = 0D;
+            this.zedGraph.ScrollMinY = 0D;
+            this.zedGraph.ScrollMinY2 = 0D;
+            this.zedGraph.Size = new System.Drawing.Size(339, 311);
+            this.zedGraph.TabIndex = 11;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 479);
+            this.Controls.Add(this.zedGraph);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.pictureBoxPick);
             this.Controls.Add(this.buttonGetColor);
@@ -185,6 +202,7 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.PictureBox pictureBoxPick;
         private System.Windows.Forms.Button buttonSave;
+        private ZedGraph.ZedGraphControl zedGraph;
     }
 }
 
