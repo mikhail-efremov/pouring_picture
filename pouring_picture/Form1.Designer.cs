@@ -95,24 +95,27 @@
             this.labelRed.AutoSize = true;
             this.labelRed.Location = new System.Drawing.Point(578, 59);
             this.labelRed.Name = "labelRed";
-            this.labelRed.Size = new System.Drawing.Size(0, 13);
+            this.labelRed.Size = new System.Drawing.Size(13, 13);
             this.labelRed.TabIndex = 5;
+            this.labelRed.Text = "0";
             // 
             // labelGreen
             // 
             this.labelGreen.AutoSize = true;
             this.labelGreen.Location = new System.Drawing.Point(578, 72);
             this.labelGreen.Name = "labelGreen";
-            this.labelGreen.Size = new System.Drawing.Size(0, 13);
+            this.labelGreen.Size = new System.Drawing.Size(13, 13);
             this.labelGreen.TabIndex = 6;
+            this.labelGreen.Text = "0";
             // 
             // labelBlue
             // 
             this.labelBlue.AutoSize = true;
             this.labelBlue.Location = new System.Drawing.Point(578, 85);
             this.labelBlue.Name = "labelBlue";
-            this.labelBlue.Size = new System.Drawing.Size(0, 13);
+            this.labelBlue.Size = new System.Drawing.Size(13, 13);
             this.labelBlue.TabIndex = 7;
+            this.labelBlue.Text = "0";
             // 
             // buttonGetColor
             // 
@@ -160,6 +163,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).EndInit();
             this.ResumeLayout(false);
