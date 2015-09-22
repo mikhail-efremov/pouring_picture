@@ -11,15 +11,18 @@ namespace pouring_picture
     {
         private int maxHeight = 510;
         private int maxWidth = 455;
+        List<PixelData> chartColors;
 
         public Form1()
         {
             InitializeComponent();
+            chartColors = new List<PixelData>();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             FillColorPickRegion();
+            FillComboBox();
         }
 
         private void imegeUploadButton_Click(object sender, EventArgs e)
@@ -42,6 +45,16 @@ namespace pouring_picture
             SaveImage();
         }
 
+        private void buttonDrawChart_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(comboBox1.Text))
+                MessageBox.Show("Chose value in combo box!", "Error");
+            else
+            {
+                DrawGraph();
+            }
+        }
+
         private void FillColorPickRegion()
         {
             Bitmap flag = new Bitmap(30, 30);
@@ -56,12 +69,18 @@ namespace pouring_picture
             pictureBoxPick.Image = flag;
         }
 
+        private void FillComboBox()
+        {
+            comboBox1.Items.Add("Red");
+            comboBox1.Items.Add("Green");
+            comboBox1.Items.Add("Blue");
+        }
+
         private bool UploadImage()
         {
             pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
             OpenFileDialog open = new OpenFileDialog();
 
-            DrawGraph();
             open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
             if (open.ShowDialog() == DialogResult.OK)
             {
@@ -165,10 +184,12 @@ namespace pouring_picture
             }
         }
 
-        private void PouringImage(List<Point> points)
+        private unsafe void PouringImage(List<Point> points)
         {
             try
             {
+                chartColors.Clear();
+
                 int red = Convert.ToInt32(labelRed.Text);
                 int green = Convert.ToInt32(labelGreen.Text);
                 int blue = Convert.ToInt32(labelBlue.Text);
@@ -177,31 +198,30 @@ namespace pouring_picture
                 var bmp = new Bitmap(pictureBox1.Image);
 
                 UnsafeBitmap uBitMap = new UnsafeBitmap(bmp);
-
-                unsafe
+                
+                uBitMap.LockBitmap();
+                for (int i = 0; i < bmp.Size.Height; i++)
                 {
-                    uBitMap.LockBitmap();
-                    for (int i = 0; i < bmp.Size.Height; i++)
+                    for (int j = 0; j < bmp.Size.Width; j++)
                     {
-                        for (int j = 0; j < bmp.Size.Width; j++)
+                        foreach (var point in points)
                         {
-                            foreach (var point in points)
+                            var color = uBitMap.PixelAt(point.X, point.Y);
+                            
+                            var _color = uBitMap.PixelAt(j, i);
+                            
+                            if (color->red == _color->red
+                                && color->green == _color->green
+                                && color->blue == _color->blue)
                             {
-                                var color = uBitMap.PixelAt(point.X, point.Y);
-
-                                var _color = uBitMap.PixelAt(j, i);
-                                if (color->red == _color->red
-                                    && color->green == _color->green
-                                    && color->blue == _color->blue)
-                                {
-                                    uBitMap.SetPixel(j, i, new PixelData(setColor.B, setColor.G, setColor.R));
-                                }
+                                chartColors.Add(new PixelData(color->blue, color->green, color->red));
+                                uBitMap.SetPixel(j, i, new PixelData(setColor.B, setColor.G, setColor.R));
                             }
                         }
                     }
-                    pictureBox1.Image = uBitMap.Bitmap;
-                    uBitMap.UnlockBitmap();
                 }
+                pictureBox1.Image = uBitMap.Bitmap;
+                uBitMap.UnlockBitmap();
             }
             catch (Exception e)
             {
@@ -219,53 +239,48 @@ namespace pouring_picture
             return result;
         }
 
-        private void DrawGraph()
+        private unsafe void DrawGraph()
         {
-            // Получим панель для рисования
-            GraphPane pane = zedGraph.GraphPane;
+            const int TINT_COUNT = 255;
 
-            // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
+            zedGraph.Refresh();
+
+            GraphPane pane = zedGraph.GraphPane;
             pane.CurveList.Clear();
 
-            int itemscount = 5;
+            double[] YValues = new double[TINT_COUNT];
+            double[] XValues = new double[TINT_COUNT];
 
-            Random rnd = new Random();
-
-            // Высоты столбиков
-            double[] YValues1 = new double[itemscount];
-            double[] YValues2 = new double[itemscount];
-            double[] YValues3 = new double[itemscount];
-
-            double[] XValues = new double[itemscount];
-
-            // Заполним данные
-            for (int i = 0; i < itemscount; i++)
+            foreach (var pixel in chartColors)
             {
-                XValues[i] = i + 1;
+                for (int i = 0; i < TINT_COUNT; i++)
+                {
+                    XValues[i] = i + 1;
 
-                YValues1[i] = rnd.NextDouble();
-                YValues2[i] = rnd.NextDouble();
-                YValues3[i] = rnd.NextDouble();
+                    if (comboBox1.Text == "Blue")
+                    {
+                        if (pixel.blue == i)
+                            YValues[i]++;
+                    }
+                    if (comboBox1.Text == "Green")
+                    {
+                        if (pixel.green == i)
+                            YValues[i]++;
+                    }
+                    if (comboBox1.Text == "Red")
+                    {
+                        if (pixel.red == i)
+                            YValues[i]++;
+                    }
+                }
             }
 
-            // Создадим три гистограммы
-            // Так как для всех гистограмм мы передаем одинаковые массивы координат по X,
-            // то столбики будут группироваться в кластеры в этих точках.
-            BarItem bar1 = pane.AddBar("Values1", XValues, YValues1, Color.Blue);
-            BarItem bar2 = pane.AddBar("Values2", XValues, YValues2, Color.Red);
-            BarItem bar3 = pane.AddBar("Values3", XValues, YValues3, Color.Yellow);
+            BarItem bar = pane.AddBar(comboBox1.Text.ToString(), XValues, YValues, Color.FromName(comboBox1.Text));
 
-            // !!! Расстояния между столбиками в кластере (группами столбиков)
             pane.BarSettings.MinBarGap = 0.0f;
+            pane.BarSettings.MinClusterGap = 0.0f;
 
-            // !!! Увеличим расстояние между кластерами в 2.5 раза
-            pane.BarSettings.MinClusterGap = 2.5f;
-
-
-            // Вызываем метод AxisChange (), чтобы обновить данные об осях. 
             zedGraph.AxisChange();
-
-            // Обновляем график
             zedGraph.Invalidate();
         }
     }
