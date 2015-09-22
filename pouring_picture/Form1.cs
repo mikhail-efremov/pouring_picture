@@ -19,6 +19,31 @@ namespace pouring_picture
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            FillColorPickRegion();
+        }
+
+        private void imegeUploadButton_Click(object sender, EventArgs e)
+        {
+            UploadImage();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            ImageClick(sender, e);
+        }
+
+        private void buttonGetColor_Click(object sender, EventArgs e)
+        {
+            GetColor();
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveImage();
+        }
+
+        private void FillColorPickRegion()
+        {
             Bitmap flag = new Bitmap(30, 30);
             Graphics flagGraphics = Graphics.FromImage(flag);
             int iterator = 0;
@@ -31,13 +56,27 @@ namespace pouring_picture
             pictureBoxPick.Image = flag;
         }
 
-        private void imegeUploadButton_Click(object sender, EventArgs e)
+        private bool UploadImage()
         {
             pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            UploadImage();
+            OpenFileDialog open = new OpenFileDialog();
+
+            DrawGraph();
+            open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                var image = new Bitmap(open.FileName);
+
+                if (VerifyImage(image))
+                {
+                    pictureBox1.Image = image;
+                    return true;
+                }
+            }
+            return false;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void ImageClick(object sender, EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
@@ -64,7 +103,7 @@ namespace pouring_picture
             PouringImage(points);
         }
 
-        private void buttonGetColor_Click(object sender, EventArgs e)
+        private void GetColor()
         {
             colorDialog1.ShowDialog();
             var color = colorDialog1;
@@ -85,9 +124,45 @@ namespace pouring_picture
             labelBlue.Text = color.Color.B.ToString();
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void SaveImage()
         {
-            SaveImage();
+            try
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+                saveFileDialog1.Title = "Save an Image File";
+                saveFileDialog1.ShowDialog();
+
+                if (saveFileDialog1.FileName != "")
+                {
+                    System.IO.FileStream fs =
+                       (System.IO.FileStream)saveFileDialog1.OpenFile();
+                    switch (saveFileDialog1.FilterIndex)
+                    {
+                        case 1:
+                            pictureBox1.Image.Save(fs,
+                               System.Drawing.Imaging.ImageFormat.Jpeg);
+                            break;
+
+                        case 2:
+                            pictureBox1.Image.Save(fs,
+                               System.Drawing.Imaging.ImageFormat.Bmp);
+                            break;
+
+                        case 3:
+                            pictureBox1.Image.Save(fs,
+                               System.Drawing.Imaging.ImageFormat.Gif);
+                            break;
+                    }
+
+                    fs.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error in SaveImage()",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void PouringImage(List<Point> points)
@@ -135,26 +210,6 @@ namespace pouring_picture
             }
         }
 
-        private bool UploadImage()
-        {
-            OpenFileDialog open = new OpenFileDialog();
-
-
-            DrawGraph();
-            open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
-            if (open.ShowDialog() == DialogResult.OK)
-            {
-                var image = new Bitmap(open.FileName);
-
-                if (VerifyImage(image))
-                {
-                    pictureBox1.Image = image;
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private bool VerifyImage(Bitmap image)
         {
             var result = image.Size.Height < maxHeight && image.Size.Width < maxWidth;
@@ -162,47 +217,6 @@ namespace pouring_picture
             MessageBox.Show("Size of your image have to be smaller then " + maxHeight + "/" + maxWidth, "Huge size error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return result;
-        }
-
-        private void SaveImage()
-        {
-            try
-            {
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
-                saveFileDialog1.Title = "Save an Image File";
-                saveFileDialog1.ShowDialog();
-
-                if (saveFileDialog1.FileName != "")
-                {
-                    System.IO.FileStream fs =
-                       (System.IO.FileStream)saveFileDialog1.OpenFile();
-                    switch (saveFileDialog1.FilterIndex)
-                    {
-                        case 1:
-                            pictureBox1.Image.Save(fs,
-                               System.Drawing.Imaging.ImageFormat.Jpeg);
-                            break;
-
-                        case 2:
-                            pictureBox1.Image.Save(fs,
-                               System.Drawing.Imaging.ImageFormat.Bmp);
-                            break;
-
-                        case 3:
-                            pictureBox1.Image.Save(fs,
-                               System.Drawing.Imaging.ImageFormat.Gif);
-                            break;
-                    }
-
-                    fs.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Error in SaveImage()",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void DrawGraph()
@@ -254,109 +268,5 @@ namespace pouring_picture
             // Обновляем график
             zedGraph.Invalidate();
         }
-    }
-
-    public unsafe class UnsafeBitmap
-    {
-        Bitmap bitmap;
-
-        // three elements used for MakeGreyUnsafe
-        int width;
-        BitmapData bitmapData = null;
-        Byte* pBase = null;
-
-        public UnsafeBitmap(Bitmap bitmap)
-        {
-            this.bitmap = new Bitmap(bitmap);
-        }
-
-        public UnsafeBitmap(int width, int height)
-        {
-            this.bitmap = new Bitmap(width, height, PixelFormat.Format24bppRgb);
-        }
-
-        public void Dispose()
-        {
-            bitmap.Dispose();
-        }
-
-        public Bitmap Bitmap
-        {
-            get
-            {
-                return (bitmap);
-            }
-        }
-
-        private Point PixelSize
-        {
-            get
-            {
-                GraphicsUnit unit = GraphicsUnit.Pixel;
-                RectangleF bounds = bitmap.GetBounds(ref unit);
-
-                return new Point((int)bounds.Width, (int)bounds.Height);
-            }
-        }
-
-        public void LockBitmap()
-        {
-            GraphicsUnit unit = GraphicsUnit.Pixel;
-            RectangleF boundsF = bitmap.GetBounds(ref unit);
-            Rectangle bounds = new Rectangle((int)boundsF.X,
-           (int)boundsF.Y,
-           (int)boundsF.Width,
-           (int)boundsF.Height);
-
-            // Figure out the number of bytes in a row
-            // This is rounded up to be a multiple of 4
-            // bytes, since a scan line in an image must always be a multiple of 4 bytes
-            // in length.
-            width = (int)boundsF.Width * sizeof(PixelData);
-            if (width % 4 != 0)
-            {
-                width = 4 * (width / 4 + 1);
-            }
-            bitmapData =
-           bitmap.LockBits(bounds, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-
-            pBase = (Byte*)bitmapData.Scan0.ToPointer();
-        }
-
-        public PixelData GetPixel(int x, int y)
-        {
-            PixelData returnValue = *PixelAt(x, y);
-            return returnValue;
-        }
-
-        public void SetPixel(int x, int y, PixelData colour)
-        {
-            PixelData* pixel = PixelAt(x, y);
-            *pixel = colour;
-        }
-
-        public void UnlockBitmap()
-        {
-            bitmap.UnlockBits(bitmapData);
-            bitmapData = null;
-            pBase = null;
-        }
-        public PixelData* PixelAt(int x, int y)
-        {
-            return (PixelData*)(pBase + y * width + x * sizeof(PixelData));
-        }
-    }
-    public struct PixelData
-    {
-        public PixelData(byte blue, byte green, byte red)
-        {
-            this.blue = blue;
-            this.green = green;
-            this.red = red;
-        }
-
-        public byte blue;
-        public byte green;
-        public byte red;
     }
 }
