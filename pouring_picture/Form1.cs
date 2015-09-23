@@ -48,7 +48,7 @@ namespace pouring_picture
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrWhiteSpace(comboBox1.Text))
-                MessageBox.Show("Chose value in combo box!", "Error");
+                MessageBox.Show("Chose value in combo box!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
                 DrawGraph();
@@ -243,9 +243,12 @@ namespace pouring_picture
         {
             const int TINT_COUNT = 255;
 
+            var color = Color.Red;
+
             zedGraph.Refresh();
             zedGraph.GraphPane.CurveList.Clear();
             zedGraph.GraphPane.GraphObjList.Clear();
+            zedGraph.ZoomStepFraction = 255;
 
             GraphPane pane = zedGraph.GraphPane;
             pane.CurveList.Clear();
@@ -259,31 +262,124 @@ namespace pouring_picture
                 {
                     XValues[i] = i + 1;
 
-                    if (comboBox1.Text == "Blue")
-                    {
-                        if (pixel.blue == i)
-                            YValues[i]++;
-                    }
-                    if (comboBox1.Text == "Green")
-                    {
-                        if (pixel.green == i)
-                            YValues[i]++;
-                    }
-                    if (comboBox1.Text == "Red")
-                    {
-                        if (pixel.red == i)
-                            YValues[i]++;
-                    }
+                    if (pixel.red == i)
+                        YValues[i]++;
                 }
             }
 
-            BarItem bar = pane.AddBar(comboBox1.Text.ToString(), XValues, YValues, Color.FromName(comboBox1.Text));
+            BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
+            bar.Bar.Border.Color = color;
+
+            pane.BarSettings.MinBarGap = 0.0f;
+            pane.BarSettings.MinClusterGap = 0.0f;
+            
+
+            pane.Border.DashOff = 0.0f;
+            pane.Border.DashOn = 0.0f;
+            pane.Border.Color = color;
+            
+            zedGraph.IsEnableZoom = false;
+            zedGraph.IsEnableVPan = false;
+            zedGraph.IsEnableHPan = false;
+
+            zedGraph.AxisChange();
+            zedGraph.Invalidate();
+            DrawGraph1();
+            DrawGraph2();
+        }
+
+        private unsafe void DrawGraph1()
+        {
+            const int TINT_COUNT = 255;
+
+            var color = Color.Green;
+
+            zedGraph1.Refresh();
+            zedGraph1.GraphPane.CurveList.Clear();
+            zedGraph1.GraphPane.GraphObjList.Clear();
+            zedGraph1.ZoomStepFraction = 255;
+
+            GraphPane pane = zedGraph1.GraphPane;
+            pane.CurveList.Clear();
+
+            double[] YValues = new double[TINT_COUNT];
+            double[] XValues = new double[TINT_COUNT];
+
+            foreach (var pixel in chartColors)
+            {
+                for (int i = 0; i < TINT_COUNT; i++)
+                {
+                    XValues[i] = i + 1;
+
+                    if (pixel.green == i)
+                        YValues[i]++;
+                }
+            }
+
+            BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
+            bar.Bar.Border.Color = color;
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
 
-            zedGraph.AxisChange();
-            zedGraph.Invalidate();
+
+            pane.Border.DashOff = 0.0f;
+            pane.Border.DashOn = 0.0f;
+            pane.Border.Color = color;
+
+            zedGraph1.IsEnableZoom = false;
+            zedGraph1.IsEnableVPan = false;
+            zedGraph1.IsEnableHPan = false;
+
+            zedGraph1.AxisChange();
+            zedGraph1.Invalidate();
+        }
+
+        private unsafe void DrawGraph2()
+        {
+            const int TINT_COUNT = 255;
+
+            var color = Color.Blue;
+
+            zedGraph2.Refresh();
+            zedGraph2.GraphPane.CurveList.Clear();
+            zedGraph2.GraphPane.GraphObjList.Clear();
+            zedGraph2.ZoomStepFraction = 255;
+
+            GraphPane pane = zedGraph2.GraphPane;
+            pane.CurveList.Clear();
+
+            double[] YValues = new double[TINT_COUNT];
+            double[] XValues = new double[TINT_COUNT];
+
+            foreach (var pixel in chartColors)
+            {
+                for (int i = 0; i < TINT_COUNT; i++)
+                {
+                    XValues[i] = i + 1;
+
+                    if (pixel.blue == i)
+                        YValues[i]++;
+                }
+            }
+
+            BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
+            bar.Bar.Border.Color = color;
+
+            pane.BarSettings.MinBarGap = 0.0f;
+            pane.BarSettings.MinClusterGap = 0.0f;
+
+
+            pane.Border.DashOff = 0.0f;
+            pane.Border.DashOn = 0.0f;
+            pane.Border.Color = color;
+
+            zedGraph2.IsEnableZoom = false;
+            zedGraph2.IsEnableVPan = false;
+            zedGraph2.IsEnableHPan = false;
+
+            zedGraph2.AxisChange();
+            zedGraph2.Invalidate();
         }
     }
 }

@@ -44,6 +44,8 @@
             this.zedGraph = new ZedGraph.ZedGraphControl();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.buttonDrawChart = new System.Windows.Forms.Button();
+            this.zedGraph1 = new ZedGraph.ZedGraphControl();
+            this.zedGraph2 = new ZedGraph.ZedGraphControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -52,14 +54,14 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(513, 455);
+            this.pictureBox1.Size = new System.Drawing.Size(531, 627);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // imegeUploadButton
             // 
-            this.imegeUploadButton.Location = new System.Drawing.Point(531, 443);
+            this.imegeUploadButton.Location = new System.Drawing.Point(1057, 557);
             this.imegeUploadButton.Name = "imegeUploadButton";
             this.imegeUploadButton.Size = new System.Drawing.Size(102, 23);
             this.imegeUploadButton.TabIndex = 1;
@@ -70,7 +72,7 @@
             // infoLabelRed
             // 
             this.infoLabelRed.AutoSize = true;
-            this.infoLabelRed.Location = new System.Drawing.Point(528, 55);
+            this.infoLabelRed.Location = new System.Drawing.Point(1248, 502);
             this.infoLabelRed.Name = "infoLabelRed";
             this.infoLabelRed.Size = new System.Drawing.Size(30, 13);
             this.infoLabelRed.TabIndex = 2;
@@ -79,7 +81,7 @@
             // infoLabelGreen
             // 
             this.infoLabelGreen.AutoSize = true;
-            this.infoLabelGreen.Location = new System.Drawing.Point(528, 68);
+            this.infoLabelGreen.Location = new System.Drawing.Point(1248, 515);
             this.infoLabelGreen.Name = "infoLabelGreen";
             this.infoLabelGreen.Size = new System.Drawing.Size(39, 13);
             this.infoLabelGreen.TabIndex = 3;
@@ -88,7 +90,7 @@
             // infoLabelBlue
             // 
             this.infoLabelBlue.AutoSize = true;
-            this.infoLabelBlue.Location = new System.Drawing.Point(528, 81);
+            this.infoLabelBlue.Location = new System.Drawing.Point(1248, 528);
             this.infoLabelBlue.Name = "infoLabelBlue";
             this.infoLabelBlue.Size = new System.Drawing.Size(31, 13);
             this.infoLabelBlue.TabIndex = 4;
@@ -97,7 +99,7 @@
             // labelRed
             // 
             this.labelRed.AutoSize = true;
-            this.labelRed.Location = new System.Drawing.Point(575, 55);
+            this.labelRed.Location = new System.Drawing.Point(1295, 502);
             this.labelRed.Name = "labelRed";
             this.labelRed.Size = new System.Drawing.Size(13, 13);
             this.labelRed.TabIndex = 5;
@@ -106,7 +108,7 @@
             // labelGreen
             // 
             this.labelGreen.AutoSize = true;
-            this.labelGreen.Location = new System.Drawing.Point(575, 68);
+            this.labelGreen.Location = new System.Drawing.Point(1295, 515);
             this.labelGreen.Name = "labelGreen";
             this.labelGreen.Size = new System.Drawing.Size(13, 13);
             this.labelGreen.TabIndex = 6;
@@ -115,7 +117,7 @@
             // labelBlue
             // 
             this.labelBlue.AutoSize = true;
-            this.labelBlue.Location = new System.Drawing.Point(575, 81);
+            this.labelBlue.Location = new System.Drawing.Point(1295, 528);
             this.labelBlue.Name = "labelBlue";
             this.labelBlue.Size = new System.Drawing.Size(13, 13);
             this.labelBlue.TabIndex = 7;
@@ -123,7 +125,7 @@
             // 
             // buttonGetColor
             // 
-            this.buttonGetColor.Location = new System.Drawing.Point(531, 414);
+            this.buttonGetColor.Location = new System.Drawing.Point(1057, 528);
             this.buttonGetColor.Name = "buttonGetColor";
             this.buttonGetColor.Size = new System.Drawing.Size(102, 23);
             this.buttonGetColor.TabIndex = 8;
@@ -133,7 +135,7 @@
             // 
             // pictureBoxPick
             // 
-            this.pictureBoxPick.Location = new System.Drawing.Point(531, 110);
+            this.pictureBoxPick.Location = new System.Drawing.Point(1251, 557);
             this.pictureBoxPick.Name = "pictureBoxPick";
             this.pictureBoxPick.Size = new System.Drawing.Size(25, 25);
             this.pictureBoxPick.TabIndex = 9;
@@ -141,7 +143,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(639, 444);
+            this.buttonSave.Location = new System.Drawing.Point(1165, 558);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 23);
             this.buttonSave.TabIndex = 10;
@@ -151,7 +153,7 @@
             // 
             // zedGraph
             // 
-            this.zedGraph.Location = new System.Drawing.Point(597, 12);
+            this.zedGraph.Location = new System.Drawing.Point(549, 12);
             this.zedGraph.Name = "zedGraph";
             this.zedGraph.ScrollGrace = 0D;
             this.zedGraph.ScrollMaxX = 0D;
@@ -160,20 +162,20 @@
             this.zedGraph.ScrollMinX = 0D;
             this.zedGraph.ScrollMinY = 0D;
             this.zedGraph.ScrollMinY2 = 0D;
-            this.zedGraph.Size = new System.Drawing.Size(369, 311);
+            this.zedGraph.Size = new System.Drawing.Size(401, 311);
             this.zedGraph.TabIndex = 11;
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(597, 329);
+            this.comboBox1.Location = new System.Drawing.Point(1057, 443);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 12;
             // 
             // buttonDrawChart
             // 
-            this.buttonDrawChart.Location = new System.Drawing.Point(725, 329);
+            this.buttonDrawChart.Location = new System.Drawing.Point(1185, 443);
             this.buttonDrawChart.Name = "buttonDrawChart";
             this.buttonDrawChart.Size = new System.Drawing.Size(75, 23);
             this.buttonDrawChart.TabIndex = 13;
@@ -181,11 +183,41 @@
             this.buttonDrawChart.UseVisualStyleBackColor = true;
             this.buttonDrawChart.Click += new System.EventHandler(this.buttonDrawChart_Click);
             // 
+            // zedGraph1
+            // 
+            this.zedGraph1.Location = new System.Drawing.Point(956, 12);
+            this.zedGraph1.Name = "zedGraph1";
+            this.zedGraph1.ScrollGrace = 0D;
+            this.zedGraph1.ScrollMaxX = 0D;
+            this.zedGraph1.ScrollMaxY = 0D;
+            this.zedGraph1.ScrollMaxY2 = 0D;
+            this.zedGraph1.ScrollMinX = 0D;
+            this.zedGraph1.ScrollMinY = 0D;
+            this.zedGraph1.ScrollMinY2 = 0D;
+            this.zedGraph1.Size = new System.Drawing.Size(401, 311);
+            this.zedGraph1.TabIndex = 14;
+            // 
+            // zedGraph2
+            // 
+            this.zedGraph2.Location = new System.Drawing.Point(549, 328);
+            this.zedGraph2.Name = "zedGraph2";
+            this.zedGraph2.ScrollGrace = 0D;
+            this.zedGraph2.ScrollMaxX = 0D;
+            this.zedGraph2.ScrollMaxY = 0D;
+            this.zedGraph2.ScrollMaxY2 = 0D;
+            this.zedGraph2.ScrollMinX = 0D;
+            this.zedGraph2.ScrollMinY = 0D;
+            this.zedGraph2.ScrollMinY2 = 0D;
+            this.zedGraph2.Size = new System.Drawing.Size(401, 311);
+            this.zedGraph2.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(978, 479);
+            this.ClientSize = new System.Drawing.Size(1370, 651);
+            this.Controls.Add(this.zedGraph2);
+            this.Controls.Add(this.zedGraph1);
             this.Controls.Add(this.buttonDrawChart);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.zedGraph);
@@ -201,9 +233,9 @@
             this.Controls.Add(this.imegeUploadButton);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Pouring Picture project";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).EndInit();
@@ -229,6 +261,8 @@
         private ZedGraph.ZedGraphControl zedGraph;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button buttonDrawChart;
+        private ZedGraph.ZedGraphControl zedGraph1;
+        private ZedGraph.ZedGraphControl zedGraph2;
     }
 }
 
