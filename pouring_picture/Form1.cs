@@ -244,6 +244,8 @@ namespace pouring_picture
             const int TINT_COUNT = 255;
 
             zedGraph.Refresh();
+            zedGraph.GraphPane.CurveList.Clear();
+            zedGraph.GraphPane.GraphObjList.Clear();
 
             GraphPane pane = zedGraph.GraphPane;
             pane.CurveList.Clear();
