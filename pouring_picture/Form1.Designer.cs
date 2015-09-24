@@ -42,7 +42,6 @@
             this.pictureBoxPick = new System.Windows.Forms.PictureBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.zedGraph = new ZedGraph.ZedGraphControl();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.buttonDrawChart = new System.Windows.Forms.Button();
             this.zedGraph1 = new ZedGraph.ZedGraphControl();
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
@@ -165,19 +164,11 @@
             this.zedGraph.Size = new System.Drawing.Size(401, 311);
             this.zedGraph.TabIndex = 11;
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(1057, 443);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 12;
-            // 
             // buttonDrawChart
             // 
-            this.buttonDrawChart.Location = new System.Drawing.Point(1185, 443);
+            this.buttonDrawChart.Location = new System.Drawing.Point(1057, 499);
             this.buttonDrawChart.Name = "buttonDrawChart";
-            this.buttonDrawChart.Size = new System.Drawing.Size(75, 23);
+            this.buttonDrawChart.Size = new System.Drawing.Size(102, 23);
             this.buttonDrawChart.TabIndex = 13;
             this.buttonDrawChart.Text = "Draw";
             this.buttonDrawChart.UseVisualStyleBackColor = true;
@@ -219,7 +210,6 @@
             this.Controls.Add(this.zedGraph2);
             this.Controls.Add(this.zedGraph1);
             this.Controls.Add(this.buttonDrawChart);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.zedGraph);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.pictureBoxPick);
@@ -259,7 +249,6 @@
         private System.Windows.Forms.PictureBox pictureBoxPick;
         private System.Windows.Forms.Button buttonSave;
         private ZedGraph.ZedGraphControl zedGraph;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button buttonDrawChart;
         private ZedGraph.ZedGraphControl zedGraph1;
         private ZedGraph.ZedGraphControl zedGraph2;

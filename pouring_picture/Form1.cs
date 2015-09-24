@@ -22,7 +22,7 @@ namespace pouring_picture
         private void Form1_Load(object sender, EventArgs e)
         {
             FillColorPickRegion();
-            FillComboBox();
+            PrepareGraph();
         }
 
         private void imegeUploadButton_Click(object sender, EventArgs e)
@@ -47,12 +47,7 @@ namespace pouring_picture
 
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(comboBox1.Text))
-                MessageBox.Show("Chose value in combo box!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else
-            {
-                DrawGraph();
-            }
+            DrawGraph();
         }
 
         private void FillColorPickRegion()
@@ -67,13 +62,6 @@ namespace pouring_picture
                 iterator++;
             }
             pictureBoxPick.Image = flag;
-        }
-
-        private void FillComboBox()
-        {
-            comboBox1.Items.Add("Red");
-            comboBox1.Items.Add("Green");
-            comboBox1.Items.Add("Blue");
         }
 
         private bool UploadImage()
@@ -239,6 +227,21 @@ namespace pouring_picture
             return result;
         }
 
+        private void PrepareGraph()
+        {
+            zedGraph.IsEnableZoom = false;
+            zedGraph.IsEnableVPan = false;
+            zedGraph.IsEnableHPan = false;
+
+            zedGraph1.IsEnableZoom = false;
+            zedGraph1.IsEnableVPan = false;
+            zedGraph1.IsEnableHPan = false;
+
+            zedGraph2.IsEnableZoom = false;
+            zedGraph2.IsEnableVPan = false;
+            zedGraph2.IsEnableHPan = false;
+        }
+
         private unsafe void DrawGraph()
         {
             const int TINT_COUNT = 255;
@@ -272,15 +275,10 @@ namespace pouring_picture
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
-            
 
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
             pane.Border.Color = color;
-            
-            zedGraph.IsEnableZoom = false;
-            zedGraph.IsEnableVPan = false;
-            zedGraph.IsEnableHPan = false;
 
             zedGraph.AxisChange();
             zedGraph.Invalidate();
@@ -297,7 +295,6 @@ namespace pouring_picture
             zedGraph1.Refresh();
             zedGraph1.GraphPane.CurveList.Clear();
             zedGraph1.GraphPane.GraphObjList.Clear();
-            zedGraph1.ZoomStepFraction = 255;
 
             GraphPane pane = zedGraph1.GraphPane;
             pane.CurveList.Clear();
@@ -322,14 +319,9 @@ namespace pouring_picture
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
 
-
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
             pane.Border.Color = color;
-
-            zedGraph1.IsEnableZoom = false;
-            zedGraph1.IsEnableVPan = false;
-            zedGraph1.IsEnableHPan = false;
 
             zedGraph1.AxisChange();
             zedGraph1.Invalidate();
@@ -369,14 +361,9 @@ namespace pouring_picture
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
 
-
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
             pane.Border.Color = color;
-
-            zedGraph2.IsEnableZoom = false;
-            zedGraph2.IsEnableVPan = false;
-            zedGraph2.IsEnableHPan = false;
 
             zedGraph2.AxisChange();
             zedGraph2.Invalidate();
