@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using ZedGraph;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace pouring_picture
 {
@@ -48,6 +49,7 @@ namespace pouring_picture
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
             DrawGraph();
+            chartColors.Clear();
         }
 
         private void FillColorPickRegion()
@@ -259,13 +261,16 @@ namespace pouring_picture
             double[] YValues = new double[TINT_COUNT];
             double[] XValues = new double[TINT_COUNT];
 
+            int green = Convert.ToInt32(labelGreen.Text);
+            int blue = Convert.ToInt32(labelBlue.Text);
+
             foreach (var pixel in chartColors)
             {
                 for (int i = 0; i < TINT_COUNT; i++)
                 {
                     XValues[i] = i + 1;
 
-                    if (pixel.red == i)
+                    if (pixel.red == i && pixel.blue != blue && pixel.green != green)
                         YValues[i]++;
                 }
             }
@@ -302,13 +307,16 @@ namespace pouring_picture
             double[] YValues = new double[TINT_COUNT];
             double[] XValues = new double[TINT_COUNT];
 
+            int blue = Convert.ToInt32(labelBlue.Text);
+            int red = Convert.ToInt32(labelRed.Text);
+
             foreach (var pixel in chartColors)
             {
                 for (int i = 0; i < TINT_COUNT; i++)
                 {
                     XValues[i] = i + 1;
 
-                    if (pixel.green == i)
+                    if (pixel.green == i && pixel.red != red && pixel.blue != blue)
                         YValues[i]++;
                 }
             }
@@ -344,13 +352,16 @@ namespace pouring_picture
             double[] YValues = new double[TINT_COUNT];
             double[] XValues = new double[TINT_COUNT];
 
+            int green = Convert.ToInt32(labelGreen.Text);
+            int red = Convert.ToInt32(labelRed.Text);
+
             foreach (var pixel in chartColors)
             {
                 for (int i = 0; i < TINT_COUNT; i++)
                 {
                     XValues[i] = i + 1;
 
-                    if (pixel.blue == i)
+                    if (pixel.blue == i && pixel.red != red && pixel.green != green)
                         YValues[i]++;
                 }
             }
