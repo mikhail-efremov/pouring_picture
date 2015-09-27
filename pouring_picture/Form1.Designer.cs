@@ -45,6 +45,7 @@
             this.buttonDrawChart = new System.Windows.Forms.Button();
             this.zedGraph1 = new ZedGraph.ZedGraphControl();
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
+            this.userControl1 = new System.Windows.Forms.UserControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -202,11 +203,19 @@
             this.zedGraph2.Size = new System.Drawing.Size(401, 311);
             this.zedGraph2.TabIndex = 15;
             // 
+            // userControl1
+            // 
+            this.userControl1.Location = new System.Drawing.Point(12, 645);
+            this.userControl1.Name = "userControl1";
+            this.userControl1.Size = new System.Drawing.Size(322, 37);
+            this.userControl1.TabIndex = 16;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 689);
+            this.Controls.Add(this.userControl1);
             this.Controls.Add(this.zedGraph2);
             this.Controls.Add(this.zedGraph1);
             this.Controls.Add(this.buttonDrawChart);
@@ -252,6 +261,7 @@
         private System.Windows.Forms.Button buttonDrawChart;
         private ZedGraph.ZedGraphControl zedGraph1;
         private ZedGraph.ZedGraphControl zedGraph2;
+        private System.Windows.Forms.UserControl userControl1;
     }
 }
 
