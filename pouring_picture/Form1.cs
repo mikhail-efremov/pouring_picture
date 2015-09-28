@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ZedGraph;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.ComponentModel;
+using ColorMine.ColorSpaces;
 
 namespace pouring_picture
 {
@@ -52,9 +53,6 @@ namespace pouring_picture
             int green = Convert.ToInt32(labelGreen.Text);
             int blue = Convert.ToInt32(labelBlue.Text);
             int red = Convert.ToInt32(labelRed.Text);
-
-            RGBtoCIELab(Color.FromArgb(red, green, blue));
-
 
             DrawGraph();
             chartColors.Clear();
@@ -388,65 +386,15 @@ namespace pouring_picture
             zedGraph2.Invalidate();
         }
 
-        private CieLAB RGBtoCIELab(Color color)
+        private Lab RGBtoLAB(Color color)
         {
-            var R = color.R;
-            var G = color.G;
-            var B = color.B;
+            Rgb rgb = new Rgb();
+            rgb.R = color.R;
+            rgb.G = color.G;
+            rgb.B = color.B;
+            var lab = rgb.To<Lab>();
 
-            double var_R = ( R / 255 );        //R from 0 to 255
-            double var_G = ( G / 255 );        //G from 0 to 255
-            double var_B = ( B / 255 );        //B from 0 to 255
-
-            if ( var_R > 0.04045 ) 
-                var_R = Math.Pow(( ( var_R + 0.055 ) / 1.055 ) , 2.4);
-            else
-                var_R = var_R / 12.92;
-            
-            if ( var_G > 0.04045 ) 
-                var_G = Math.Pow(( ( var_G + 0.055 ) / 1.055 ) , 2.4);
-            else
-                var_G = var_G / 12.92;
-
-            
-            if ( var_B > 0.04045 ) 
-                var_B = Math.Pow(( ( var_B + 0.055 ) / 1.055 ) , 2.4);
-            else
-                var_B = var_B / 12.92;
-
-            var_R = var_R * 100;
-            var_G = var_G * 100;
-            var_B = var_B * 100;
-
-            //Observer. = 2°, Illuminant = D65
-            var X = var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805;
-            var Y = var_R * 0.2126 + var_G * 0.7152 + var_B * 0.0722;
-            var Z = var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505;
-
-
-            //xyz to CIELAB
-            var var_X = X / 95.047;           //ref_X =  95.047   Observer= 2°, Illuminant= D65
-            var var_Y = Y / 100.000;          //ref_Y = 100.000
-            var var_Z = Z / 108.883;          //ref_Z = 108.883
-
-            if ( var_X > 0.008856 ) 
-                var_X = Math.Pow(var_X , ( 1/3 ));
-            else                    
-                var_X = ( 7.787 * var_X ) + ( 16 / 116 );
-            if ( var_Y > 0.008856 )
-                var_Y = Math.Pow(var_Y, ( 1/3 ));
-            else
-                var_Y = ( 7.787 * var_Y ) + ( 16 / 116 );
-            if ( var_Z > 0.008856 )
-                var_Z = Math.Pow(var_Z, ( 1/3 ));
-            else
-                var_Z = ( 7.787 * var_Z ) + ( 16 / 116 );
-
-            var cieL = ( 116 * var_Y ) - 16;
-            var cieA = 500 * ( var_X - var_Y );
-            var cieB = 200 * (var_Y - var_Z);
-
-            return new CieLAB(cieL, cieA, cieB);
+            return lab;
         }
     }
     ///TODO:
@@ -603,19 +551,5 @@ namespace pouring_picture
         /// </summary>
         enum MovingMode { MovingValue, MovingMin, MovingMax }
         MovingMode movingMode;
-    }
-
-    public struct CieLAB
-    {
-        public CieLAB(double L, double A, double B)
-        {
-            this.L = L;
-            this.A = A;
-            this.B = B;
-        }
-
-        public double L;
-        public double A;
-        public double B;
     }
 }
