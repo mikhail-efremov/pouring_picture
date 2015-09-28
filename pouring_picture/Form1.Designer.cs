@@ -46,6 +46,7 @@
             this.zedGraph1 = new ZedGraph.ZedGraphControl();
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
             this.userControl1 = new System.Windows.Forms.UserControl();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -145,7 +146,7 @@
             // 
             this.buttonSave.Location = new System.Drawing.Point(1144, 588);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.Size = new System.Drawing.Size(77, 23);
             this.buttonSave.TabIndex = 10;
             this.buttonSave.Text = "Save image";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -210,11 +211,24 @@
             this.userControl1.Size = new System.Drawing.Size(322, 37);
             this.userControl1.TabIndex = 16;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "RGB",
+            "LAB"});
+            this.comboBox1.Location = new System.Drawing.Point(1036, 532);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(102, 21);
+            this.comboBox1.TabIndex = 17;
+            this.comboBox1.Text = "RGB";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 689);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.userControl1);
             this.Controls.Add(this.zedGraph2);
             this.Controls.Add(this.zedGraph1);
@@ -262,6 +276,7 @@
         private ZedGraph.ZedGraphControl zedGraph1;
         private ZedGraph.ZedGraphControl zedGraph2;
         private System.Windows.Forms.UserControl userControl1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

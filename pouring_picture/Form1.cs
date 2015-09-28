@@ -50,10 +50,6 @@ namespace pouring_picture
 
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
-            int green = Convert.ToInt32(labelGreen.Text);
-            int blue = Convert.ToInt32(labelBlue.Text);
-            int red = Convert.ToInt32(labelRed.Text);
-
             DrawGraph();
             chartColors.Clear();
         }
@@ -267,29 +263,56 @@ namespace pouring_picture
             double[] YValues = new double[TINT_COUNT];
             double[] XValues = new double[TINT_COUNT];
 
-            int green = Convert.ToInt32(labelGreen.Text);
-            int blue = Convert.ToInt32(labelBlue.Text);
-
-            foreach (var pixel in chartColors)
+            if (comboBox1.Text == "RGB")
             {
-                for (int i = 0; i < TINT_COUNT; i++)
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
+
+                foreach (var pixel in chartColors)
                 {
-                    XValues[i] = i + 1;
+                    for (int i = 0; i < TINT_COUNT; i++)
+                    {
+                        XValues[i] = i + 1;
 
-                    if (pixel.red == i && pixel.blue != blue && pixel.green != green)
-                        YValues[i]++;
+                        if (pixel.red == i && pixel.blue != blue && pixel.green != green)
+                            YValues[i]++;
+                    }
                 }
+
+                BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
+                bar.Bar.Border.Color = color;
             }
+            else
+            { 
+                int red = Convert.ToInt32(labelRed.Text);
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
 
-            BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
-            bar.Bar.Border.Color = color;
+                Color _color = Color.FromArgb(red, green, blue);
+                var lab = RGBtoLAB(_color);
 
+                foreach (var pixel in chartColors)
+                {
+                    for (int i = 0; i < TINT_COUNT; i++)
+                    {
+                        XValues[i] = i + 1;
+
+                        var __color = Color.FromArgb(pixel.red, pixel.blue, pixel.green);
+                        var __lab = RGBtoLAB(__color);
+
+                        if (lab.L == i && lab.A != __lab.A && lab.B != __lab.B)
+                            YValues[i]++;
+                    }
+                }
+
+                BarItem bar = pane.AddBar("L", XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+            }
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
 
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
-            pane.Border.Color = color;
 
             zedGraph.AxisChange();
             zedGraph.Invalidate();
@@ -335,7 +358,6 @@ namespace pouring_picture
 
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
-            pane.Border.Color = color;
 
             zedGraph1.AxisChange();
             zedGraph1.Invalidate();
@@ -380,7 +402,6 @@ namespace pouring_picture
 
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
-            pane.Border.Color = color;
 
             zedGraph2.AxisChange();
             zedGraph2.Invalidate();
