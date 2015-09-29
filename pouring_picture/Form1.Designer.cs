@@ -47,6 +47,9 @@
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
             this.userControl1 = new System.Windows.Forms.UserControl();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
+            this.labelRangeSliderMin = new System.Windows.Forms.Label();
+            this.labelRangeSliderMax = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -223,11 +226,44 @@
             this.comboBox1.TabIndex = 17;
             this.comboBox1.Text = "RGB";
             // 
+            // selectionRangeSlider1
+            // 
+            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 328);
+            this.selectionRangeSlider1.Max = 255;
+            this.selectionRangeSlider1.Min = 0;
+            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
+            this.selectionRangeSlider1.SelectedMax = 255;
+            this.selectionRangeSlider1.SelectedMin = 0;
+            this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider1.TabIndex = 18;
+            this.selectionRangeSlider1.Value = 128;
+            // 
+            // labelRangeSliderMin
+            // 
+            this.labelRangeSliderMin.AutoSize = true;
+            this.labelRangeSliderMin.Location = new System.Drawing.Point(1003, 345);
+            this.labelRangeSliderMin.Name = "labelRangeSliderMin";
+            this.labelRangeSliderMin.Size = new System.Drawing.Size(23, 13);
+            this.labelRangeSliderMin.TabIndex = 19;
+            this.labelRangeSliderMin.Text = "min";
+            // 
+            // labelRangeSliderMax
+            // 
+            this.labelRangeSliderMax.AutoSize = true;
+            this.labelRangeSliderMax.Location = new System.Drawing.Point(1308, 345);
+            this.labelRangeSliderMax.Name = "labelRangeSliderMax";
+            this.labelRangeSliderMax.Size = new System.Drawing.Size(26, 13);
+            this.labelRangeSliderMax.TabIndex = 20;
+            this.labelRangeSliderMax.Text = "max";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 689);
+            this.Controls.Add(this.labelRangeSliderMax);
+            this.Controls.Add(this.labelRangeSliderMin);
+            this.Controls.Add(this.selectionRangeSlider1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.userControl1);
             this.Controls.Add(this.zedGraph2);
@@ -277,6 +313,9 @@
         private ZedGraph.ZedGraphControl zedGraph2;
         private System.Windows.Forms.UserControl userControl1;
         private System.Windows.Forms.ComboBox comboBox1;
+        private SelectionRangeSlider selectionRangeSlider1;
+        private System.Windows.Forms.Label labelRangeSliderMin;
+        private System.Windows.Forms.Label labelRangeSliderMax;
     }
 }
 

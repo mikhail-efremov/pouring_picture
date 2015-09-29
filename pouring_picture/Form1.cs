@@ -26,6 +26,13 @@ namespace pouring_picture
         {
             FillColorPickRegion();
             PrepareGraph();
+            selectionRangeSlider1.SelectionChanged += selectionRangeSlider1_SelectionChanged;
+        }
+
+        private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
+        {
+            labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
+            labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
         }
 
         private void imegeUploadButton_Click(object sender, EventArgs e)
@@ -381,7 +388,6 @@ namespace pouring_picture
                     var __lab = RGBtoLAB(__color);
                     labList.Add(__lab);
                 }
-
 
                 foreach (var l in labList)
                 {
