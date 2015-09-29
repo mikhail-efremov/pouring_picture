@@ -47,9 +47,10 @@
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
             this.userControl1 = new System.Windows.Forms.UserControl();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             this.labelRangeSliderMin = new System.Windows.Forms.Label();
             this.labelRangeSliderMax = new System.Windows.Forms.Label();
+            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
+            this.buttonCut1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -216,6 +217,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "RGB",
@@ -225,18 +227,6 @@
             this.comboBox1.Size = new System.Drawing.Size(102, 21);
             this.comboBox1.TabIndex = 17;
             this.comboBox1.Text = "RGB";
-            // 
-            // selectionRangeSlider1
-            // 
-            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 328);
-            this.selectionRangeSlider1.Max = 255;
-            this.selectionRangeSlider1.Min = 0;
-            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
-            this.selectionRangeSlider1.SelectedMax = 255;
-            this.selectionRangeSlider1.SelectedMin = 0;
-            this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
-            this.selectionRangeSlider1.TabIndex = 18;
-            this.selectionRangeSlider1.Value = 128;
             // 
             // labelRangeSliderMin
             // 
@@ -256,11 +246,34 @@
             this.labelRangeSliderMax.TabIndex = 20;
             this.labelRangeSliderMax.Text = "max";
             // 
+            // selectionRangeSlider1
+            // 
+            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 328);
+            this.selectionRangeSlider1.Max = 255;
+            this.selectionRangeSlider1.Min = 0;
+            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
+            this.selectionRangeSlider1.SelectedMax = 255;
+            this.selectionRangeSlider1.SelectedMin = 0;
+            this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider1.TabIndex = 18;
+            this.selectionRangeSlider1.Value = 128;
+            // 
+            // buttonCut1
+            // 
+            this.buttonCut1.Location = new System.Drawing.Point(1134, 344);
+            this.buttonCut1.Name = "buttonCut1";
+            this.buttonCut1.Size = new System.Drawing.Size(75, 23);
+            this.buttonCut1.TabIndex = 21;
+            this.buttonCut1.Text = "Cut";
+            this.buttonCut1.UseVisualStyleBackColor = true;
+            this.buttonCut1.Click += new System.EventHandler(this.buttonCut1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 689);
+            this.Controls.Add(this.buttonCut1);
             this.Controls.Add(this.labelRangeSliderMax);
             this.Controls.Add(this.labelRangeSliderMin);
             this.Controls.Add(this.selectionRangeSlider1);
@@ -316,6 +329,7 @@
         private SelectionRangeSlider selectionRangeSlider1;
         private System.Windows.Forms.Label labelRangeSliderMin;
         private System.Windows.Forms.Label labelRangeSliderMax;
+        private System.Windows.Forms.Button buttonCut1;
     }
 }
 
