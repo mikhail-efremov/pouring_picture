@@ -517,37 +517,52 @@ namespace pouring_picture
 
         private void buttonCut1_Click(object sender, EventArgs e)
         {
-            var points = zedGraph1.GraphPane.CurveList[0].Points;
-            var min = selectionRangeSlider1.SelectedMin;
-            var max = selectionRangeSlider1.SelectedMax;
-
-            var successColors = new List<Point>();
-            for (int i = 0; i < 255; i++)
+            try
             {
-                if (points[i].X > min && points[i].X < max)
-                    successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
+                var points = zedGraph1.GraphPane.CurveList[0].Points;
+                var min = selectionRangeSlider1.SelectedMin;
+                var max = selectionRangeSlider1.SelectedMax;
+
+                var successColors = new List<Point>();
+                for (int i = 0; i < 255; i++)
+                {
+                    if (points[i].X > min && points[i].X < max)
+                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
+                }
+
+                var XValues = new double[255];
+                var YValues = new double[255];
+
+                for (int i = 0; i < XValues.Length; i++)
+                {
+                    XValues[i] = i;
+                }
+
+                for (int i = 0; i < successColors.Count; i++)
+                {
+                    var x = successColors[i].X;
+                    YValues[x] = successColors[i].Y;
+                }
+
+                zedGraph1.Refresh();
+                zedGraph1.GraphPane.CurveList.Clear();
+                zedGraph1.GraphPane.GraphObjList.Clear();
+
+                GraphPane pane = zedGraph1.GraphPane;
+                pane.CurveList.Clear();
+
+                var color = Color.Green;
+
+                BarItem bar = pane.AddBar("A", XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+
+                zedGraph1.AxisChange();
+                zedGraph1.Invalidate();
             }
-
-            var XValues = new double[255];
-            var YValues = new double[255];
-
-            for (int i = successColors[0].X; i < successColors.Count; i++ )
+            catch (Exception ex)
             {
-                XValues[i] = successColors[i].X;
-                YValues[i] = successColors[i].Y;
+                MessageBox.Show(ex.Message, ex.TargetSite.ToString());
             }
-
-            zedGraph1.Refresh();
-            zedGraph1.GraphPane.CurveList.Clear();
-            zedGraph1.GraphPane.GraphObjList.Clear();
-
-            GraphPane pane = zedGraph1.GraphPane;
-            pane.CurveList.Clear();
-
-            var color = Color.Green;
-
-            BarItem bar = pane.AddBar("A", XValues, YValues, color);
-            bar.Bar.Border.Color = color;
         }
     }
     /// <summary>
