@@ -363,8 +363,8 @@ namespace pouring_picture
             }
             else
             {
-                double[] YValues = new double[128 + 128 + 10];
-                double[] XValues = new double[128 + 128 + 10];
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[TINT_COUNT];
 
                 int red = Convert.ToInt32(labelRed.Text);
                 int green = Convert.ToInt32(labelGreen.Text);
@@ -382,18 +382,21 @@ namespace pouring_picture
                     labList.Add(__lab);
                 }
 
+
                 foreach (var l in labList)
                 {
-                    for (int i = 0; i < 255; i++) //-128 to 128 - is A range
+                    int j = -128;
+                    for (int i = 0; i < TINT_COUNT; i++) //-128 to 128 - is A range
                     {
                         XValues[i] = i + 1;
 
-                        if((int)l.A == i && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
+                        if((int)l.A == j && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
                             YValues[i]++;
+                        j++;
                     }
                 }
 
-                BarItem bar = pane.AddBar("L", XValues, YValues, color);
+                BarItem bar = pane.AddBar("A", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
 
@@ -435,7 +438,7 @@ namespace pouring_picture
                     {
                         XValues[i] = i + 1;
 
-                        if (pixel.blue == i && pixel.red != red && pixel.green != green)
+                        if (pixel.blue == i + 128 && pixel.red != red && pixel.green != green)
                             YValues[i]++;
                     }
                 }
@@ -445,8 +448,8 @@ namespace pouring_picture
             }
             else
             {
-                double[] YValues = new double[128 + 128 + 10];
-                double[] XValues = new double[128 + 128 + 10];
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[TINT_COUNT];
 
                 int red = Convert.ToInt32(labelRed.Text);
                 int green = Convert.ToInt32(labelGreen.Text);
@@ -466,16 +469,18 @@ namespace pouring_picture
 
                 foreach (var l in labList)
                 {
-                    for (int i = 0; i < 255; i++) //-128 to 128 - is B range
+                    int j = -128;
+                    for (int i = 0; i < TINT_COUNT; i++) //-128 to 128 - is B range
                     {
                         XValues[i] = i + 1;
 
-                        if ((int)l.B == i && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
+                        if ((int)l.B == j && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
                             YValues[i]++; //dosnt correct
+                        j++;
                     }
                 }
 
-                BarItem bar = pane.AddBar("L", XValues, YValues, color);
+                BarItem bar = pane.AddBar("B", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
 
