@@ -47,10 +47,18 @@
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
             this.userControl1 = new System.Windows.Forms.UserControl();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.labelRangeSliderMin = new System.Windows.Forms.Label();
-            this.labelRangeSliderMax = new System.Windows.Forms.Label();
-            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
+            this.labelRangeSliderMin1 = new System.Windows.Forms.Label();
+            this.labelRangeSliderMax1 = new System.Windows.Forms.Label();
             this.buttonCut1 = new System.Windows.Forms.Button();
+            this.buttonCut = new System.Windows.Forms.Button();
+            this.labelRangeSliderMax = new System.Windows.Forms.Label();
+            this.labelRangeSliderMin = new System.Windows.Forms.Label();
+            this.buttonCut2 = new System.Windows.Forms.Button();
+            this.labelRangeSliderMax2 = new System.Windows.Forms.Label();
+            this.labelRangeSliderMin2 = new System.Windows.Forms.Label();
+            this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
+            this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
+            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -167,7 +175,7 @@
             this.zedGraph.ScrollMinX = 0D;
             this.zedGraph.ScrollMinY = 0D;
             this.zedGraph.ScrollMinY2 = 0D;
-            this.zedGraph.Size = new System.Drawing.Size(401, 311);
+            this.zedGraph.Size = new System.Drawing.Size(401, 282);
             this.zedGraph.TabIndex = 11;
             // 
             // buttonDrawChart
@@ -191,12 +199,12 @@
             this.zedGraph1.ScrollMinX = 0D;
             this.zedGraph1.ScrollMinY = 0D;
             this.zedGraph1.ScrollMinY2 = 0D;
-            this.zedGraph1.Size = new System.Drawing.Size(401, 311);
+            this.zedGraph1.Size = new System.Drawing.Size(401, 282);
             this.zedGraph1.TabIndex = 14;
             // 
             // zedGraph2
             // 
-            this.zedGraph2.Location = new System.Drawing.Point(549, 328);
+            this.zedGraph2.Location = new System.Drawing.Point(549, 357);
             this.zedGraph2.Name = "zedGraph2";
             this.zedGraph2.ScrollGrace = 0D;
             this.zedGraph2.ScrollMaxX = 0D;
@@ -205,7 +213,7 @@
             this.zedGraph2.ScrollMinX = 0D;
             this.zedGraph2.ScrollMinY = 0D;
             this.zedGraph2.ScrollMinY2 = 0D;
-            this.zedGraph2.Size = new System.Drawing.Size(401, 311);
+            this.zedGraph2.Size = new System.Drawing.Size(401, 282);
             this.zedGraph2.TabIndex = 15;
             // 
             // userControl1
@@ -228,27 +236,117 @@
             this.comboBox1.TabIndex = 17;
             this.comboBox1.Text = "RGB";
             // 
-            // labelRangeSliderMin
+            // labelRangeSliderMin1
             // 
-            this.labelRangeSliderMin.AutoSize = true;
-            this.labelRangeSliderMin.Location = new System.Drawing.Point(1003, 345);
-            this.labelRangeSliderMin.Name = "labelRangeSliderMin";
-            this.labelRangeSliderMin.Size = new System.Drawing.Size(23, 13);
-            this.labelRangeSliderMin.TabIndex = 19;
-            this.labelRangeSliderMin.Text = "min";
+            this.labelRangeSliderMin1.AutoSize = true;
+            this.labelRangeSliderMin1.Location = new System.Drawing.Point(1000, 317);
+            this.labelRangeSliderMin1.Name = "labelRangeSliderMin1";
+            this.labelRangeSliderMin1.Size = new System.Drawing.Size(23, 13);
+            this.labelRangeSliderMin1.TabIndex = 19;
+            this.labelRangeSliderMin1.Text = "min";
+            // 
+            // labelRangeSliderMax1
+            // 
+            this.labelRangeSliderMax1.AutoSize = true;
+            this.labelRangeSliderMax1.Location = new System.Drawing.Point(1305, 317);
+            this.labelRangeSliderMax1.Name = "labelRangeSliderMax1";
+            this.labelRangeSliderMax1.Size = new System.Drawing.Size(26, 13);
+            this.labelRangeSliderMax1.TabIndex = 20;
+            this.labelRangeSliderMax1.Text = "max";
+            // 
+            // buttonCut1
+            // 
+            this.buttonCut1.Location = new System.Drawing.Point(1131, 316);
+            this.buttonCut1.Name = "buttonCut1";
+            this.buttonCut1.Size = new System.Drawing.Size(75, 23);
+            this.buttonCut1.TabIndex = 21;
+            this.buttonCut1.Text = "Cut";
+            this.buttonCut1.UseVisualStyleBackColor = true;
+            this.buttonCut1.Click += new System.EventHandler(this.buttonCut1_Click);
+            // 
+            // buttonCut
+            // 
+            this.buttonCut.Location = new System.Drawing.Point(726, 315);
+            this.buttonCut.Name = "buttonCut";
+            this.buttonCut.Size = new System.Drawing.Size(75, 23);
+            this.buttonCut.TabIndex = 25;
+            this.buttonCut.Text = "Cut";
+            this.buttonCut.UseVisualStyleBackColor = true;
+            this.buttonCut.Click += new System.EventHandler(this.buttonCut_Click);
             // 
             // labelRangeSliderMax
             // 
             this.labelRangeSliderMax.AutoSize = true;
-            this.labelRangeSliderMax.Location = new System.Drawing.Point(1308, 345);
+            this.labelRangeSliderMax.Location = new System.Drawing.Point(900, 316);
             this.labelRangeSliderMax.Name = "labelRangeSliderMax";
             this.labelRangeSliderMax.Size = new System.Drawing.Size(26, 13);
-            this.labelRangeSliderMax.TabIndex = 20;
+            this.labelRangeSliderMax.TabIndex = 24;
             this.labelRangeSliderMax.Text = "max";
+            // 
+            // labelRangeSliderMin
+            // 
+            this.labelRangeSliderMin.AutoSize = true;
+            this.labelRangeSliderMin.Location = new System.Drawing.Point(595, 316);
+            this.labelRangeSliderMin.Name = "labelRangeSliderMin";
+            this.labelRangeSliderMin.Size = new System.Drawing.Size(23, 13);
+            this.labelRangeSliderMin.TabIndex = 23;
+            this.labelRangeSliderMin.Text = "min";
+            // 
+            // buttonCut2
+            // 
+            this.buttonCut2.Location = new System.Drawing.Point(726, 659);
+            this.buttonCut2.Name = "buttonCut2";
+            this.buttonCut2.Size = new System.Drawing.Size(75, 23);
+            this.buttonCut2.TabIndex = 29;
+            this.buttonCut2.Text = "Cut";
+            this.buttonCut2.UseVisualStyleBackColor = true;
+            this.buttonCut2.Click += new System.EventHandler(this.buttonCut2_Click);
+            // 
+            // labelRangeSliderMax2
+            // 
+            this.labelRangeSliderMax2.AutoSize = true;
+            this.labelRangeSliderMax2.Location = new System.Drawing.Point(900, 660);
+            this.labelRangeSliderMax2.Name = "labelRangeSliderMax2";
+            this.labelRangeSliderMax2.Size = new System.Drawing.Size(26, 13);
+            this.labelRangeSliderMax2.TabIndex = 28;
+            this.labelRangeSliderMax2.Text = "max";
+            // 
+            // labelRangeSliderMin2
+            // 
+            this.labelRangeSliderMin2.AutoSize = true;
+            this.labelRangeSliderMin2.Location = new System.Drawing.Point(595, 660);
+            this.labelRangeSliderMin2.Name = "labelRangeSliderMin2";
+            this.labelRangeSliderMin2.Size = new System.Drawing.Size(23, 13);
+            this.labelRangeSliderMin2.TabIndex = 27;
+            this.labelRangeSliderMin2.Text = "min";
+            // 
+            // selectionRangeSlider2
+            // 
+            this.selectionRangeSlider2.Location = new System.Drawing.Point(595, 643);
+            this.selectionRangeSlider2.Max = 255;
+            this.selectionRangeSlider2.Min = 0;
+            this.selectionRangeSlider2.Name = "selectionRangeSlider2";
+            this.selectionRangeSlider2.SelectedMax = 255;
+            this.selectionRangeSlider2.SelectedMin = 0;
+            this.selectionRangeSlider2.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider2.TabIndex = 26;
+            this.selectionRangeSlider2.Value = 128;
+            // 
+            // selectionRangeSlider
+            // 
+            this.selectionRangeSlider.Location = new System.Drawing.Point(595, 299);
+            this.selectionRangeSlider.Max = 255;
+            this.selectionRangeSlider.Min = 0;
+            this.selectionRangeSlider.Name = "selectionRangeSlider";
+            this.selectionRangeSlider.SelectedMax = 255;
+            this.selectionRangeSlider.SelectedMin = 0;
+            this.selectionRangeSlider.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider.TabIndex = 22;
+            this.selectionRangeSlider.Value = 128;
             // 
             // selectionRangeSlider1
             // 
-            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 328);
+            this.selectionRangeSlider1.Location = new System.Drawing.Point(1000, 300);
             this.selectionRangeSlider1.Max = 255;
             this.selectionRangeSlider1.Min = 0;
             this.selectionRangeSlider1.Name = "selectionRangeSlider1";
@@ -258,24 +356,22 @@
             this.selectionRangeSlider1.TabIndex = 18;
             this.selectionRangeSlider1.Value = 128;
             // 
-            // buttonCut1
-            // 
-            this.buttonCut1.Location = new System.Drawing.Point(1134, 344);
-            this.buttonCut1.Name = "buttonCut1";
-            this.buttonCut1.Size = new System.Drawing.Size(75, 23);
-            this.buttonCut1.TabIndex = 21;
-            this.buttonCut1.Text = "Cut";
-            this.buttonCut1.UseVisualStyleBackColor = true;
-            this.buttonCut1.Click += new System.EventHandler(this.buttonCut1_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1367, 689);
-            this.Controls.Add(this.buttonCut1);
+            this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.buttonCut2);
+            this.Controls.Add(this.labelRangeSliderMax2);
+            this.Controls.Add(this.labelRangeSliderMin2);
+            this.Controls.Add(this.selectionRangeSlider2);
+            this.Controls.Add(this.buttonCut);
             this.Controls.Add(this.labelRangeSliderMax);
             this.Controls.Add(this.labelRangeSliderMin);
+            this.Controls.Add(this.selectionRangeSlider);
+            this.Controls.Add(this.buttonCut1);
+            this.Controls.Add(this.labelRangeSliderMax1);
+            this.Controls.Add(this.labelRangeSliderMin1);
             this.Controls.Add(this.selectionRangeSlider1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.userControl1);
@@ -327,9 +423,17 @@
         private System.Windows.Forms.UserControl userControl1;
         private System.Windows.Forms.ComboBox comboBox1;
         private SelectionRangeSlider selectionRangeSlider1;
-        private System.Windows.Forms.Label labelRangeSliderMin;
-        private System.Windows.Forms.Label labelRangeSliderMax;
+        private System.Windows.Forms.Label labelRangeSliderMin1;
+        private System.Windows.Forms.Label labelRangeSliderMax1;
         private System.Windows.Forms.Button buttonCut1;
+        private System.Windows.Forms.Button buttonCut;
+        private System.Windows.Forms.Label labelRangeSliderMax;
+        private System.Windows.Forms.Label labelRangeSliderMin;
+        private SelectionRangeSlider selectionRangeSlider;
+        private System.Windows.Forms.Button buttonCut2;
+        private System.Windows.Forms.Label labelRangeSliderMax2;
+        private System.Windows.Forms.Label labelRangeSliderMin2;
+        private SelectionRangeSlider selectionRangeSlider2;
     }
 }
 

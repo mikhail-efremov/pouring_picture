@@ -57,7 +57,9 @@ namespace pouring_picture
 
         private void Subscribe()
         {
+            selectionRangeSlider.SelectionChanged += selectionRangeSlider_SelectionChanged;
             selectionRangeSlider1.SelectionChanged += selectionRangeSlider1_SelectionChanged;
+            selectionRangeSlider2.SelectionChanged += selectionRangeSlider2_SelectionChanged;
         }
 
         private void FillColorPickRegion()
@@ -509,10 +511,23 @@ namespace pouring_picture
 
             return lab;
         }
+
+        void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
+        {
+            labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
+            labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
+        }
+
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
-            labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
-            labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
+            labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
+            labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
+        }
+
+        void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
+        {
+            labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
+            labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
         }
 
         private void buttonCut1_Click(object sender, EventArgs e)
@@ -553,11 +568,111 @@ namespace pouring_picture
 
                 var color = Color.Green;
 
-                BarItem bar = pane.AddBar("A", XValues, YValues, color);
+                BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
 
                 zedGraph1.AxisChange();
                 zedGraph1.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.TargetSite.ToString());
+            }
+        }
+
+        private void buttonCut_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var points = zedGraph.GraphPane.CurveList[0].Points;
+                var min = selectionRangeSlider.SelectedMin;
+                var max = selectionRangeSlider.SelectedMax;
+
+                var successColors = new List<Point>();
+                for (int i = 0; i < 255; i++)
+                {
+                    if (points[i].X > min && points[i].X < max)
+                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
+                }
+
+                var XValues = new double[255];
+                var YValues = new double[255];
+
+                for (int i = 0; i < XValues.Length; i++)
+                {
+                    XValues[i] = i;
+                }
+
+                for (int i = 0; i < successColors.Count; i++)
+                {
+                    var x = successColors[i].X;
+                    YValues[x] = successColors[i].Y;
+                }
+
+                zedGraph.Refresh();
+                zedGraph.GraphPane.CurveList.Clear();
+                zedGraph.GraphPane.GraphObjList.Clear();
+
+                GraphPane pane = zedGraph.GraphPane;
+                pane.CurveList.Clear();
+
+                var color = Color.Red;
+
+                BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+
+                zedGraph.AxisChange();
+                zedGraph.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.TargetSite.ToString());
+            }
+        }
+
+        private void buttonCut2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var points = zedGraph2.GraphPane.CurveList[0].Points;
+                var min = selectionRangeSlider2.SelectedMin;
+                var max = selectionRangeSlider2.SelectedMax;
+
+                var successColors = new List<Point>();
+                for (int i = 0; i < 255; i++)
+                {
+                    if (points[i].X > min && points[i].X < max)
+                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
+                }
+
+                var XValues = new double[255];
+                var YValues = new double[255];
+
+                for (int i = 0; i < XValues.Length; i++)
+                {
+                    XValues[i] = i;
+                }
+
+                for (int i = 0; i < successColors.Count; i++)
+                {
+                    var x = successColors[i].X;
+                    YValues[x] = successColors[i].Y;
+                }
+
+                zedGraph2.Refresh();
+                zedGraph2.GraphPane.CurveList.Clear();
+                zedGraph2.GraphPane.GraphObjList.Clear();
+
+                GraphPane pane = zedGraph2.GraphPane;
+                pane.CurveList.Clear();
+
+                var color = Color.Blue;
+
+                BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+
+                zedGraph2.AxisChange();
+                zedGraph2.Invalidate();
             }
             catch (Exception ex)
             {
