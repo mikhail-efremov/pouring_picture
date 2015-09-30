@@ -268,11 +268,11 @@ namespace pouring_picture
             GraphPane pane = zedGraph.GraphPane;
             pane.CurveList.Clear();
 
-            double[] YValues = new double[TINT_COUNT];
-            double[] XValues = new double[TINT_COUNT];
-
             if (comboBox1.Text == "RGB")
             {
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[TINT_COUNT];
+
                 int green = Convert.ToInt32(labelGreen.Text);
                 int blue = Convert.ToInt32(labelBlue.Text);
 
@@ -290,8 +290,11 @@ namespace pouring_picture
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
-            else
-            { 
+            else if (comboBox1.Text == "LAB")
+            {
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[TINT_COUNT];
+
                 int red = Convert.ToInt32(labelRed.Text);
                 int green = Convert.ToInt32(labelGreen.Text);
                 int blue = Convert.ToInt32(labelBlue.Text);
@@ -320,6 +323,42 @@ namespace pouring_picture
                 }
 
                 BarItem bar = pane.AddBar("L", XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+            }
+            else if (comboBox1.Text == "HSV")
+            {
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[360];
+
+                int red = Convert.ToInt32(labelRed.Text);
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
+
+                Color _color = Color.FromArgb(red, green, blue);
+                var hsv = RGBtoHSV(_color);
+
+                var hsvList = new List<Hsv>();
+
+                foreach (var c in chartColors)
+                {
+                    var __color = Color.FromArgb(c.red, c.blue, c.green);
+                    var __hsv = RGBtoHSV(__color);
+                    hsvList.Add(__hsv);
+                }
+
+                foreach (var l in hsvList)
+                {
+                    for (int i = 0; i < 360; i++) //0 to 100 - is L range
+                    {
+                        XValues[i] = i + 1;
+
+                        if ((int)l.H == i)// && (int)hsv.S * 100 != (int)l.S * 100 
+                            //&& (int)hsv.V * 100 != (int)l.V * 100)
+                            YValues[i]++;
+                    }
+                }
+
+                BarItem bar = pane.AddBar("H", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
             pane.BarSettings.MinBarGap = 0.0f;
@@ -369,7 +408,7 @@ namespace pouring_picture
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
-            else
+            else if (comboBox1.Text == "LAB")
             {
                 double[] YValues = new double[TINT_COUNT];
                 double[] XValues = new double[TINT_COUNT];
@@ -404,6 +443,42 @@ namespace pouring_picture
                 }
 
                 BarItem bar = pane.AddBar("A", XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+            }
+            else if (comboBox1.Text == "HSV")
+            {
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[TINT_COUNT];
+
+                int red = Convert.ToInt32(labelRed.Text);
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
+
+                Color _color = Color.FromArgb(red, green, blue);
+                var hsv = RGBtoHSV(_color);
+
+                var hsvList = new List<Hsv>();
+
+                foreach (var c in chartColors)
+                {
+                    var __color = Color.FromArgb(c.red, c.blue, c.green);
+                    var __hsv = RGBtoHSV(__color);
+                    hsvList.Add(__hsv);
+                }
+
+                foreach (var l in hsvList)
+                {
+                    for (int i = 0; i < 100; i++) //0 to 100 - is L range
+                    {
+                        XValues[i] = i + 1;
+
+                        if ((int)l.S == i)// && (int)hsv.H * 100 != (int)l.H * 100 
+                            //&& (int)hsv.V * 100 != (int)l.V * 100)
+                            YValues[i]++;
+                    }
+                }
+
+                BarItem bar = pane.AddBar("S", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
 
@@ -453,7 +528,7 @@ namespace pouring_picture
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
-            else
+            else if (comboBox1.Text == "LAB")
             {
                 double[] YValues = new double[TINT_COUNT];
                 double[] XValues = new double[TINT_COUNT];
@@ -490,6 +565,42 @@ namespace pouring_picture
                 BarItem bar = pane.AddBar("B", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
             }
+            else if (comboBox1.Text == "HSV")
+            {
+                double[] YValues = new double[TINT_COUNT];
+                double[] XValues = new double[TINT_COUNT];
+
+                int red = Convert.ToInt32(labelRed.Text);
+                int green = Convert.ToInt32(labelGreen.Text);
+                int blue = Convert.ToInt32(labelBlue.Text);
+
+                Color _color = Color.FromArgb(red, green, blue);
+                var hsv = RGBtoHSV(_color);
+
+                var hsvList = new List<Hsv>();
+
+                foreach (var c in chartColors)
+                {
+                    var __color = Color.FromArgb(c.red, c.blue, c.green);
+                    var __hsv = RGBtoHSV(__color);
+                    hsvList.Add(__hsv);
+                }
+
+                foreach (var l in hsvList)
+                {
+                    for (int i = 0; i < 255; i++) //0 to 100 - is L range
+                    {
+                        XValues[i] = i + 1;
+
+                        if ((int)l.V == i)// && (int)hsv.H * 100 != (int)l.H * 100 
+                          //  && (int)hsv.S * 100 != (int)l.S * 100)
+                            YValues[i]++;
+                    }
+                }
+
+                BarItem bar = pane.AddBar("V", XValues, YValues, color);
+                bar.Bar.Border.Color = color;
+            }
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
@@ -510,6 +621,17 @@ namespace pouring_picture
             var lab = rgb.To<Lab>();
 
             return lab;
+        }
+
+        private Hsv RGBtoHSV(Color color)
+        {
+            Rgb rgb = new Rgb();
+            rgb.R = color.R;
+            rgb.G = color.G;
+            rgb.B = color.B;
+            var hsv = rgb.To<Hsv>();
+
+            return hsv;
         }
 
         void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
@@ -738,17 +860,11 @@ namespace pouring_picture
             }
         }
         int selectedMax = 100;
-        int value = 50;
         /// <summary>
         /// Fired when SelectedMin or SelectedMax changes.
         /// </summary>
         [Description("Fired when SelectedMin or SelectedMax changes.")]
         public event EventHandler SelectionChanged;
-        /// <summary>
-        /// Fired when Value changes.
-        /// </summary>
-        [Description("Fired when Value changes.")]
-        public event EventHandler ValueChanged;
 
         public SelectionRangeSlider()
         {
