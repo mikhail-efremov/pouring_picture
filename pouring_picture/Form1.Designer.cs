@@ -330,7 +330,6 @@
             this.selectionRangeSlider2.SelectedMin = 0;
             this.selectionRangeSlider2.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider2.TabIndex = 26;
-            this.selectionRangeSlider2.Value = 128;
             // 
             // selectionRangeSlider
             // 
@@ -342,7 +341,6 @@
             this.selectionRangeSlider.SelectedMin = 0;
             this.selectionRangeSlider.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider.TabIndex = 22;
-            this.selectionRangeSlider.Value = 128;
             // 
             // selectionRangeSlider1
             // 
@@ -354,7 +352,6 @@
             this.selectionRangeSlider1.SelectedMin = 0;
             this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider1.TabIndex = 18;
-            this.selectionRangeSlider1.Value = 128;
             // 
             // Form1
             // 

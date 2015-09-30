@@ -738,21 +738,6 @@ namespace pouring_picture
             }
         }
         int selectedMax = 100;
-        /// <summary>
-        /// Current value.
-        /// </summary>
-        [Description("Current value.")]
-        public int Value
-        {
-            get { return value; }
-            set
-            {
-                this.value = value;
-                if (ValueChanged != null)
-                    ValueChanged(this, null);
-                Invalidate();
-            }
-        }
         int value = 50;
         /// <summary>
         /// Fired when SelectedMin or SelectedMax changes.
@@ -789,23 +774,16 @@ namespace pouring_picture
             e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
             //draw a black frame around our control
             e.Graphics.DrawRectangle(Pens.Black, 0, 0, Width - 1, Height - 1);
-            //draw a simple vertical line at the Value position
-            e.Graphics.DrawLine(Pens.Black,
-                (Value - Min) * Width / (Max - Min), 0,
-                (Value - Min) * Width / (Max - Min), Height);
         }
 
         void SelectionRangeSlider_MouseDown(object sender, MouseEventArgs e)
         {
             //check where the user clicked so we can decide which thumb to move
             int pointedValue = Min + e.X * (Max - Min) / Width;
-            int distValue = Math.Abs(pointedValue - Value);
             int distMin = Math.Abs(pointedValue - SelectedMin);
             int distMax = Math.Abs(pointedValue - SelectedMax);
-            int minDist = Math.Min(distValue, Math.Min(distMin, distMax));
-            if (minDist == distValue)
-                movingMode = MovingMode.MovingValue;
-            else if (minDist == distMin)
+            int minDist =  Math.Min(distMin, distMax);
+            if (minDist == distMin)
                 movingMode = MovingMode.MovingMin;
             else
                 movingMode = MovingMode.MovingMax;
@@ -819,9 +797,7 @@ namespace pouring_picture
             if (e.Button != MouseButtons.Left)
                 return;
             int pointedValue = Min + e.X * (Max - Min) / Width;
-            if (movingMode == MovingMode.MovingValue)
-                Value = pointedValue;
-            else if (movingMode == MovingMode.MovingMin)
+            if (movingMode == MovingMode.MovingMin)
                 SelectedMin = pointedValue;
             else if (movingMode == MovingMode.MovingMax)
                 SelectedMax = pointedValue;
