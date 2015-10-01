@@ -327,7 +327,7 @@ namespace pouring_picture
             }
             else if (comboBox1.Text == "HSV")
             {
-                double[] YValues = new double[TINT_COUNT];
+                double[] YValues = new double[360];
                 double[] XValues = new double[360];
 
                 int red = Convert.ToInt32(labelRed.Text);
@@ -447,8 +447,8 @@ namespace pouring_picture
             }
             else if (comboBox1.Text == "HSV")
             {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
+                double[] YValues = new double[100];
+                double[] XValues = new double[100];
 
                 int red = Convert.ToInt32(labelRed.Text);
                 int green = Convert.ToInt32(labelGreen.Text);
@@ -468,11 +468,15 @@ namespace pouring_picture
 
                 foreach (var l in hsvList)
                 {
-                    for (int i = 0; i < 100; i++) //0 to 100 - is L range
+                    for (int i = 0; i < 100; i++) //0 to 1 - is s range
                     {
                         XValues[i] = i + 1;
 
-                        if ((int)l.S == i)// && (int)hsv.H * 100 != (int)l.H * 100 
+                        int f = (int)(l.S * 100);
+                        double s0 = ((double)i / 100)*100;
+                        int s = (int)s0;
+
+                        if (f == s)// && (int)hsv.H * 100 != (int)l.H * 100 
                             //&& (int)hsv.V * 100 != (int)l.V * 100)
                             YValues[i]++;
                     }
@@ -567,8 +571,8 @@ namespace pouring_picture
             }
             else if (comboBox1.Text == "HSV")
             {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
+                double[] YValues = new double[100];
+                double[] XValues = new double[100];
 
                 int red = Convert.ToInt32(labelRed.Text);
                 int green = Convert.ToInt32(labelGreen.Text);
@@ -588,11 +592,15 @@ namespace pouring_picture
 
                 foreach (var l in hsvList)
                 {
-                    for (int i = 0; i < 255; i++) //0 to 100 - is L range
+                    for (int i = 0; i < 100; i++) //0 to 1 - is V range
                     {
                         XValues[i] = i + 1;
 
-                        if ((int)l.V == i)// && (int)hsv.H * 100 != (int)l.H * 100 
+                        int f = (int)(l.V * 100);
+                        double s0 = ((double)i / 100) * 100;
+                        int s = (int)s0;
+
+                        if (f == s)// && (int)hsv.H * 100 != (int)l.H * 100 
                           //  && (int)hsv.S * 100 != (int)l.S * 100)
                             YValues[i]++;
                     }
