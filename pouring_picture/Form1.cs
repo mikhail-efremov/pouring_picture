@@ -735,46 +735,49 @@ namespace pouring_picture
 //            pane.CurveList.Clear();
 
             var count = zedGraph.GraphPane.CurveList.Count;
+
+            var barList = new List<UserBar>();
             for (int l = 0; l < count; l++)
             {
-                try
+                var points = zedGraph.GraphPane.CurveList[l].Points;
+                var min = selectionRangeSlider.SelectedMin;
+                var max = selectionRangeSlider.SelectedMax;
+
+                var successColors = new List<Point>();
+                for (int i = 0; i < 255; i++)
                 {
-                    var points = zedGraph.GraphPane.CurveList[l].Points;
-                    var min = selectionRangeSlider.SelectedMin;
-                    var max = selectionRangeSlider.SelectedMax;
-
-                    var successColors = new List<Point>();
-                    for (int i = 0; i < 255; i++)
-                    {
-                        if (points[i].X > min && points[i].X < max)
-                            successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
-                    }
-
-                    var XValues = new double[255];
-                    var YValues = new double[255];
-
-                    for (int i = 0; i < XValues.Length; i++)
-                    {
-                        XValues[i] = i;
-                    }
-
-                    for (int i = 0; i < successColors.Count; i++)
-                    {
-                        var x = successColors[i].X;
-                        YValues[x] = successColors[i].Y;
-                    }
-
-                    col = Color.FromArgb(col.R - 20, col.G + 20, col.B);
-                    
-                    BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
-                    zedGraph.GraphPane.CurveList[l] = bar;// new Bar((Bar)bar); // new CurveItem("", XValues, YValues);
-              //      bar.Bar.Border.Color = col;
+                    if (points[i].X > min && points[i].X < max)
+                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
                 }
-                catch (Exception ex)
+
+                var XValues = new double[255];
+                var YValues = new double[255];
+
+                for (int i = 0; i < XValues.Length; i++)
                 {
-                    MessageBox.Show(ex.Message, ex.TargetSite.ToString());
+                    XValues[i] = i;
                 }
+
+                for (int i = 0; i < successColors.Count; i++)
+                {
+                    var x = successColors[i].X;
+                    YValues[x] = successColors[i].Y;
+                }
+
+                col = Color.FromArgb(col.R - 20, col.G + 20, col.B);
+
+                barList.Add(new UserBar(col, XValues, YValues, col.ToString()));
             }
+            pane.CurveList.Clear();
+
+            for (int i = 0; i < barList.Count; i++)
+            {
+                var _bar = barList[i];
+                BarItem bar = pane.AddBar(_bar.label, _bar.XValues, _bar.YValues, _bar.color);
+                zedGraph.GraphPane.CurveList[i] = bar;
+                bar.Label.IsVisible = false;
+            }
+
             zedGraph.AxisChange();
             zedGraph.Invalidate();
         }
@@ -951,5 +954,21 @@ namespace pouring_picture
         /// </summary>
         enum MovingMode { MovingValue, MovingMin, MovingMax }
         MovingMode movingMode;
+    }
+
+    public class UserBar
+    {
+        public Color color;
+        public double[] XValues;
+        public double[] YValues;
+        public string label;
+
+        public UserBar(Color color, double[] XValues, double[] YValues, string label)
+        {
+            this.color = color;
+            this.XValues = XValues;
+            this.YValues = YValues;
+            this.label = label;
+        }
     }
 }
