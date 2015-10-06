@@ -843,13 +843,56 @@ namespace pouring_picture
         }
 
         private void buttonSaveGraphColors_Click(object sender, EventArgs e)
-        {
-            var points = zedGraph.GraphPane.CurveList[l].Points;
+        {  
+            double[] XValues = new double[255];
+            double[] RedValues = new double[255];
+            double[] GreenValues = new double[255];
+            double[] BlueValues = new double[255];
 
             for (int i = 0; i < 255; i++)
             {
-                successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
+                XValues[i] = i;
             }
+
+            var count = zedGraph.GraphPane.CurveList.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var points = zedGraph.GraphPane.CurveList[i].Points;
+
+                for (int j = 0; j < 255; j++)
+                {
+                    RedValues[j] = RedValues[j] + points[j].Y;
+                }
+            }
+
+            var count1 = zedGraph1.GraphPane.CurveList.Count;
+            for (int i = 0; i < count1; i++)
+            {
+                var points = zedGraph1.GraphPane.CurveList[i].Points;
+
+                for (int j = 0; j < 255; j++)
+                {
+                    GreenValues[j] = GreenValues[j] + points[j].Y;
+                }
+            }
+
+            var count2 = zedGraph2.GraphPane.CurveList.Count;
+            for (int i = 0; i < count2; i++)
+            {
+                var points = zedGraph2.GraphPane.CurveList[i].Points;
+
+                for (int j = 0; j < 255; j++)
+                {
+                    BlueValues[j] = BlueValues[j] + points[j].Y;
+                }
+            }
+
+            datas.Clear();
+            for (int i = 0; i < 255; i++)
+            {
+                chartColors.Add(new PixelData((byte)RedValues[i], (byte)GreenValues[i], (byte)BlueValues[i]));
+            }
+            datas.Add(new List<PixelData>(chartColors));
         }
     }
     /// <summary>
