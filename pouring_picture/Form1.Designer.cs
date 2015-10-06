@@ -59,6 +59,7 @@
             this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
+            this.buttonSaveGraphColors = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -355,11 +356,22 @@
             this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider1.TabIndex = 18;
             // 
+            // buttonSaveGraphColors
+            // 
+            this.buttonSaveGraphColors.Location = new System.Drawing.Point(807, 315);
+            this.buttonSaveGraphColors.Name = "buttonSaveGraphColors";
+            this.buttonSaveGraphColors.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveGraphColors.TabIndex = 30;
+            this.buttonSaveGraphColors.Text = "Save";
+            this.buttonSaveGraphColors.UseVisualStyleBackColor = true;
+            this.buttonSaveGraphColors.Click += new System.EventHandler(this.buttonSaveGraphColors_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.buttonSaveGraphColors);
             this.Controls.Add(this.buttonCut2);
             this.Controls.Add(this.labelRangeSliderMax2);
             this.Controls.Add(this.labelRangeSliderMin2);
@@ -433,6 +445,7 @@
         private System.Windows.Forms.Label labelRangeSliderMax2;
         private System.Windows.Forms.Label labelRangeSliderMin2;
         private SelectionRangeSlider selectionRangeSlider2;
+        private System.Windows.Forms.Button buttonSaveGraphColors;
     }
 }
 

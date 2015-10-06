@@ -298,6 +298,7 @@ namespace pouring_picture
 
                     BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
                     bar.Bar.Border.Color = col;
+                    bar.Label.IsVisible = false;
                 }
             }
             else if (comboBox1.Text == "LAB")
@@ -334,6 +335,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar("L", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
             else if (comboBox1.Text == "HSV")
             {
@@ -370,6 +372,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar("H", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
@@ -417,6 +420,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
             else if (comboBox1.Text == "LAB")
             {
@@ -454,6 +458,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar("A", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
             else if (comboBox1.Text == "HSV")
             {
@@ -494,6 +499,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar("S", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
 
             pane.BarSettings.MinBarGap = 0.0f;
@@ -541,6 +547,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
             else if (comboBox1.Text == "LAB")
             {
@@ -578,6 +585,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar("B", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
             else if (comboBox1.Text == "HSV")
             {
@@ -618,6 +626,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar("V", XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
             }
 
             pane.BarSettings.MinBarGap = 0.0f;
@@ -710,6 +719,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
 
                 zedGraph1.AxisChange();
                 zedGraph1.Invalidate();
@@ -720,11 +730,9 @@ namespace pouring_picture
             }
         }
 
-        //TODO cut system to multiple selected area
         private void buttonCut_Click(object sender, EventArgs e)
         {
             var color = Color.Red;
-            var col = Color.FromArgb(color.R, color.G, color.B);
 
             zedGraph.Refresh();
 //            zedGraph.GraphPane.CurveList.Clear();
@@ -764,9 +772,9 @@ namespace pouring_picture
                     YValues[x] = successColors[i].Y;
                 }
 
-                col = Color.FromArgb(col.R - 20, col.G + 20, col.B);
+                color = Color.FromArgb(color.R - 20, color.G + 20, color.B);
 
-                barList.Add(new UserBar(col, XValues, YValues, col.ToString()));
+                barList.Add(new UserBar(color, XValues, YValues, color.ToString()));
             }
             pane.CurveList.Clear();
 
@@ -774,6 +782,7 @@ namespace pouring_picture
             {
                 var _bar = barList[i];
                 BarItem bar = pane.AddBar(_bar.label, _bar.XValues, _bar.YValues, _bar.color);
+                bar.Bar.Border.Color = _bar.color;
                 zedGraph.GraphPane.CurveList[i] = bar;
                 bar.Label.IsVisible = false;
             }
@@ -822,6 +831,7 @@ namespace pouring_picture
 
                 BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
                 bar.Bar.Border.Color = color;
+                bar.Label.IsVisible = false;
 
                 zedGraph2.AxisChange();
                 zedGraph2.Invalidate();
@@ -829,6 +839,16 @@ namespace pouring_picture
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, ex.TargetSite.ToString());
+            }
+        }
+
+        private void buttonSaveGraphColors_Click(object sender, EventArgs e)
+        {
+            var points = zedGraph.GraphPane.CurveList[l].Points;
+
+            for (int i = 0; i < 255; i++)
+            {
+                successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
             }
         }
     }
