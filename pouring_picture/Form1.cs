@@ -258,11 +258,80 @@ namespace pouring_picture
             zedGraph2.IsEnableHPan = false;
         }
 
+        private unsafe void DrowRGB(int tintCount, ZedGraph.ZedGraphControl izedGraph, Color color, Color col)
+        {
+            double[] YValues = new double[tintCount];
+            double[] XValues = new double[tintCount];
+
+            int red = Convert.ToInt32(labelRed.Text);
+            int green = Convert.ToInt32(labelGreen.Text);
+            int blue = Convert.ToInt32(labelBlue.Text);
+
+            GraphPane pane = izedGraph.GraphPane;
+
+            foreach (var data in datas)
+            {
+                Array.Clear(XValues, 0, XValues.Length);
+                foreach (var pixel in data)
+                {
+                    for (int i = 0; i < tintCount; i++)
+                    {
+                        XValues[i] = i + 1;
+
+                        if (color == Color.Red)
+                        {
+                            if (pixel.red == i && pixel.blue != blue && pixel.green != green)
+                                YValues[i]++;
+                        }
+                        if (color == Color.Blue)
+                        {
+                            if (pixel.blue == i && pixel.red != red && pixel.green != green)
+                                YValues[i]++;
+                        }
+                        if (color == Color.Green)
+                        {
+                            if (pixel.green == i && pixel.red != red && pixel.blue != blue)
+                                YValues[i]++;
+                        }
+                    }
+                }
+                if (color == Color.Red)
+                {
+                    col = Color.FromArgb(col.R - 20, col.G + 20, col.B + 20);
+                }
+                if (color == Color.Blue)
+                {
+                    col = Color.FromArgb(col.R + 20, col.G + 20, col.B - 20);
+                }
+                if (color == Color.Green)
+                {
+                    col = Color.FromArgb(col.R + 20, col.G - 20, col.B + 20);
+                }
+
+                BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
+                bar.Bar.Border.Color = col;
+                bar.Label.IsVisible = false;
+
+                pane.BarSettings.MinBarGap = 0.0f;
+                pane.BarSettings.MinClusterGap = 0.0f;
+
+                pane.Border.DashOff = 0.0f;
+                pane.Border.DashOn = 0.0f;
+
+                izedGraph.AxisChange();
+                izedGraph.Invalidate();
+            }
+        }
+
         private unsafe void DrawGraph()
         {
             const int TINT_COUNT = 255;
 
             var color = Color.Red;
+
+            int red = Convert.ToInt32(labelRed.Text);
+            int green = Convert.ToInt32(labelGreen.Text);
+            int blue = Convert.ToInt32(labelBlue.Text);
 
             zedGraph.Refresh();
             zedGraph.GraphPane.CurveList.Clear();
@@ -271,44 +340,15 @@ namespace pouring_picture
 
             GraphPane pane = zedGraph.GraphPane;
             pane.CurveList.Clear();
-
-            var col = Color.FromArgb(color.R, color.G, color.B);
+            
             if (comboBox1.Text == "RGB")
             {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
-
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
-
-                foreach (var data in datas)
-                {
-                    Array.Clear(XValues, 0, XValues.Length);
-                    foreach (var pixel in data)
-                    {
-                        for (int i = 0; i < TINT_COUNT; i++)
-                        {
-                            XValues[i] = i + 1;
-
-                            if (pixel.red == i && pixel.blue != blue && pixel.green != green)
-                                YValues[i]++;
-                        }
-                    }
-                    col = Color.FromArgb(col.R - 20, col.G + 20, col.B + 20);
-
-                    BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
-                    bar.Bar.Border.Color = col;
-                    bar.Label.IsVisible = false;
-                }
+                DrowRGB(255, zedGraph, Color.Red, color);
             }
             else if (comboBox1.Text == "LAB")
             {
                 double[] YValues = new double[TINT_COUNT];
                 double[] XValues = new double[TINT_COUNT];
-
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
 
                 Color _color = Color.FromArgb(red, green, blue);
                 var lab = RGBtoLAB(_color);
@@ -342,10 +382,6 @@ namespace pouring_picture
                 double[] YValues = new double[360];
                 double[] XValues = new double[360];
 
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
-
                 Color _color = Color.FromArgb(red, green, blue);
                 var hsv = RGBtoHSV(_color);
 
@@ -364,8 +400,7 @@ namespace pouring_picture
                     {
                         XValues[i] = i + 1;
 
-                        if ((int)l.H == i)// && (int)hsv.S * 100 != (int)l.S * 100 
-                            //&& (int)hsv.V * 100 != (int)l.V * 100)
+                        if ((int)l.H == i)
                             YValues[i]++;
                     }
                 }
@@ -392,6 +427,10 @@ namespace pouring_picture
 
             var color = Color.Green;
 
+            int red = Convert.ToInt32(labelRed.Text);
+            int green = Convert.ToInt32(labelGreen.Text);
+            int blue = Convert.ToInt32(labelBlue.Text);
+
             zedGraph1.Refresh();
             zedGraph1.GraphPane.CurveList.Clear();
             zedGraph1.GraphPane.GraphObjList.Clear();
@@ -401,41 +440,12 @@ namespace pouring_picture
 
             if (comboBox1.Text == "RGB")
             {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
-
-                int blue = Convert.ToInt32(labelBlue.Text);
-                int red = Convert.ToInt32(labelRed.Text);
-
-                foreach (var data in datas)
-                {
-                    Array.Clear(XValues, 0, XValues.Length);
-                    foreach (var pixel in data)
-                    {
-                        for (int i = 0; i < TINT_COUNT; i++)
-                        {
-                            XValues[i] = i + 1;
-
-                            if (pixel.green == i && pixel.red != red && pixel.blue != blue)
-                                YValues[i]++;
-                        }
-                    }
-
-                    color = Color.FromArgb(color.R + 20, color.G - 20, color.B + 20);
-
-                    BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
-                    bar.Bar.Border.Color = color;
-                    bar.Label.IsVisible = false;
-                }
+                DrowRGB(255, zedGraph1, Color.Green, color);
             }
             else if (comboBox1.Text == "LAB")
             {
                 double[] YValues = new double[TINT_COUNT];
                 double[] XValues = new double[TINT_COUNT];
-
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
 
                 Color _color = Color.FromArgb(red, green, blue);
                 var lab = RGBtoLAB(_color);
@@ -471,10 +481,6 @@ namespace pouring_picture
                 double[] YValues = new double[100];
                 double[] XValues = new double[100];
 
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
-
                 Color _color = Color.FromArgb(red, green, blue);
                 var hsv = RGBtoHSV(_color);
 
@@ -497,8 +503,7 @@ namespace pouring_picture
                         double s0 = ((double)i / 100)*100;
                         int s = (int)s0;
 
-                        if (f == s)// && (int)hsv.H * 100 != (int)l.H * 100 
-                            //&& (int)hsv.V * 100 != (int)l.V * 100)
+                        if (f == s)
                             YValues[i]++;
                     }
                 }
@@ -524,6 +529,10 @@ namespace pouring_picture
 
             var color = Color.Blue;
 
+            int red = Convert.ToInt32(labelRed.Text);
+            int green = Convert.ToInt32(labelGreen.Text);
+            int blue = Convert.ToInt32(labelBlue.Text);
+
             zedGraph2.Refresh();
             zedGraph2.GraphPane.CurveList.Clear();
             zedGraph2.GraphPane.GraphObjList.Clear();
@@ -534,41 +543,12 @@ namespace pouring_picture
 
             if (comboBox1.Text == "RGB")
             {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
-
-                int green = Convert.ToInt32(labelGreen.Text);
-                int red = Convert.ToInt32(labelRed.Text);
-
-                foreach (var data in datas)
-                {
-                    Array.Clear(XValues, 0, XValues.Length);
-                    foreach (var pixel in data)
-                    {
-                        for (int i = 0; i < TINT_COUNT; i++)
-                        {
-                            XValues[i] = i + 1;
-
-                            if (pixel.blue == i && pixel.red != red && pixel.green != green)
-                                YValues[i]++;
-                        }
-                    }
-
-                    color = Color.FromArgb(color.R + 20, color.G + 20, color.B - 20);
-
-                    BarItem bar = pane.AddBar(color.ToString(), XValues, YValues, color);
-                    bar.Bar.Border.Color = color;
-                    bar.Label.IsVisible = false;
-                }
+                DrowRGB(255, zedGraph2, Color.Blue, color);
             }
             else if (comboBox1.Text == "LAB")
             {
                 double[] YValues = new double[TINT_COUNT];
                 double[] XValues = new double[TINT_COUNT];
-
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
 
                 Color _color = Color.FromArgb(red, green, blue);
                 var lab = RGBtoLAB(_color);
@@ -590,7 +570,7 @@ namespace pouring_picture
                         XValues[i] = i + 1;
 
                         if ((int)l.B == j && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
-                            YValues[i]++; //dosnt correct
+                            YValues[i]++;
                         j++;
                     }
                 }
@@ -603,10 +583,6 @@ namespace pouring_picture
             {
                 double[] YValues = new double[100];
                 double[] XValues = new double[100];
-
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
 
                 Color _color = Color.FromArgb(red, green, blue);
                 var hsv = RGBtoHSV(_color);
@@ -630,8 +606,7 @@ namespace pouring_picture
                         double s0 = ((double)i / 100) * 100;
                         int s = (int)s0;
 
-                        if (f == s)// && (int)hsv.H * 100 != (int)l.H * 100 
-                          //  && (int)hsv.S * 100 != (int)l.S * 100)
+                        if (f == s)
                             YValues[i]++;
                     }
                 }
@@ -746,14 +721,7 @@ namespace pouring_picture
         {
             var color = Color.Red;
 
-            zedGraph.Refresh();
-//            zedGraph.GraphPane.CurveList.Clear();
-//            zedGraph.GraphPane.GraphObjList.Clear();
-            zedGraph.ZoomStepFraction = 255;
-
             GraphPane pane = zedGraph.GraphPane;
-//            pane.CurveList.Clear();
-
             var count = zedGraph.GraphPane.CurveList.Count;
 
             var barList = new List<UserBar>();
