@@ -60,6 +60,9 @@
             this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             this.buttonSaveGraphColors = new System.Windows.Forms.Button();
+            this.textBoxMarkerWidth = new System.Windows.Forms.TextBox();
+            this.textBoxMarkerHeight = new System.Windows.Forms.TextBox();
+            this.labelMarkerInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -366,11 +369,39 @@
             this.buttonSaveGraphColors.UseVisualStyleBackColor = true;
             this.buttonSaveGraphColors.Click += new System.EventHandler(this.buttonSaveGraphColors_Click);
             // 
+            // textBoxMarkerWidth
+            // 
+            this.textBoxMarkerWidth.Location = new System.Drawing.Point(1036, 450);
+            this.textBoxMarkerWidth.Name = "textBoxMarkerWidth";
+            this.textBoxMarkerWidth.Size = new System.Drawing.Size(48, 20);
+            this.textBoxMarkerWidth.TabIndex = 31;
+            this.textBoxMarkerWidth.Text = "10";
+            // 
+            // textBoxMarkerHeight
+            // 
+            this.textBoxMarkerHeight.Location = new System.Drawing.Point(1090, 450);
+            this.textBoxMarkerHeight.Name = "textBoxMarkerHeight";
+            this.textBoxMarkerHeight.Size = new System.Drawing.Size(48, 20);
+            this.textBoxMarkerHeight.TabIndex = 32;
+            this.textBoxMarkerHeight.Text = "10";
+            // 
+            // labelMarkerInfo
+            // 
+            this.labelMarkerInfo.AutoSize = true;
+            this.labelMarkerInfo.Location = new System.Drawing.Point(1036, 431);
+            this.labelMarkerInfo.Name = "labelMarkerInfo";
+            this.labelMarkerInfo.Size = new System.Drawing.Size(64, 13);
+            this.labelMarkerInfo.TabIndex = 33;
+            this.labelMarkerInfo.Text = "Marker size:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.labelMarkerInfo);
+            this.Controls.Add(this.textBoxMarkerHeight);
+            this.Controls.Add(this.textBoxMarkerWidth);
             this.Controls.Add(this.buttonSaveGraphColors);
             this.Controls.Add(this.buttonCut2);
             this.Controls.Add(this.labelRangeSliderMax2);
@@ -446,6 +477,9 @@
         private System.Windows.Forms.Label labelRangeSliderMin2;
         private SelectionRangeSlider selectionRangeSlider2;
         private System.Windows.Forms.Button buttonSaveGraphColors;
+        private System.Windows.Forms.TextBox textBoxMarkerWidth;
+        private System.Windows.Forms.TextBox textBoxMarkerHeight;
+        private System.Windows.Forms.Label labelMarkerInfo;
     }
 }
 

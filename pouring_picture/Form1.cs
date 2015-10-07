@@ -107,7 +107,8 @@ namespace pouring_picture
 
             myRectangle.Location = new Point(coordinates.X, coordinates.Y);
 
-            myRectangle.Size = new Size(20, 10);
+            myRectangle.Size = new Size(Convert.ToInt32(textBoxMarkerWidth.Text),
+                Convert.ToInt32(textBoxMarkerHeight.Text));
 
             var points = new List<Point>();
 
