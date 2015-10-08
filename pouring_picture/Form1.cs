@@ -12,9 +12,10 @@ namespace pouring_picture
 {
     public partial class Form1 : Form
     {
-        private int maxHeight = 510;
-        private int maxWidth = 455;
+        private int maxHeight = 2510;
+        private int maxWidth = 2455;
         List<PixelData> chartColors;
+        private Bitmap savedBitmap;
 
         List<List<PixelData>> datas;
 
@@ -92,6 +93,7 @@ namespace pouring_picture
                 if (VerifyImage(image))
                 {
                     pictureBox1.Image = image;
+                    savedBitmap = image;
                     return true;
                 }
             }
@@ -100,6 +102,10 @@ namespace pouring_picture
 
         private void ImageClick(object sender, EventArgs e)
         {
+            var bmp = new Bitmap(pictureBox1.Image);
+            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image), new Rectangle(new Point(100, 100), new Size(new Point(100, 100))));
+            LockUnlockBitsExample(ad);
+            /*
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
 
@@ -124,6 +130,42 @@ namespace pouring_picture
                 }
 
             PouringImage(points);
+             * */
+        }
+
+        private void LockUnlockBitsExample(PaintEventArgs e)
+        {
+
+            var bmp = new Bitmap(pictureBox1.Image);
+            // Lock the bitmap's bits.  
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            System.Drawing.Imaging.BitmapData bmpData =
+                bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                bmp.PixelFormat);
+
+            // Get the address of the first line.
+            IntPtr ptr = bmpData.Scan0;
+
+            // Declare an array to hold the bytes of the bitmap.
+            int bytes  = Math.Abs(bmpData.Stride) * bmp.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy the RGB values into the array.
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            // Set every third value to 255. A 24bpp bitmap will look red.  
+            for (int counter = 2; counter < rgbValues.Length; counter += 3)
+                rgbValues[counter] = 0;
+
+            // Copy the RGB values back to the bitmap
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+
+            // Unlock the bits.
+            bmp.UnlockBits(bmpData);
+
+            // Draw the modified image.
+            e.Graphics.DrawImage(bmp, 0, 150);
+
         }
 
         private void GetColor()
@@ -874,6 +916,11 @@ namespace pouring_picture
                 chartColors.Add(new PixelData((byte)RedValues[i], (byte)GreenValues[i], (byte)BlueValues[i]));
             }
             datas.Add(new List<PixelData>(chartColors));
+        }
+
+        private void buttonLoadBackup_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = savedBitmap;
         }
     }
 
