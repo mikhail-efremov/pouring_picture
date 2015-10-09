@@ -103,7 +103,7 @@ namespace pouring_picture
         private void ImageClick(object sender, EventArgs e)
         {
             var bmp = new Bitmap(pictureBox1.Image);
-            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image), new Rectangle(new Point(100, 100), new Size(new Point(100, 100))));
+            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image), new Rectangle(new Point(0, 0), new Size(new Point(0, 0))));
             LockUnlockBitsExample(ad);
             /*
             MouseEventArgs me = (MouseEventArgs)e;
@@ -154,18 +154,38 @@ namespace pouring_picture
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 
             // Set every third value to 255. A 24bpp bitmap will look red.  
-            for (int counter = 2; counter < rgbValues.Length; counter += 3)
-                rgbValues[counter] = 0;
+//            for (int counter = 2; counter < rgbValues.Length; counter += 3)
+  //              rgbValues[counter] = 255;
+
+            for (int counter = 0; counter < rgbValues.Length; counter += 4)
+            {
+                if (rgbValues[counter] > 0 && rgbValues[counter + 1] < 100 && rgbValues[counter + 2] > 1)
+                {
+                    rgbValues[counter] = 255; // синий
+                    rgbValues[counter + 1] = 0; // зелёный
+                    rgbValues[counter + 2] = 0; // красный
+                }
+            }
 
             // Copy the RGB values back to the bitmap
+
+
+   /*         const int bytesPerPixel = 3;
+            int row = 20;
+            int col = 2;
+            uint rValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel];
+            uint gValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel + 1];
+            uint bValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel + 2];
+    */
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
 
             // Unlock the bits.
             bmp.UnlockBits(bmpData);
 
             // Draw the modified image.
-            e.Graphics.DrawImage(bmp, 0, 150);
+     //       e.Graphics.DrawImage(bmp, 0, 150);
 
+            pictureBox1.Image = bmp;
         }
 
         private void GetColor()
