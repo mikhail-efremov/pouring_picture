@@ -156,14 +156,23 @@ namespace pouring_picture
             // Set every third value to 255. A 24bpp bitmap will look red.  
 //            for (int counter = 2; counter < rgbValues.Length; counter += 3)
   //              rgbValues[counter] = 255;
+            /*
+            rgbValues[counter] = 255; // синий
+            rgbValues[counter + 1] = 0; // зелёный
+            rgbValues[counter + 2] = 0; // красный
+            */
+
+            byte blue = Convert.ToByte(labelBlue.Text);
+            byte green = Convert.ToByte(labelGreen.Text);
+            byte red = Convert.ToByte(labelRed.Text);
 
             for (int counter = 0; counter < rgbValues.Length; counter += 4)
             {
                 if (rgbValues[counter] > 0 && rgbValues[counter + 1] < 100 && rgbValues[counter + 2] > 1)
                 {
-                    rgbValues[counter] = 255; // синий
-                    rgbValues[counter + 1] = 0; // зелёный
-                    rgbValues[counter + 2] = 0; // красный
+                    rgbValues[counter] = blue; // синий
+                    rgbValues[counter + 1] = green; // зелёный
+                    rgbValues[counter + 2] = red; // красный
                 }
             }
 
