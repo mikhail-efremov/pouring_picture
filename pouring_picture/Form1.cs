@@ -4,8 +4,6 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using ZedGraph;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.ComponentModel;
 using ColorMine.ColorSpaces;
 
 namespace pouring_picture
@@ -102,20 +100,19 @@ namespace pouring_picture
 
         private void ImageClick(object sender, EventArgs e)
         {
-            var bmp = new Bitmap(pictureBox1.Image);
-            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image), new Rectangle(new Point(0, 0), new Size(new Point(0, 0))));
-            LockUnlockBitsExample(ad);
-            /*
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
 
-            Rectangle myRectangle = new Rectangle();
+            Rectangle selectedRectangle = new Rectangle();
+            selectedRectangle.Location = new Point();
 
-            myRectangle.Location = new Point(coordinates.X, coordinates.Y);
-
-            myRectangle.Size = new Size(Convert.ToInt32(textBoxMarkerWidth.Text),
-                Convert.ToInt32(textBoxMarkerHeight.Text));
-
+            var bmp = new Bitmap(pictureBox1.Image);
+            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image), new Rectangle(new Point(coordinates.X, coordinates.Y),
+                new Size(Convert.ToInt32(textBoxMarkerWidth.Text), Convert.ToInt32(textBoxMarkerHeight.Text))));
+            
+            LockUnlockBitsExample(ad);
+            
+            /*
             var points = new List<Point>();
 
             var bmp = new Bitmap(pictureBox1.Image);
@@ -123,14 +120,14 @@ namespace pouring_picture
             for (int i = 0; i < bmp.Size.Height; i++)
                 for (int j = 0; j < bmp.Size.Width; j++)
                 {
-                    if (myRectangle.Contains(new Point(j, i)))
+                    if (selectedRectangle.Contains(new Point(j, i)))
                     {
                         points.Add(new Point(j, i));
                     }
                 }
 
             PouringImage(points);
-             * */
+            */
         }
 
         private void LockUnlockBitsExample(PaintEventArgs e)
@@ -139,8 +136,8 @@ namespace pouring_picture
             var bmp = new Bitmap(pictureBox1.Image);
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            System.Drawing.Imaging.BitmapData bmpData =
-                bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+            BitmapData bmpData =
+                bmp.LockBits(rect, ImageLockMode.ReadWrite,
                 bmp.PixelFormat);
 
             // Get the address of the first line.
@@ -154,25 +151,48 @@ namespace pouring_picture
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 
             // Set every third value to 255. A 24bpp bitmap will look red.  
-//            for (int counter = 2; counter < rgbValues.Length; counter += 3)
-  //              rgbValues[counter] = 255;
+            //            for (int counter = 2; counter < rgbValues.Length; counter += 3)
+            //              rgbValues[counter] = 255;
             /*
             rgbValues[counter] = 255; // синий
             rgbValues[counter + 1] = 0; // зелёный
             rgbValues[counter + 2] = 0; // красный
             */
 
+            var points = new List<Point>();
+
+            for (int i = 0; i < bmp.Size.Height; i++)
+                for (int j = 0; j < bmp.Size.Width; j++)
+                {
+                    if (e.ClipRectangle.Contains(new Point(j, i)))
+                    {
+                        points.Add(new Point(j, i));
+                    }
+                }
+
+            const int bytesPerPixel = 3;
+
             byte blue = Convert.ToByte(labelBlue.Text);
             byte green = Convert.ToByte(labelGreen.Text);
             byte red = Convert.ToByte(labelRed.Text);
 
-            for (int counter = 0; counter < rgbValues.Length; counter += 4)
+            for (int i = 0; i < points.Count; i++)
             {
-                if (rgbValues[counter] > 0 && rgbValues[counter + 1] < 100 && rgbValues[counter + 2] > 1)
+                int row = points[i].X;
+                int col = points[i].Y;
+
+                uint rValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel];
+                uint gValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel + 1];
+                uint bValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel + 2];
+
+                for (int counter = 0; counter < rgbValues.Length; counter += 4)
                 {
-                    rgbValues[counter] = blue; // синий
-                    rgbValues[counter + 1] = green; // зелёный
-                    rgbValues[counter + 2] = red; // красный
+                    if (rgbValues[counter] == bValue && rgbValues[counter + 1] == gValue && rgbValues[counter + 2] == rValue)
+                    {
+                        rgbValues[counter] = blue; // синий
+                        rgbValues[counter + 1] = green; // зелёный
+                        rgbValues[counter + 2] = red; // красный
+                    }
                 }
             }
 
