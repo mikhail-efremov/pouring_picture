@@ -102,8 +102,11 @@ namespace pouring_picture
 
         private void ImageClick(object sender, EventArgs e)
         {
+            var mouse = (MouseEventArgs)e;
+
             var bmp = new Bitmap(pictureBox1.Image);
-            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image), new Rectangle(new Point(0, 0), new Size(new Point(0, 0))));
+            var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image)
+                , new Rectangle(new Point(mouse.X, mouse.Y), new Size(new Point(0, 0))));
             LockUnlockBitsExample(ad);
             /*
             MouseEventArgs me = (MouseEventArgs)e;
@@ -135,8 +138,26 @@ namespace pouring_picture
 
         private void LockUnlockBitsExample(PaintEventArgs e)
         {
+            Rectangle myRectangle = new Rectangle();
+
+            myRectangle.Location = new Point(e.ClipRectangle.X, e.ClipRectangle.Y);
+
+            myRectangle.Size = new Size(Convert.ToInt32(textBoxMarkerWidth.Text),
+                Convert.ToInt32(textBoxMarkerHeight.Text));
+
+            var points = new List<Point>();
 
             var bmp = new Bitmap(pictureBox1.Image);
+
+            for (int i = 0; i < bmp.Size.Height; i++)
+                for (int j = 0; j < bmp.Size.Width; j++)
+                {
+                    if (myRectangle.Contains(new Point(j, i)))
+                    {
+                        points.Add(new Point(j, i));
+                    }
+                }
+
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             System.Drawing.Imaging.BitmapData bmpData =
@@ -153,9 +174,6 @@ namespace pouring_picture
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 
-            // Set every third value to 255. A 24bpp bitmap will look red.  
-//            for (int counter = 2; counter < rgbValues.Length; counter += 3)
-  //              rgbValues[counter] = 255;
             /*
             rgbValues[counter] = 255; // синий
             rgbValues[counter + 1] = 0; // зелёный
@@ -166,16 +184,43 @@ namespace pouring_picture
             byte green = Convert.ToByte(labelGreen.Text);
             byte red = Convert.ToByte(labelRed.Text);
 
-            for (int counter = 0; counter < rgbValues.Length; counter += 4)
+            var row = 1;
+            var col = 1;
+
+            var pe = points[0];
+
+            var x = e.ClipRectangle.X;
+            var y = e.ClipRectangle.Y;
+
+            int success = 0;
+
+            foreach (var point in points)
             {
-                if (rgbValues[counter] > 0 && rgbValues[counter + 1] < 100 && rgbValues[counter + 2] > 1)
+                var marker = point.X * 4 + point.Y * 4;
+                
+                //TODO get byte from array lol
+
+                var color = savedBitmap.GetPixel(point.X, point.Y);
+
+                byte b = color.B;       //rgbValues[marker];
+                byte g = color.G;       //rgbValues[marker + 1];
+                byte r = color.R;       //rgbValues[marker + 2];
+
+                for (int counter = 0; counter < rgbValues.Length; counter += 4)
                 {
-                    rgbValues[counter] = blue; // синий
-                    rgbValues[counter + 1] = green; // зелёный
-                    rgbValues[counter + 2] = red; // красный
+                    if (rgbValues[counter] == b 
+                        && rgbValues[counter + 1] == g
+                        && rgbValues[counter + 2] == r)
+                    {
+                        success++;
+                        rgbValues[counter] = blue;
+                        rgbValues[counter + 1] = green;
+                        rgbValues[counter + 2] = red;
+                    }
                 }
             }
 
+            Console.Write(success);
             // Copy the RGB values back to the bitmap
 
 
