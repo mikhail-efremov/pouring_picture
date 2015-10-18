@@ -4,8 +4,6 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using ZedGraph;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.ComponentModel;
 using ColorMine.ColorSpaces;
 
 namespace pouring_picture
@@ -124,12 +122,12 @@ namespace pouring_picture
             for (int i = 0; i < bmp.Size.Height; i++)
                 for (int j = 0; j < bmp.Size.Width; j++)
                 {
-                    if (myRectangle.Contains(new Point(j, i)))
+                    if (selectedRectangle.Contains(new Point(j, i)))
                     {
                         points.Add(new Point(j, i));
                     }
                 }
-            
+
             PouringImage(points, ad);
              
         }
@@ -158,8 +156,8 @@ namespace pouring_picture
 
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            System.Drawing.Imaging.BitmapData bmpData =
-                bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+            BitmapData bmpData =
+                bmp.LockBits(rect, ImageLockMode.ReadWrite,
                 bmp.PixelFormat);
 
             // Get the address of the first line.
@@ -205,18 +203,18 @@ namespace pouring_picture
                 byte g1 = rgbValues[marker + 1];
                 byte r1 = rgbValues[marker + 2];
 
-                for (int counter = 0; counter < rgbValues.Length; counter += 4)
-                {
+            for (int counter = 0; counter < rgbValues.Length; counter += 4)
+            {
                     if (rgbValues[counter] == b 
                         && rgbValues[counter + 1] == g
                         && rgbValues[counter + 2] == r)
-                    {
+                {
                         success++;
                         rgbValues[counter] = blue;
                         rgbValues[counter + 1] = green;
                         rgbValues[counter + 2] = red;
-                    }
                 }
+            }
             }
 
             Console.Write(success);
@@ -369,7 +367,7 @@ namespace pouring_picture
                     {
                         points.Add(new Point(j, i));
                     }
-                }
+        }
 
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
@@ -950,7 +948,7 @@ namespace pouring_picture
 
                 barList.Add(new UserBar(color, XValues, YValues, color.ToString()));
             }
-            pane.CurveList.Clear();
+                pane.CurveList.Clear();
 
             for (int i = 0; i < barList.Count; i++)
             {
@@ -961,9 +959,9 @@ namespace pouring_picture
                 bar.Label.IsVisible = false;
             }
 
-            zedGraph1.AxisChange();
-            zedGraph1.Invalidate();
-        }
+                zedGraph1.AxisChange();
+                zedGraph1.Invalidate();
+            }
 
         private void buttonCut_Click(object sender, EventArgs e)
         {
@@ -1076,7 +1074,7 @@ namespace pouring_picture
 
                 barList.Add(new UserBar(color, XValues, YValues, color.ToString()));
             }
-            pane.CurveList.Clear();
+                pane.CurveList.Clear();
 
             for (int i = 0; i < barList.Count; i++)
             {
@@ -1087,9 +1085,9 @@ namespace pouring_picture
                 bar.Label.IsVisible = false;
             }
 
-            zedGraph2.AxisChange();
-            zedGraph2.Invalidate();
-        }
+                zedGraph2.AxisChange();
+                zedGraph2.Invalidate();
+            }
 
         private void buttonSaveGraphColors_Click(object sender, EventArgs e)
         {  
