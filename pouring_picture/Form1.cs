@@ -122,7 +122,7 @@ namespace pouring_picture
             for (int i = 0; i < bmp.Size.Height; i++)
                 for (int j = 0; j < bmp.Size.Width; j++)
                 {
-                    if (selectedRectangle.Contains(new Point(j, i)))
+                    if (myRectangle.Contains(new Point(j, i)))
                     {
                         points.Add(new Point(j, i));
                     }
