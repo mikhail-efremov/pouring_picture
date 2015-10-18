@@ -132,113 +132,6 @@ namespace pouring_picture
              
         }
 
-        private void LockUnlockBitsExample(PaintEventArgs e)
-        {
-            Rectangle myRectangle = new Rectangle();
-
-            myRectangle.Location = new Point(e.ClipRectangle.X, e.ClipRectangle.Y);
-
-            myRectangle.Size = new Size(Convert.ToInt32(textBoxMarkerWidth.Text),
-                Convert.ToInt32(textBoxMarkerHeight.Text));
-
-            var points = new List<Point>();
-
-            var bmp = new Bitmap(pictureBox1.Image);
-
-            for (int i = 0; i < bmp.Size.Height; i++)
-                for (int j = 0; j < bmp.Size.Width; j++)
-                {
-                    if (myRectangle.Contains(new Point(j, i)))
-                    {
-                        points.Add(new Point(j, i));
-                    }
-                }
-
-            // Lock the bitmap's bits.  
-            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            BitmapData bmpData =
-                bmp.LockBits(rect, ImageLockMode.ReadWrite,
-                bmp.PixelFormat);
-
-            // Get the address of the first line.
-            IntPtr ptr = bmpData.Scan0;
-
-            // Declare an array to hold the bytes of the bitmap.
-            int bytes  = Math.Abs(bmpData.Stride) * bmp.Height;
-            byte[] rgbValues = new byte[bytes];
-
-            // Copy the RGB values into the array.
-            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-            /*
-            rgbValues[counter] = 255; // синий
-            rgbValues[counter + 1] = 0; // зелёный
-            rgbValues[counter + 2] = 0; // красный
-            */
-
-            byte blue = Convert.ToByte(labelBlue.Text);
-            byte green = Convert.ToByte(labelGreen.Text);
-            byte red = Convert.ToByte(labelRed.Text);
-
-            var pe = points[0];
-
-            var x = e.ClipRectangle.X;
-            var y = e.ClipRectangle.Y;
-
-            int success = 0;
-
-            foreach (var point in points)
-            {
-                var marker = point.X * 4 + point.Y * 4;
-                
-                //TODO get byte from array lol
-
-                var color = savedBitmap.GetPixel(point.X, point.Y);
-
-                byte b = color.B;       //rgbValues[marker];
-                byte g = color.G;       //rgbValues[marker + 1];
-                byte r = color.R;       //rgbValues[marker + 2];
-
-                byte b1 = rgbValues[marker];
-                byte g1 = rgbValues[marker + 1];
-                byte r1 = rgbValues[marker + 2];
-
-            for (int counter = 0; counter < rgbValues.Length; counter += 4)
-            {
-                    if (rgbValues[counter] == b 
-                        && rgbValues[counter + 1] == g
-                        && rgbValues[counter + 2] == r)
-                {
-                        success++;
-                        rgbValues[counter] = blue;
-                        rgbValues[counter + 1] = green;
-                        rgbValues[counter + 2] = red;
-                }
-            }
-            }
-
-            Console.Write(success);
-            // Copy the RGB values back to the bitmap
-
-
-   /*         const int bytesPerPixel = 3;
-            int row = 20;
-            int col = 2;
-            uint rValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel];
-            uint gValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel + 1];
-            uint bValue = rgbValues[bmp.Width * row * bytesPerPixel + col * bytesPerPixel + 2];
-    */
-            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
-            // Unlock the bits.
-            bmp.UnlockBits(bmpData);
-
-            // Draw the modified image.
-     //       e.Graphics.DrawImage(bmp, 0, 150);
-
-            pictureBox1.Image = bmp;
-        }
-
         private void GetColor()
         {
             colorDialog1.ShowDialog();
@@ -277,17 +170,17 @@ namespace pouring_picture
                     {
                         case 1:
                             pictureBox1.Image.Save(fs,
-                               System.Drawing.Imaging.ImageFormat.Jpeg);
+                               ImageFormat.Jpeg);
                             break;
 
                         case 2:
                             pictureBox1.Image.Save(fs,
-                               System.Drawing.Imaging.ImageFormat.Bmp);
+                               ImageFormat.Bmp);
                             break;
 
                         case 3:
                             pictureBox1.Image.Save(fs,
-                               System.Drawing.Imaging.ImageFormat.Gif);
+                               ImageFormat.Gif);
                             break;
                     }
 
@@ -303,52 +196,6 @@ namespace pouring_picture
 
         private unsafe void PouringImage(List<Point> points, PaintEventArgs e)
         {
-        /*
-            try
-            {
-                chartColors.Clear();
-
-                int red = Convert.ToInt32(labelRed.Text);
-                int green = Convert.ToInt32(labelGreen.Text);
-                int blue = Convert.ToInt32(labelBlue.Text);
-                
-                var setColor = Color.FromArgb(red, green, blue);
-                var bmp = new Bitmap(pictureBox1.Image);
-
-                UnsafeBitmap uBitMap = new UnsafeBitmap(bmp);
-                
-                uBitMap.LockBitmap();
-                for (int i = 0; i < bmp.Size.Height; i++)
-                {
-                    for (int j = 0; j < bmp.Size.Width; j++)
-                    {
-                        foreach (var point in points)
-                        {
-                            var color = uBitMap.PixelAt(point.X, point.Y);
-                            
-                            var _color = uBitMap.PixelAt(j, i);
-                            
-                            if (color->red == _color->red
-                                && color->green == _color->green
-                                && color->blue == _color->blue)
-                            {
-                                chartColors.Add(new PixelData(color->blue, color->green, color->red));
-                                uBitMap.SetPixel(j, i, new PixelData(setColor.B, setColor.G, setColor.R));
-                            }
-                        }
-                    }
-                }
-                datas.Add(new List<PixelData>(chartColors));
-                pictureBox1.Image = uBitMap.Bitmap;
-                uBitMap.UnlockBitmap();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Error in PouringImage()",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            */
-            //////////////////////////////////
             chartColors.Clear();
             
             Rectangle myRectangle = new Rectangle();
@@ -371,8 +218,8 @@ namespace pouring_picture
 
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            System.Drawing.Imaging.BitmapData bmpData =
-                bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+            BitmapData bmpData =
+                bmp.LockBits(rect, ImageLockMode.ReadWrite,
                 bmp.PixelFormat);
 
             // Get the address of the first line.
@@ -459,7 +306,7 @@ namespace pouring_picture
             zedGraph2.IsEnableHPan = false;
         }
 
-        private unsafe void DrowRGB(int tintCount, ZedGraph.ZedGraphControl izedGraph, Color color, Color col)
+        private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, Color color, Color col)
         {
             double[] YValues = new double[tintCount];
             double[] XValues = new double[tintCount];
