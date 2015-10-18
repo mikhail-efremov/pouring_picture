@@ -107,8 +107,8 @@ namespace pouring_picture
             var bmp = new Bitmap(pictureBox1.Image);
             var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image)
                 , new Rectangle(new Point(mouse.X, mouse.Y), new Size(new Point(0, 0))));
-            LockUnlockBitsExample(ad);
-            /*
+        //    LockUnlockBitsExample(ad);
+            
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
 
@@ -121,8 +121,6 @@ namespace pouring_picture
 
             var points = new List<Point>();
 
-            var bmp = new Bitmap(pictureBox1.Image);
-
             for (int i = 0; i < bmp.Size.Height; i++)
                 for (int j = 0; j < bmp.Size.Width; j++)
                 {
@@ -131,9 +129,9 @@ namespace pouring_picture
                         points.Add(new Point(j, i));
                     }
                 }
-
-            PouringImage(points);
-             * */
+            
+            PouringImage(points, ad);
+             
         }
 
         private void LockUnlockBitsExample(PaintEventArgs e)
@@ -184,9 +182,6 @@ namespace pouring_picture
             byte green = Convert.ToByte(labelGreen.Text);
             byte red = Convert.ToByte(labelRed.Text);
 
-            var row = 1;
-            var col = 1;
-
             var pe = points[0];
 
             var x = e.ClipRectangle.X;
@@ -205,6 +200,10 @@ namespace pouring_picture
                 byte b = color.B;       //rgbValues[marker];
                 byte g = color.G;       //rgbValues[marker + 1];
                 byte r = color.R;       //rgbValues[marker + 2];
+
+                byte b1 = rgbValues[marker];
+                byte g1 = rgbValues[marker + 1];
+                byte r1 = rgbValues[marker + 2];
 
                 for (int counter = 0; counter < rgbValues.Length; counter += 4)
                 {
@@ -304,8 +303,9 @@ namespace pouring_picture
             }
         }
 
-        private unsafe void PouringImage(List<Point> points)
+        private unsafe void PouringImage(List<Point> points, PaintEventArgs e)
         {
+        /*
             try
             {
                 chartColors.Clear();
@@ -349,6 +349,92 @@ namespace pouring_picture
                 MessageBox.Show(e.Message, "Error in PouringImage()",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            */
+            //////////////////////////////////
+            chartColors.Clear();
+            
+            Rectangle myRectangle = new Rectangle();
+
+            myRectangle.Location = new Point(e.ClipRectangle.X, e.ClipRectangle.Y);
+
+            myRectangle.Size = new Size(Convert.ToInt32(textBoxMarkerWidth.Text),
+                Convert.ToInt32(textBoxMarkerHeight.Text));
+
+            var bmp = new Bitmap(pictureBox1.Image);
+
+            for (int i = 0; i < bmp.Size.Height; i++)
+                for (int j = 0; j < bmp.Size.Width; j++)
+                {
+                    if (myRectangle.Contains(new Point(j, i)))
+                    {
+                        points.Add(new Point(j, i));
+                    }
+                }
+
+            // Lock the bitmap's bits.  
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            System.Drawing.Imaging.BitmapData bmpData =
+                bmp.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                bmp.PixelFormat);
+
+            // Get the address of the first line.
+            IntPtr ptr = bmpData.Scan0;
+
+            // Declare an array to hold the bytes of the bitmap.
+            int bytes = Math.Abs(bmpData.Stride) * bmp.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy the RGB values into the array.
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            byte blue = Convert.ToByte(labelBlue.Text);
+            byte green = Convert.ToByte(labelGreen.Text);
+            byte red = Convert.ToByte(labelRed.Text);
+
+            var pe = points[0];
+
+            var x = e.ClipRectangle.X;
+            var y = e.ClipRectangle.Y;
+
+            int success = 0;
+
+            foreach (var point in points)
+            {
+                var marker = point.X * 4 + point.Y * 4;
+
+                //TODO get byte from array lol
+
+                var color = savedBitmap.GetPixel(point.X, point.Y);
+
+                byte b = color.B;       //rgbValues[marker];
+                byte g = color.G;       //rgbValues[marker + 1];
+                byte r = color.R;       //rgbValues[marker + 2];
+
+                byte b1 = rgbValues[marker];
+                byte g1 = rgbValues[marker + 1];
+                byte r1 = rgbValues[marker + 2];
+
+                for (int counter = 0; counter < rgbValues.Length; counter += 4)
+                {
+                    if (rgbValues[counter] == b
+                        && rgbValues[counter + 1] == g
+                        && rgbValues[counter + 2] == r)
+                    {
+                        chartColors.Add(new PixelData(rgbValues[counter],
+                            rgbValues[counter + 1], rgbValues[counter + 2]));
+                        success++;
+                        rgbValues[counter] = blue;
+                        rgbValues[counter + 1] = green;
+                        rgbValues[counter + 2] = red;
+                    }
+                }
+            }
+            datas.Add(new List<PixelData>(chartColors));
+
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+            bmp.UnlockBits(bmpData);
+
+            pictureBox1.Image = bmp;
         }
 
         private bool VerifyImage(Bitmap image)
@@ -414,15 +500,48 @@ namespace pouring_picture
                 }
                 if (color == Color.Red)
                 {
-                    col = Color.FromArgb(col.R - 20, col.G + 20, col.B + 20);
+                    var colR = col.R;
+                    var colG = col.G;
+                    var colB = col.B;
+
+                    if (colR - 20 >= 0)
+                        colR -= 20;
+                    if (colG + 20 <= 255)
+                        colG += 20;
+                    if (colB + 20 <= 255)
+                        colB += 20;
+
+                    col = Color.FromArgb(colR, colG, colB);
                 }
                 if (color == Color.Blue)
                 {
-                    col = Color.FromArgb(col.R + 20, col.G + 20, col.B - 20);
+                    var colR = col.R;
+                    var colG = col.G;
+                    var colB = col.B;
+
+                    if (colR + 20 <= 255)
+                        colR += 20;
+                    if (colG + 20 <= 255)
+                        colG += 20;
+                    if (colB - 20 >= 0)
+                        colB -= 20;
+
+                    col = Color.FromArgb(colR, colG, colB);
                 }
                 if (color == Color.Green)
                 {
-                    col = Color.FromArgb(col.R + 20, col.G - 20, col.B + 20);
+                    var colR = col.R;
+                    var colG = col.G;
+                    var colB = col.B;
+
+                    if (colR + 20 <= 255)
+                        colR += 20;
+                    if (colG - 20 >= 0)
+                        colG -= 20;
+                    if (colB + 20 <= 255)
+                        colB += 20;
+
+                    col = Color.FromArgb(colR, colG, colB);
                 }
 
                 BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
@@ -868,7 +987,7 @@ namespace pouring_picture
                     var x = successColors[i].X;
                     YValues[x] = successColors[i].Y;
                 }
-
+                
                 color = Color.FromArgb(color.R - 20, color.G + 20, color.B);
 
                 barList.Add(new UserBar(color, XValues, YValues, color.ToString()));

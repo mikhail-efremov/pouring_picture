@@ -182,7 +182,6 @@
             this.zedGraph.ScrollMinY2 = 0D;
             this.zedGraph.Size = new System.Drawing.Size(401, 282);
             this.zedGraph.TabIndex = 11;
-            this.zedGraph.Visible = false;
             // 
             // buttonDrawChart
             // 
@@ -207,7 +206,6 @@
             this.zedGraph1.ScrollMinY2 = 0D;
             this.zedGraph1.Size = new System.Drawing.Size(401, 282);
             this.zedGraph1.TabIndex = 14;
-            this.zedGraph1.Visible = false;
             // 
             // zedGraph2
             // 
@@ -222,7 +220,6 @@
             this.zedGraph2.ScrollMinY2 = 0D;
             this.zedGraph2.Size = new System.Drawing.Size(401, 282);
             this.zedGraph2.TabIndex = 15;
-            this.zedGraph2.Visible = false;
             // 
             // userControl1
             // 
@@ -254,7 +251,6 @@
             this.labelRangeSliderMin1.Size = new System.Drawing.Size(23, 13);
             this.labelRangeSliderMin1.TabIndex = 19;
             this.labelRangeSliderMin1.Text = "min";
-            this.labelRangeSliderMin1.Visible = false;
             // 
             // labelRangeSliderMax1
             // 
@@ -274,7 +270,6 @@
             this.buttonCut1.TabIndex = 21;
             this.buttonCut1.Text = "Cut";
             this.buttonCut1.UseVisualStyleBackColor = true;
-            this.buttonCut1.Visible = false;
             this.buttonCut1.Click += new System.EventHandler(this.buttonCut1_Click);
             // 
             // buttonCut
@@ -285,7 +280,6 @@
             this.buttonCut.TabIndex = 25;
             this.buttonCut.Text = "Cut";
             this.buttonCut.UseVisualStyleBackColor = true;
-            this.buttonCut.Visible = false;
             this.buttonCut.Click += new System.EventHandler(this.buttonCut_Click);
             // 
             // labelRangeSliderMax
@@ -296,7 +290,6 @@
             this.labelRangeSliderMax.Size = new System.Drawing.Size(26, 13);
             this.labelRangeSliderMax.TabIndex = 24;
             this.labelRangeSliderMax.Text = "max";
-            this.labelRangeSliderMax.Visible = false;
             // 
             // labelRangeSliderMin
             // 
@@ -306,7 +299,6 @@
             this.labelRangeSliderMin.Size = new System.Drawing.Size(23, 13);
             this.labelRangeSliderMin.TabIndex = 23;
             this.labelRangeSliderMin.Text = "min";
-            this.labelRangeSliderMin.Visible = false;
             // 
             // buttonCut2
             // 
@@ -316,7 +308,6 @@
             this.buttonCut2.TabIndex = 29;
             this.buttonCut2.Text = "Cut";
             this.buttonCut2.UseVisualStyleBackColor = true;
-            this.buttonCut2.Visible = false;
             this.buttonCut2.Click += new System.EventHandler(this.buttonCut2_Click);
             // 
             // labelRangeSliderMax2
@@ -327,7 +318,6 @@
             this.labelRangeSliderMax2.Size = new System.Drawing.Size(26, 13);
             this.labelRangeSliderMax2.TabIndex = 28;
             this.labelRangeSliderMax2.Text = "max";
-            this.labelRangeSliderMax2.Visible = false;
             // 
             // labelRangeSliderMin2
             // 
@@ -337,7 +327,6 @@
             this.labelRangeSliderMin2.Size = new System.Drawing.Size(23, 13);
             this.labelRangeSliderMin2.TabIndex = 27;
             this.labelRangeSliderMin2.Text = "min";
-            this.labelRangeSliderMin2.Visible = false;
             // 
             // selectionRangeSlider2
             // 
@@ -349,7 +338,6 @@
             this.selectionRangeSlider2.SelectedMin = 0;
             this.selectionRangeSlider2.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider2.TabIndex = 26;
-            this.selectionRangeSlider2.Visible = false;
             // 
             // selectionRangeSlider
             // 
@@ -361,7 +349,6 @@
             this.selectionRangeSlider.SelectedMin = 0;
             this.selectionRangeSlider.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider.TabIndex = 22;
-            this.selectionRangeSlider.Visible = false;
             // 
             // selectionRangeSlider1
             // 
@@ -373,7 +360,6 @@
             this.selectionRangeSlider1.SelectedMin = 0;
             this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
             this.selectionRangeSlider1.TabIndex = 18;
-            this.selectionRangeSlider1.Visible = false;
             // 
             // buttonSaveGraphColors
             // 
@@ -383,7 +369,6 @@
             this.buttonSaveGraphColors.TabIndex = 30;
             this.buttonSaveGraphColors.Text = "Save";
             this.buttonSaveGraphColors.UseVisualStyleBackColor = true;
-            this.buttonSaveGraphColors.Visible = false;
             this.buttonSaveGraphColors.Click += new System.EventHandler(this.buttonSaveGraphColors_Click);
             // 
             // textBoxMarkerWidth
