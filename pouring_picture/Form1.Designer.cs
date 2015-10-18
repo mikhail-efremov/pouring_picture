@@ -260,7 +260,6 @@
             this.labelRangeSliderMax1.Size = new System.Drawing.Size(26, 13);
             this.labelRangeSliderMax1.TabIndex = 20;
             this.labelRangeSliderMax1.Text = "max";
-            this.labelRangeSliderMax1.Visible = false;
             // 
             // buttonCut1
             // 
