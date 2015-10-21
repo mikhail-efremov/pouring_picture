@@ -45,7 +45,6 @@
             this.buttonDrawChart = new System.Windows.Forms.Button();
             this.zedGraph1 = new ZedGraph.ZedGraphControl();
             this.zedGraph2 = new ZedGraph.ZedGraphControl();
-            this.userControl1 = new System.Windows.Forms.UserControl();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.labelRangeSliderMin1 = new System.Windows.Forms.Label();
             this.labelRangeSliderMax1 = new System.Windows.Forms.Label();
@@ -64,6 +63,9 @@
             this.textBoxMarkerHeight = new System.Windows.Forms.TextBox();
             this.labelMarkerInfo = new System.Windows.Forms.Label();
             this.buttonLoadBackup = new System.Windows.Forms.Button();
+            this.textBoxMagic = new System.Windows.Forms.TextBox();
+            this.buttonBack = new System.Windows.Forms.Button();
+            this.labelSensInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -220,13 +222,6 @@
             this.zedGraph2.ScrollMinY2 = 0D;
             this.zedGraph2.Size = new System.Drawing.Size(401, 282);
             this.zedGraph2.TabIndex = 15;
-            // 
-            // userControl1
-            // 
-            this.userControl1.Location = new System.Drawing.Point(12, 645);
-            this.userControl1.Name = "userControl1";
-            this.userControl1.Size = new System.Drawing.Size(322, 37);
-            this.userControl1.TabIndex = 16;
             // 
             // comboBox1
             // 
@@ -405,11 +400,42 @@
             this.buttonLoadBackup.UseVisualStyleBackColor = true;
             this.buttonLoadBackup.Click += new System.EventHandler(this.buttonLoadBackup_Click);
             // 
+            // textBoxMagic
+            // 
+            this.textBoxMagic.Location = new System.Drawing.Point(1167, 450);
+            this.textBoxMagic.Name = "textBoxMagic";
+            this.textBoxMagic.Size = new System.Drawing.Size(100, 20);
+            this.textBoxMagic.TabIndex = 36;
+            this.textBoxMagic.Text = "2";
+            this.textBoxMagic.TextChanged += new System.EventHandler(this.textBoxMagic_TextChanged);
+            // 
+            // buttonBack
+            // 
+            this.buttonBack.Location = new System.Drawing.Point(117, 660);
+            this.buttonBack.Name = "buttonBack";
+            this.buttonBack.Size = new System.Drawing.Size(75, 23);
+            this.buttonBack.TabIndex = 37;
+            this.buttonBack.Text = "Back";
+            this.buttonBack.UseVisualStyleBackColor = true;
+            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
+            // labelSensInfo
+            // 
+            this.labelSensInfo.AutoSize = true;
+            this.labelSensInfo.Location = new System.Drawing.Point(1164, 431);
+            this.labelSensInfo.Name = "labelSensInfo";
+            this.labelSensInfo.Size = new System.Drawing.Size(31, 13);
+            this.labelSensInfo.TabIndex = 38;
+            this.labelSensInfo.Text = "Sens";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.labelSensInfo);
+            this.Controls.Add(this.buttonBack);
+            this.Controls.Add(this.textBoxMagic);
             this.Controls.Add(this.buttonLoadBackup);
             this.Controls.Add(this.labelMarkerInfo);
             this.Controls.Add(this.textBoxMarkerHeight);
@@ -428,7 +454,6 @@
             this.Controls.Add(this.labelRangeSliderMin1);
             this.Controls.Add(this.selectionRangeSlider1);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.userControl1);
             this.Controls.Add(this.zedGraph2);
             this.Controls.Add(this.zedGraph1);
             this.Controls.Add(this.buttonDrawChart);
@@ -474,7 +499,6 @@
         private System.Windows.Forms.Button buttonDrawChart;
         private ZedGraph.ZedGraphControl zedGraph1;
         private ZedGraph.ZedGraphControl zedGraph2;
-        private System.Windows.Forms.UserControl userControl1;
         private System.Windows.Forms.ComboBox comboBox1;
         private SelectionRangeSlider selectionRangeSlider1;
         private System.Windows.Forms.Label labelRangeSliderMin1;
@@ -493,6 +517,9 @@
         private System.Windows.Forms.TextBox textBoxMarkerHeight;
         private System.Windows.Forms.Label labelMarkerInfo;
         private System.Windows.Forms.Button buttonLoadBackup;
+        private System.Windows.Forms.TextBox textBoxMagic;
+        private System.Windows.Forms.Button buttonBack;
+        private System.Windows.Forms.Label labelSensInfo;
     }
 }
 

@@ -14,12 +14,16 @@ namespace pouring_picture
         private int maxWidth = 2455;
         List<PixelData> chartColors;
         private Bitmap savedBitmap;
+        private Bitmap previousBitmap;
+
+        private int rangeValue;
 
         List<List<PixelData>> datas;
 
         public Form1()
         {
             InitializeComponent();
+            rangeValue = Convert.ToInt32(textBoxMagic.Text);
             chartColors = new List<PixelData>();
             datas = new List<List<PixelData>>();
         }
@@ -54,7 +58,11 @@ namespace pouring_picture
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
             DrawGraph();
-#warning            chartColors.Clear();
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            BackStep();
         }
 
         private void Subscribe()
@@ -103,9 +111,10 @@ namespace pouring_picture
             var mouse = (MouseEventArgs)e;
 
             var bmp = new Bitmap(pictureBox1.Image);
+            previousBitmap = bmp;
+
             var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image)
                 , new Rectangle(new Point(mouse.X, mouse.Y), new Size(new Point(0, 0))));
-        //    LockUnlockBitsExample(ad);
             
             MouseEventArgs me = (MouseEventArgs)e;
             Point coordinates = me.Location;
@@ -117,19 +126,7 @@ namespace pouring_picture
             myRectangle.Size = new Size(Convert.ToInt32(textBoxMarkerWidth.Text),
                 Convert.ToInt32(textBoxMarkerHeight.Text));
 
-            var points = new List<Point>();
-
-            for (int i = 0; i < bmp.Size.Height; i++)
-                for (int j = 0; j < bmp.Size.Width; j++)
-                {
-                    if (myRectangle.Contains(new Point(j, i)))
-                    {
-                        points.Add(new Point(j, i));
-                    }
-                }
-
-            PouringImage(points, ad);
-             
+            PouringImage(ad);
         }
 
         private void GetColor()
@@ -194,10 +191,12 @@ namespace pouring_picture
             }
         }
 
-        private unsafe void PouringImage(List<Point> points, PaintEventArgs e)
+        private unsafe void PouringImage(PaintEventArgs e)
         {
             chartColors.Clear();
-            
+
+            var points = new List<Point>();
+
             Rectangle myRectangle = new Rectangle();
 
             myRectangle.Location = new Point(e.ClipRectangle.X, e.ClipRectangle.Y);
@@ -214,7 +213,7 @@ namespace pouring_picture
                     {
                         points.Add(new Point(j, i));
                     }
-        }
+                }
 
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
@@ -261,9 +260,10 @@ namespace pouring_picture
 
                 for (int counter = 0; counter < rgbValues.Length; counter += 4)
                 {
-                    if (rgbValues[counter] == b
-                        && rgbValues[counter + 1] == g
-                        && rgbValues[counter + 2] == r)
+                        if(PointContains(rgbValues[counter], 
+                            rgbValues[counter + 1],
+                            rgbValues[counter + 2],
+                            b, g, r))
                     {
                         chartColors.Add(new PixelData(rgbValues[counter],
                             rgbValues[counter + 1], rgbValues[counter + 2]));
@@ -280,6 +280,15 @@ namespace pouring_picture
             bmp.UnlockBits(bmpData);
 
             pictureBox1.Image = bmp;
+        }
+
+        private bool PointContains(byte keyb, byte keyg, byte keyr, byte b, byte g, byte r)
+        {
+            if (keyb > b - rangeValue && keyb < b + rangeValue
+                && keyg > g - rangeValue && keyg < g + rangeValue 
+                && keyr > r - rangeValue && keyr < r + rangeValue)
+                return true;
+            return false;
         }
 
         private bool VerifyImage(Bitmap image)
@@ -992,6 +1001,19 @@ namespace pouring_picture
         private void buttonLoadBackup_Click(object sender, EventArgs e)
         {
             pictureBox1.Image = savedBitmap;
+            datas.Clear();
+        }
+
+        private void textBoxMagic_TextChanged(object sender, EventArgs e)
+        {
+            int value = 0;
+            if(Int32.TryParse(textBoxMagic.Text, out value))
+                rangeValue = value;
+        }
+
+        private void BackStep()
+        {
+            pictureBox1.Image = previousBitmap;
         }
     }
 

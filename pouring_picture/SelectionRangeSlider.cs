@@ -121,9 +121,15 @@ namespace pouring_picture
                 return;
             int pointedValue = Min + e.X * (Max - Min) / Width;
             if (movingMode == MovingMode.MovingMin)
-                SelectedMin = pointedValue;
+            {
+                if (pointedValue >= 0 && pointedValue <= 255 && pointedValue <= SelectedMax)
+                    SelectedMin = pointedValue;
+            }
             else if (movingMode == MovingMode.MovingMax)
-                SelectedMax = pointedValue;
+            {
+                if(pointedValue >= 0 && pointedValue <= 255 && pointedValue >= SelectedMin)
+                    SelectedMax = pointedValue;
+            }
         }
 
         /// <summary>
