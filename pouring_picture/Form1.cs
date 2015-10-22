@@ -42,7 +42,7 @@ namespace pouring_picture
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            ImageClick(sender, e);
+            ImageClick(e);
         }
 
         private void buttonGetColor_Click(object sender, EventArgs e)
@@ -57,7 +57,9 @@ namespace pouring_picture
 
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
-            DrawGraph();
+            DrawGraph(zedGraph, Color.Red);
+            DrawGraph(zedGraph1, Color.Green);
+            DrawGraph(zedGraph2, Color.Blue);
         }
 
         private void buttonBack_Click(object sender, EventArgs e)
@@ -106,7 +108,7 @@ namespace pouring_picture
             return false;
         }
 
-        private void ImageClick(object sender, EventArgs e)
+        private void ImageClick(EventArgs e)
         {
             var mouse = (MouseEventArgs)e;
 
@@ -413,11 +415,30 @@ namespace pouring_picture
             }
         }
 
-        private unsafe void DrawGraph()
+        void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
+        {
+            labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
+            labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
+            DrawGraph(zedGraph, Color.Red, selectionRangeSlider.SelectedMin, selectionRangeSlider.SelectedMax);
+        }
+
+        private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
+        {
+            labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
+            labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
+            DrawGraph(zedGraph1, Color.Green, selectionRangeSlider1.SelectedMin, selectionRangeSlider1.SelectedMax);
+        }
+
+        void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
+        {
+            labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
+            labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
+            DrawGraph(zedGraph2, Color.Blue, selectionRangeSlider2.SelectedMin, selectionRangeSlider2.SelectedMax);
+        }
+
+        private unsafe void DrawGraph(ZedGraphControl zedGraph, Color color)
         {
             const int TINT_COUNT = 255;
-
-            var color = Color.Red;
 
             int red = Convert.ToInt32(labelRed.Text);
             int green = Convert.ToInt32(labelGreen.Text);
@@ -426,403 +447,29 @@ namespace pouring_picture
             zedGraph.Refresh();
             zedGraph.GraphPane.CurveList.Clear();
             zedGraph.GraphPane.GraphObjList.Clear();
-            zedGraph.ZoomStepFraction = 255;
 
             GraphPane pane = zedGraph.GraphPane;
             pane.CurveList.Clear();
-            
+
             if (comboBox1.Text == "RGB")
             {
-                DrowRGB(255, zedGraph, Color.Red, color);
+                DrowRGB(TINT_COUNT, zedGraph, color, color);
             }
-            else if (comboBox1.Text == "LAB")
-            {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
 
-                Color _color = Color.FromArgb(red, green, blue);
-                var lab = RGBtoLAB(_color);
-
-                var labList = new List<Lab>();
-
-                foreach (var c in chartColors)
-                {
-                    var __color = Color.FromArgb(c.red, c.blue, c.green);
-                    var __lab = RGBtoLAB(__color);
-                    labList.Add(__lab);
-                }
-
-                foreach (var l in labList)
-                {
-                    for (int i = 0; i < 100; i++) //0 to 100 - is L range
-                    {
-                        XValues[i] = i + 1;
-
-                        if ((int)l.L == i && (int)lab.A != (int)l.A && (int)lab.B != (int)l.B)
-                            YValues[i]++;
-                    }
-                }
-
-                BarItem bar = pane.AddBar("L", XValues, YValues, color);
-                bar.Bar.Border.Color = color;
-                bar.Label.IsVisible = false;
-            }
-            else if (comboBox1.Text == "HSV")
-            {
-                double[] YValues = new double[360];
-                double[] XValues = new double[360];
-
-                Color _color = Color.FromArgb(red, green, blue);
-                var hsv = RGBtoHSV(_color);
-
-                var hsvList = new List<Hsv>();
-
-                foreach (var c in chartColors)
-                {
-                    var __color = Color.FromArgb(c.red, c.blue, c.green);
-                    var __hsv = RGBtoHSV(__color);
-                    hsvList.Add(__hsv);
-                }
-
-                foreach (var l in hsvList)
-                {
-                    for (int i = 0; i < 360; i++) //0 to 100 - is L range
-                    {
-                        XValues[i] = i + 1;
-
-                        if ((int)l.H == i)
-                            YValues[i]++;
-                    }
-                }
-
-                BarItem bar = pane.AddBar("H", XValues, YValues, color);
-                bar.Bar.Border.Color = color;
-                bar.Label.IsVisible = false;
-            }
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
 
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
 
+            zedGraph.GraphPane.XAxis.Scale.Min = 0;
+            zedGraph.GraphPane.XAxis.Scale.Max = 255;
             zedGraph.AxisChange();
-            zedGraph.Invalidate();
-            DrawGraph1();
-            DrawGraph2();
+            zedGraph.Refresh();
         }
 
-        private unsafe void DrawGraph1()
+        private void DrawGraph(ZedGraphControl zedGraph, Color color, int min, int max)
         {
-            const int TINT_COUNT = 255;
-
-            var color = Color.Green;
-
-            int red = Convert.ToInt32(labelRed.Text);
-            int green = Convert.ToInt32(labelGreen.Text);
-            int blue = Convert.ToInt32(labelBlue.Text);
-
-            zedGraph1.Refresh();
-            zedGraph1.GraphPane.CurveList.Clear();
-            zedGraph1.GraphPane.GraphObjList.Clear();
-
-            GraphPane pane = zedGraph1.GraphPane;
-            pane.CurveList.Clear();
-
-            if (comboBox1.Text == "RGB")
-            {
-                DrowRGB(255, zedGraph1, Color.Green, color);
-            }
-            else if (comboBox1.Text == "LAB")
-            {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
-
-                Color _color = Color.FromArgb(red, green, blue);
-                var lab = RGBtoLAB(_color);
-
-                var labList = new List<Lab>();
-
-                foreach (var c in chartColors)
-                {
-                    var __color = Color.FromArgb(c.red, c.blue, c.green);
-                    var __lab = RGBtoLAB(__color);
-                    labList.Add(__lab);
-                }
-
-                foreach (var l in labList)
-                {
-                    int j = -128;
-                    for (int i = 0; i < TINT_COUNT; i++) //-128 to 128 - is A range
-                    {
-                        XValues[i] = i + 1;
-
-                        if((int)l.A == j && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
-                            YValues[i]++;
-                        j++;
-                    }
-                }
-
-                BarItem bar = pane.AddBar("A", XValues, YValues, color);
-                bar.Bar.Border.Color = color;
-                bar.Label.IsVisible = false;
-            }
-            else if (comboBox1.Text == "HSV")
-            {
-                double[] YValues = new double[100];
-                double[] XValues = new double[100];
-
-                Color _color = Color.FromArgb(red, green, blue);
-                var hsv = RGBtoHSV(_color);
-
-                var hsvList = new List<Hsv>();
-
-                foreach (var c in chartColors)
-                {
-                    var __color = Color.FromArgb(c.red, c.blue, c.green);
-                    var __hsv = RGBtoHSV(__color);
-                    hsvList.Add(__hsv);
-                }
-
-                foreach (var l in hsvList)
-                {
-                    for (int i = 0; i < 100; i++) //0 to 1 - is s range
-                    {
-                        XValues[i] = i + 1;
-
-                        int f = (int)(l.S * 100);
-                        double s0 = ((double)i / 100)*100;
-                        int s = (int)s0;
-
-                        if (f == s)
-                            YValues[i]++;
-                    }
-                }
-
-                BarItem bar = pane.AddBar("S", XValues, YValues, color);
-                bar.Bar.Border.Color = color;
-                bar.Label.IsVisible = false;
-            }
-
-            pane.BarSettings.MinBarGap = 0.0f;
-            pane.BarSettings.MinClusterGap = 0.0f;
-
-            pane.Border.DashOff = 0.0f;
-            pane.Border.DashOn = 0.0f;
-
-            zedGraph1.AxisChange();
-            zedGraph1.Invalidate();
-        }
-
-        private unsafe void DrawGraph2()
-        {
-            const int TINT_COUNT = 255;
-
-            var color = Color.Blue;
-
-            int red = Convert.ToInt32(labelRed.Text);
-            int green = Convert.ToInt32(labelGreen.Text);
-            int blue = Convert.ToInt32(labelBlue.Text);
-
-            zedGraph2.Refresh();
-            zedGraph2.GraphPane.CurveList.Clear();
-            zedGraph2.GraphPane.GraphObjList.Clear();
-            zedGraph2.ZoomStepFraction = 255;
-
-            GraphPane pane = zedGraph2.GraphPane;
-            pane.CurveList.Clear();
-
-            if (comboBox1.Text == "RGB")
-            {
-                DrowRGB(255, zedGraph2, Color.Blue, color);
-            }
-            else if (comboBox1.Text == "LAB")
-            {
-                double[] YValues = new double[TINT_COUNT];
-                double[] XValues = new double[TINT_COUNT];
-
-                Color _color = Color.FromArgb(red, green, blue);
-                var lab = RGBtoLAB(_color);
-
-                var labList = new List<Lab>();
-
-                foreach (var c in chartColors)
-                {
-                    var __color = Color.FromArgb(c.red, c.blue, c.green);
-                    var __lab = RGBtoLAB(__color);
-                    labList.Add(__lab);
-                }
-
-                foreach (var l in labList)
-                {
-                    int j = -128;
-                    for (int i = 0; i < TINT_COUNT; i++) //-128 to 128 - is B range
-                    {
-                        XValues[i] = i + 1;
-
-                        if ((int)l.B == j && (int)lab.L != (int)l.L && (int)lab.B != (int)l.B)
-                            YValues[i]++;
-                        j++;
-                    }
-                }
-
-                BarItem bar = pane.AddBar("B", XValues, YValues, color);
-                bar.Bar.Border.Color = color;
-                bar.Label.IsVisible = false;
-            }
-            else if (comboBox1.Text == "HSV")
-            {
-                double[] YValues = new double[100];
-                double[] XValues = new double[100];
-
-                Color _color = Color.FromArgb(red, green, blue);
-                var hsv = RGBtoHSV(_color);
-
-                var hsvList = new List<Hsv>();
-
-                foreach (var c in chartColors)
-                {
-                    var __color = Color.FromArgb(c.red, c.blue, c.green);
-                    var __hsv = RGBtoHSV(__color);
-                    hsvList.Add(__hsv);
-                }
-
-                foreach (var l in hsvList)
-                {
-                    for (int i = 0; i < 100; i++) //0 to 1 - is V range
-                    {
-                        XValues[i] = i + 1;
-
-                        int f = (int)(l.V * 100);
-                        double s0 = ((double)i / 100) * 100;
-                        int s = (int)s0;
-
-                        if (f == s)
-                            YValues[i]++;
-                    }
-                }
-
-                BarItem bar = pane.AddBar("V", XValues, YValues, color);
-                bar.Bar.Border.Color = color;
-                bar.Label.IsVisible = false;
-            }
-
-            pane.BarSettings.MinBarGap = 0.0f;
-            pane.BarSettings.MinClusterGap = 0.0f;
-
-            pane.Border.DashOff = 0.0f;
-            pane.Border.DashOn = 0.0f;
-
-            zedGraph2.AxisChange();
-            zedGraph2.Invalidate();
-        }
-
-        private Lab RGBtoLAB(Color color)
-        {
-            Rgb rgb = new Rgb();
-            rgb.R = color.R;
-            rgb.G = color.G;
-            rgb.B = color.B;
-            var lab = rgb.To<Lab>();
-
-            return lab;
-        }
-
-        private Hsv RGBtoHSV(Color color)
-        {
-            Rgb rgb = new Rgb();
-            rgb.R = color.R;
-            rgb.G = color.G;
-            rgb.B = color.B;
-            var hsv = rgb.To<Hsv>();
-
-            return hsv;
-        }
-
-        void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
-        {
-            labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
-            labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
-        }
-
-        private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
-        {
-            labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
-            labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
-        }
-
-        void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
-        {
-            labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
-            labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
-        }
-
-        private void buttonCut1_Click(object sender, EventArgs e)
-        {
-            var color = Color.Green;
-
-            GraphPane pane = zedGraph1.GraphPane;
-            var count = zedGraph1.GraphPane.CurveList.Count;
-
-            var barList = new List<UserBar>();
-            for (int l = 0; l < count; l++)
-            {
-                var points = zedGraph1.GraphPane.CurveList[l].Points;
-                var min = selectionRangeSlider1.SelectedMin;
-                var max = selectionRangeSlider1.SelectedMax;
-
-                var successColors = new List<Point>();
-                for (int i = 0; i < 255; i++)
-                {
-                    if (points[i].X > min && points[i].X < max)
-                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
-                }
-
-                var XValues = new double[255];
-                var YValues = new double[255];
-
-                for (int i = 0; i < XValues.Length; i++)
-                {
-                    XValues[i] = i;
-                }
-
-                for (int i = 0; i < successColors.Count; i++)
-                {
-                    var x = successColors[i].X;
-                    YValues[x] = successColors[i].Y;
-                }
-
-                var colR = color.R;
-                var colG = color.G;
-                var colB = color.B;
-
-                if (colR - 20 >= 0)
-                    colR -= 20;
-                if (colG + 20 <= 255)
-                    colG += 20;
-
-                color = Color.FromArgb(colR, colG, colB);
-
-                barList.Add(new UserBar(color, XValues, YValues, color.ToString()));
-            }
-                pane.CurveList.Clear();
-
-            for (int i = 0; i < barList.Count; i++)
-            {
-                var _bar = barList[i];
-                BarItem bar = pane.AddBar(_bar.label, _bar.XValues, _bar.YValues, _bar.color);
-                bar.Bar.Border.Color = _bar.color;
-                zedGraph1.GraphPane.CurveList[i] = bar;
-                bar.Label.IsVisible = false;
-            }
-
-                zedGraph1.AxisChange();
-                zedGraph1.Invalidate();
-            }
-
-        private void buttonCut_Click(object sender, EventArgs e)
-        {
-            var color = Color.Red;
-
             GraphPane pane = zedGraph.GraphPane;
             var count = zedGraph.GraphPane.CurveList.Count;
 
@@ -830,8 +477,6 @@ namespace pouring_picture
             for (int l = 0; l < count; l++)
             {
                 var points = zedGraph.GraphPane.CurveList[l].Points;
-                var min = selectionRangeSlider.SelectedMin;
-                var max = selectionRangeSlider.SelectedMax;
 
                 var successColors = new List<Point>();
                 for (int i = 0; i < 255; i++)
@@ -881,69 +526,6 @@ namespace pouring_picture
             zedGraph.AxisChange();
             zedGraph.Invalidate();
         }
-
-        private void buttonCut2_Click(object sender, EventArgs e)
-        {
-            var color = Color.Blue;
-
-            GraphPane pane = zedGraph2.GraphPane;
-            var count = zedGraph2.GraphPane.CurveList.Count;
-
-            var barList = new List<UserBar>();
-            for (int l = 0; l < count; l++)
-            {
-                var points = zedGraph2.GraphPane.CurveList[l].Points;
-                var min = selectionRangeSlider2.SelectedMin;
-                var max = selectionRangeSlider2.SelectedMax;
-
-                var successColors = new List<Point>();
-                for (int i = 0; i < 255; i++)
-                {
-                    if (points[i].X > min && points[i].X < max)
-                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
-                }
-
-                var XValues = new double[255];
-                var YValues = new double[255];
-
-                for (int i = 0; i < XValues.Length; i++)
-                {
-                    XValues[i] = i;
-                }
-
-                for (int i = 0; i < successColors.Count; i++)
-                {
-                    var x = successColors[i].X;
-                    YValues[x] = successColors[i].Y;
-                }
-
-                var colR = color.R;
-                var colG = color.G;
-                var colB = color.B;
-
-                if (colR - 20 >= 0)
-                    colR -= 20;
-                if (colG + 20 <= 255)
-                    colG += 20;
-
-                color = Color.FromArgb(colR, colG, colB);
-
-                barList.Add(new UserBar(color, XValues, YValues, color.ToString()));
-            }
-                pane.CurveList.Clear();
-
-            for (int i = 0; i < barList.Count; i++)
-            {
-                var _bar = barList[i];
-                BarItem bar = pane.AddBar(_bar.label, _bar.XValues, _bar.YValues, _bar.color);
-                bar.Bar.Border.Color = _bar.color;
-                zedGraph2.GraphPane.CurveList[i] = bar;
-                bar.Label.IsVisible = false;
-            }
-
-                zedGraph2.AxisChange();
-                zedGraph2.Invalidate();
-            }
 
         private void buttonSaveGraphColors_Click(object sender, EventArgs e)
         {  

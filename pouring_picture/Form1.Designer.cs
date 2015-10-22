@@ -48,11 +48,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.labelRangeSliderMin1 = new System.Windows.Forms.Label();
             this.labelRangeSliderMax1 = new System.Windows.Forms.Label();
-            this.buttonCut1 = new System.Windows.Forms.Button();
-            this.buttonCut = new System.Windows.Forms.Button();
             this.labelRangeSliderMax = new System.Windows.Forms.Label();
             this.labelRangeSliderMin = new System.Windows.Forms.Label();
-            this.buttonCut2 = new System.Windows.Forms.Button();
             this.labelRangeSliderMax2 = new System.Windows.Forms.Label();
             this.labelRangeSliderMin2 = new System.Windows.Forms.Label();
             this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
@@ -256,26 +253,6 @@
             this.labelRangeSliderMax1.TabIndex = 20;
             this.labelRangeSliderMax1.Text = "max";
             // 
-            // buttonCut1
-            // 
-            this.buttonCut1.Location = new System.Drawing.Point(1131, 316);
-            this.buttonCut1.Name = "buttonCut1";
-            this.buttonCut1.Size = new System.Drawing.Size(75, 23);
-            this.buttonCut1.TabIndex = 21;
-            this.buttonCut1.Text = "Cut";
-            this.buttonCut1.UseVisualStyleBackColor = true;
-            this.buttonCut1.Click += new System.EventHandler(this.buttonCut1_Click);
-            // 
-            // buttonCut
-            // 
-            this.buttonCut.Location = new System.Drawing.Point(726, 315);
-            this.buttonCut.Name = "buttonCut";
-            this.buttonCut.Size = new System.Drawing.Size(75, 23);
-            this.buttonCut.TabIndex = 25;
-            this.buttonCut.Text = "Cut";
-            this.buttonCut.UseVisualStyleBackColor = true;
-            this.buttonCut.Click += new System.EventHandler(this.buttonCut_Click);
-            // 
             // labelRangeSliderMax
             // 
             this.labelRangeSliderMax.AutoSize = true;
@@ -293,16 +270,6 @@
             this.labelRangeSliderMin.Size = new System.Drawing.Size(23, 13);
             this.labelRangeSliderMin.TabIndex = 23;
             this.labelRangeSliderMin.Text = "min";
-            // 
-            // buttonCut2
-            // 
-            this.buttonCut2.Location = new System.Drawing.Point(726, 659);
-            this.buttonCut2.Name = "buttonCut2";
-            this.buttonCut2.Size = new System.Drawing.Size(75, 23);
-            this.buttonCut2.TabIndex = 29;
-            this.buttonCut2.Text = "Cut";
-            this.buttonCut2.UseVisualStyleBackColor = true;
-            this.buttonCut2.Click += new System.EventHandler(this.buttonCut2_Click);
             // 
             // labelRangeSliderMax2
             // 
@@ -441,15 +408,12 @@
             this.Controls.Add(this.textBoxMarkerHeight);
             this.Controls.Add(this.textBoxMarkerWidth);
             this.Controls.Add(this.buttonSaveGraphColors);
-            this.Controls.Add(this.buttonCut2);
             this.Controls.Add(this.labelRangeSliderMax2);
             this.Controls.Add(this.labelRangeSliderMin2);
             this.Controls.Add(this.selectionRangeSlider2);
-            this.Controls.Add(this.buttonCut);
             this.Controls.Add(this.labelRangeSliderMax);
             this.Controls.Add(this.labelRangeSliderMin);
             this.Controls.Add(this.selectionRangeSlider);
-            this.Controls.Add(this.buttonCut1);
             this.Controls.Add(this.labelRangeSliderMax1);
             this.Controls.Add(this.labelRangeSliderMin1);
             this.Controls.Add(this.selectionRangeSlider1);
@@ -503,12 +467,9 @@
         private SelectionRangeSlider selectionRangeSlider1;
         private System.Windows.Forms.Label labelRangeSliderMin1;
         private System.Windows.Forms.Label labelRangeSliderMax1;
-        private System.Windows.Forms.Button buttonCut1;
-        private System.Windows.Forms.Button buttonCut;
         private System.Windows.Forms.Label labelRangeSliderMax;
         private System.Windows.Forms.Label labelRangeSliderMin;
         private SelectionRangeSlider selectionRangeSlider;
-        private System.Windows.Forms.Button buttonCut2;
         private System.Windows.Forms.Label labelRangeSliderMax2;
         private System.Windows.Forms.Label labelRangeSliderMin2;
         private SelectionRangeSlider selectionRangeSlider2;
