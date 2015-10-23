@@ -3,8 +3,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using ZedGraph;
-using ColorMine.ColorSpaces;
 
 namespace pouring_picture
 {
@@ -22,14 +20,14 @@ namespace pouring_picture
 
         private int rangeValue;
 
-        List<List<PixelData>> datas;
+        List<PixelData> pixelDatas;
 
         public Form1()
         {
             InitializeComponent();
             rangeValue = Convert.ToInt32(textBoxMagic.Text);
             chartColors = new List<PixelData>();
-            datas = new List<List<PixelData>>();
+            pixelDatas = new List<PixelData>();
             redWrap = new ZedGraphWrap(zedGraph, Color.Red);
             greenWrap = new ZedGraphWrap(zedGraph1, Color.Green);
             blueWrap = new ZedGraphWrap(zedGraph2, Color.Blue);
@@ -64,9 +62,9 @@ namespace pouring_picture
 
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
-            redWrap.DrawGraph(datas);
-            greenWrap.DrawGraph(datas);
-            blueWrap.DrawGraph(datas);
+            redWrap.DrawGraph(pixelDatas);
+            greenWrap.DrawGraph(pixelDatas);
+            blueWrap.DrawGraph(pixelDatas);
         }
 
         private void buttonBack_Click(object sender, EventArgs e)
@@ -274,7 +272,7 @@ namespace pouring_picture
                             rgbValues[counter + 2],
                             b, g, r))
                     {
-                        chartColors.Add(new PixelData(rgbValues[counter],
+                        pixelDatas.Add(new PixelData(rgbValues[counter],
                             rgbValues[counter + 1], rgbValues[counter + 2]));
                         success++;
                         rgbValues[counter] = blue;
@@ -283,7 +281,7 @@ namespace pouring_picture
                     }
                 }
             }
-            datas.Add(new List<PixelData>(chartColors));
+         //   pixelDatas.Add(chartColors);
 
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             bmp.UnlockBits(bmpData);
@@ -390,18 +388,18 @@ namespace pouring_picture
                 }
             }
 
-            datas.Clear();
+            pixelDatas.Clear();
             for (int i = 0; i < 255; i++)
             {
-                chartColors.Add(new PixelData((byte)RedValues[i], (byte)GreenValues[i], (byte)BlueValues[i]));
+                pixelDatas.Add(new PixelData((byte)RedValues[i], (byte)GreenValues[i], (byte)BlueValues[i]));
             }
-            datas.Add(new List<PixelData>(chartColors));
+          //  pixelDatas.Add(new List<PixelData>(chartColors));
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)
         {
             pictureBox1.Image = savedBitmap;
-            datas.Clear();
+            pixelDatas.Clear();
         }
 
         private void textBoxMagic_TextChanged(object sender, EventArgs e)

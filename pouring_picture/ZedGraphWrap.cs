@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using ZedGraph;
 
@@ -19,7 +16,7 @@ namespace pouring_picture
             Color = color;
         }
 
-        public unsafe void DrawGraph(List<List<PixelData>> datas)
+        public unsafe void DrawGraph(List<PixelData> datas)
         {
             const int TINT_COUNT = 255;
 
@@ -92,7 +89,7 @@ namespace pouring_picture
             GraphControl.Invalidate();
         }
 
-        private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<List<PixelData>> datas)
+        private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelData> datas)
         {
             double[] YValues = new double[tintCount];
             double[] XValues = new double[tintCount];
@@ -106,91 +103,88 @@ namespace pouring_picture
 
             GraphPane pane = izedGraph.GraphPane;
 
+            Array.Clear(XValues, 0, XValues.Length);
             foreach (var data in datas)
             {
-                Array.Clear(XValues, 0, XValues.Length);
-                foreach (var pixel in data)
+                for (int i = 0; i < tintCount; i++)
                 {
-                    for (int i = 0; i < tintCount; i++)
-                    {
-                        XValues[i] = i + 1;
+                    XValues[i] = i + 1;
 
-                        if (color == Color.Red)
-                        {
-                            if (pixel.red == i && pixel.blue != blue && pixel.green != green)
-                                YValues[i]++;
-                        }
-                        if (color == Color.Blue)
-                        {
-                            if (pixel.blue == i && pixel.red != red && pixel.green != green)
-                                YValues[i]++;
-                        }
-                        if (color == Color.Green)
-                        {
-                            if (pixel.green == i && pixel.red != red && pixel.blue != blue)
-                                YValues[i]++;
-                        }
+                    if (color == Color.Red)
+                    {
+                        if (data.red == i && data.blue != blue && data.green != green)
+                            YValues[i]++;
+                    }
+                    if (color == Color.Blue)
+                    {
+                        if (data.blue == i && data.red != red && data.green != green)
+                            YValues[i]++;
+                    }
+                    if (color == Color.Green)
+                    {
+                        if (data.green == i && data.red != red && data.blue != blue)
+                            YValues[i]++;
                     }
                 }
-                if (color == Color.Red)
-                {
-                    var colR = col.R;
-                    var colG = col.G;
-                    var colB = col.B;
-
-                    if (colR - 20 >= 0)
-                        colR -= 20;
-                    if (colG + 20 <= 255)
-                        colG += 20;
-                    if (colB + 20 <= 255)
-                        colB += 20;
-
-                    col = Color.FromArgb(colR, colG, colB);
-                }
-                if (color == Color.Blue)
-                {
-                    var colR = col.R;
-                    var colG = col.G;
-                    var colB = col.B;
-
-                    if (colR + 20 <= 255)
-                        colR += 20;
-                    if (colG + 20 <= 255)
-                        colG += 20;
-                    if (colB - 20 >= 0)
-                        colB -= 20;
-
-                    col = Color.FromArgb(colR, colG, colB);
-                }
-                if (color == Color.Green)
-                {
-                    var colR = col.R;
-                    var colG = col.G;
-                    var colB = col.B;
-
-                    if (colR + 20 <= 255)
-                        colR += 20;
-                    if (colG - 20 >= 0)
-                        colG -= 20;
-                    if (colB + 20 <= 255)
-                        colB += 20;
-
-                    col = Color.FromArgb(colR, colG, colB);
-                }
-
-                BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
-                bar.Bar.Border.Color = col;
-                bar.Label.IsVisible = false;
-
-                pane.BarSettings.MinBarGap = 0.0f;
-                pane.BarSettings.MinClusterGap = 0.0f;
-
-                pane.Border.DashOff = 0.0f;
-                pane.Border.DashOn = 0.0f;
-
-                izedGraph.AxisChange();
-                izedGraph.Invalidate();
             }
+            if (color == Color.Red)
+            {
+                var colR = col.R;
+                var colG = col.G;
+                var colB = col.B;
+
+                if (colR - 20 >= 0)
+                    colR -= 20;
+                if (colG + 20 <= 255)
+                    colG += 20;
+                if (colB + 20 <= 255)
+                    colB += 20;
+
+                col = Color.FromArgb(colR, colG, colB);
+            }
+            if (color == Color.Blue)
+            {
+                var colR = col.R;
+                var colG = col.G;
+                var colB = col.B;
+
+                if (colR + 20 <= 255)
+                    colR += 20;
+                if (colG + 20 <= 255)
+                    colG += 20;
+                if (colB - 20 >= 0)
+                    colB -= 20;
+
+                col = Color.FromArgb(colR, colG, colB);
+            }
+            if (color == Color.Green)
+            {
+                var colR = col.R;
+                var colG = col.G;
+                var colB = col.B;
+
+                if (colR + 20 <= 255)
+                    colR += 20;
+                if (colG - 20 >= 0)
+                    colG -= 20;
+                if (colB + 20 <= 255)
+                    colB += 20;
+
+                col = Color.FromArgb(colR, colG, colB);
+            }
+
+            BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
+            bar.Bar.Border.Color = col;
+            bar.Label.IsVisible = false;
+
+            pane.BarSettings.MinBarGap = 0.0f;
+            pane.BarSettings.MinClusterGap = 0.0f;
+
+            pane.Border.DashOff = 0.0f;
+            pane.Border.DashOn = 0.0f;
+
+            izedGraph.AxisChange();
+            izedGraph.Invalidate();
         }
     }
 }
