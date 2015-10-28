@@ -313,13 +313,13 @@
             // 
             // selectionRangeSlider1
             // 
-            this.selectionRangeSlider1.Location = new System.Drawing.Point(1000, 300);
+            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 300);
             this.selectionRangeSlider1.Max = 255;
             this.selectionRangeSlider1.Min = 0;
             this.selectionRangeSlider1.Name = "selectionRangeSlider1";
             this.selectionRangeSlider1.SelectedMax = 255;
             this.selectionRangeSlider1.SelectedMin = 0;
-            this.selectionRangeSlider1.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
             this.selectionRangeSlider1.TabIndex = 18;
             // 
             // buttonSaveGraphColors

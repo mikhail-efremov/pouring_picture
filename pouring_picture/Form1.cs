@@ -326,21 +326,39 @@ namespace pouring_picture
         {
             labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
             labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
-            redWrap.DrawGraph(selectionRangeSlider.SelectedMin, selectionRangeSlider.SelectedMax);
+            var bar = redWrap.DrawGraph(selectionRangeSlider.SelectedMin, selectionRangeSlider.SelectedMax);
+
+            chartColors.Clear();
+            foreach (var b in bar)
+            {
+                chartColors.Add(new PixelData(b.color.B, b.color.G, b.color.R));
+            }
         }
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
             labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
             labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
-            greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin, selectionRangeSlider1.SelectedMax);
+            var bar = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin, selectionRangeSlider1.SelectedMax);
+
+            chartColors.Clear();
+            foreach (var b in bar)
+            {
+                chartColors.Add(new PixelData(b.color.B, b.color.G, b.color.R));
+            }
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
         {
             labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
             labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
-            blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin, selectionRangeSlider2.SelectedMax);
+            var bar = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin, selectionRangeSlider2.SelectedMax);
+
+            chartColors.Clear();
+            foreach (var b in bar)
+            {
+                chartColors.Add(new PixelData(b.color.B, b.color.G, b.color.R));
+            }
         }
 
         private void buttonSaveGraphColors_Click(object sender, EventArgs e)
@@ -393,7 +411,6 @@ namespace pouring_picture
             {
                 pixelDatas.Add(new PixelData((byte)RedValues[i], (byte)GreenValues[i], (byte)BlueValues[i]));
             }
-          //  pixelDatas.Add(new List<PixelData>(chartColors));
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)

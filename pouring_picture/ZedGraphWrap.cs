@@ -41,7 +41,7 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public void DrawGraph(int min, int max)
+        public List<UserBar> DrawGraph(int min, int max)
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;
@@ -87,6 +87,8 @@ namespace pouring_picture
 
             GraphControl.AxisChange();
             GraphControl.Invalidate();
+
+            return barList;
         }
 
         private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelData> datas)
