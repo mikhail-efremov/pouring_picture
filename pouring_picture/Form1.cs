@@ -10,7 +10,6 @@ namespace pouring_picture
     {
         private int maxHeight = 2510;
         private int maxWidth = 2455;
-        List<PixelData> chartColors;
         private Bitmap savedBitmap;
         private Bitmap previousBitmap;
 
@@ -26,7 +25,6 @@ namespace pouring_picture
         {
             InitializeComponent();
             rangeValue = Convert.ToInt32(textBoxMagic.Text);
-            chartColors = new List<PixelData>();
             pixelDatas = new List<PixelData>();
             redWrap = new ZedGraphWrap(zedGraph, Color.Red);
             greenWrap = new ZedGraphWrap(zedGraph1, Color.Green);
@@ -200,8 +198,6 @@ namespace pouring_picture
 
         private unsafe void PouringImage(PaintEventArgs e)
         {
-            chartColors.Clear();
-
             var points = new List<Point>();
 
             Rectangle myRectangle = new Rectangle();
@@ -281,7 +277,6 @@ namespace pouring_picture
                     }
                 }
             }
-         //   pixelDatas.Add(chartColors);
 
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             bmp.UnlockBits(bmpData);
@@ -326,12 +321,14 @@ namespace pouring_picture
         {
             labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
             labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
-            var bar = redWrap.DrawGraph(selectionRangeSlider.SelectedMin, selectionRangeSlider.SelectedMax);
+            var bar = redWrap.DrawGraph(selectionRangeSlider.SelectedMin,
+                selectionRangeSlider.SelectedMax,
+                new Bitmap(pictureBox1.Image));
 
-            chartColors.Clear();
+            pixelDatas.Clear();
             foreach (var b in bar)
             {
-                chartColors.Add(new PixelData(b.color.B, b.color.G, b.color.R));
+                pixelDatas.Add(new PixelData((Byte)b.blue, (Byte)b.green, (Byte)b.red));
             }
         }
 
@@ -339,12 +336,14 @@ namespace pouring_picture
         {
             labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
             labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
-            var bar = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin, selectionRangeSlider1.SelectedMax);
+            var bar = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin,
+                selectionRangeSlider1.SelectedMax,
+                new Bitmap(pictureBox1.Image));
 
-            chartColors.Clear();
+            pixelDatas.Clear();
             foreach (var b in bar)
             {
-                chartColors.Add(new PixelData(b.color.B, b.color.G, b.color.R));
+                pixelDatas.Add(new PixelData(b.blue, b.green, b.red));
             }
         }
 
@@ -352,12 +351,14 @@ namespace pouring_picture
         {
             labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
             labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
-            var bar = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin, selectionRangeSlider2.SelectedMax);
+            var bar = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin,
+                selectionRangeSlider2.SelectedMax,
+                new Bitmap(pictureBox1.Image));
 
-            chartColors.Clear();
+            pixelDatas.Clear();
             foreach (var b in bar)
             {
-                chartColors.Add(new PixelData(b.color.B, b.color.G, b.color.R));
+                pixelDatas.Add(new PixelData(b.blue, b.green, b.red));
             }
         }
 

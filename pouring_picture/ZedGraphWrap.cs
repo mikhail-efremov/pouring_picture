@@ -41,10 +41,11 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public List<UserBar> DrawGraph(int min, int max)
+        public List<PixelData> DrawGraph(int min, int max, Bitmap bitmap)
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;
+            var pixelData = new List<PixelData>();
 
             var barList = new List<UserBar>();
             for (int l = 0; l < count; l++)
@@ -55,7 +56,11 @@ namespace pouring_picture
                 for (int i = 0; i < 255; i++)
                 {
                     if (points[i].X > min && points[i].X < max)
+                    {
                         successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
+                        var pixel = bitmap.GetPixel((int)points[i].X, (int)points[i].Y);
+                        pixelData.Add(new PixelData((byte)pixel.B, (byte)pixel.G, (byte)pixel.R));
+                    }
                 }
 
                 var XValues = new double[255];
@@ -88,7 +93,7 @@ namespace pouring_picture
             GraphControl.AxisChange();
             GraphControl.Invalidate();
 
-            return barList;
+            return pixelData;
         }
 
         private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelData> datas)
