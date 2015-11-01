@@ -41,7 +41,7 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public List<PixelData> DrawGraph(int min, int max, Bitmap bitmap)
+        public List<PixelData> DrawGraph(int min, int max, Bitmap bitmap, Color color)
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;
@@ -55,12 +55,29 @@ namespace pouring_picture
                 var successColors = new List<Point>();
                 for (int i = 0; i < 255; i++)
                 {
-                    if (points[i].X > min && points[i].X < max)
+                    if (points[i].X >= min && points[i].X <= max)
                     {
                         successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
                         var pixel = bitmap.GetPixel((int)points[i].X, (int)points[i].Y);
                         pixelData.Add(new PixelData((byte)pixel.B, (byte)pixel.G, (byte)pixel.R));
                     }
+
+           /*         else
+                    {
+                        if (color == Color.Red)
+                        {
+                            pixelData.Add(new PixelData((byte)pixel.B, (byte)pixel.G, (byte)0));
+                        }
+                        if (color == Color.Green)
+                        {
+                            pixelData.Add(new PixelData((byte)pixel.B, (byte)0, (byte)pixel.R));
+                        }
+                        if (color == Color.Blue)
+                        {
+                            pixelData.Add(new PixelData((byte)0, (byte)pixel.G, (byte)pixel.R));
+                        }
+                    }
+            * */
                 }
 
                 var XValues = new double[255];
@@ -133,51 +150,6 @@ namespace pouring_picture
                             YValues[i]++;
                     }
                 }
-            }
-            if (color == Color.Red)
-            {
-                var colR = col.R;
-                var colG = col.G;
-                var colB = col.B;
-
-                if (colR - 20 >= 0)
-                    colR -= 20;
-                if (colG + 20 <= 255)
-                    colG += 20;
-                if (colB + 20 <= 255)
-                    colB += 20;
-
-                col = Color.FromArgb(colR, colG, colB);
-            }
-            if (color == Color.Blue)
-            {
-                var colR = col.R;
-                var colG = col.G;
-                var colB = col.B;
-
-                if (colR + 20 <= 255)
-                    colR += 20;
-                if (colG + 20 <= 255)
-                    colG += 20;
-                if (colB - 20 >= 0)
-                    colB -= 20;
-
-                col = Color.FromArgb(colR, colG, colB);
-            }
-            if (color == Color.Green)
-            {
-                var colR = col.R;
-                var colG = col.G;
-                var colB = col.B;
-
-                if (colR + 20 <= 255)
-                    colR += 20;
-                if (colG - 20 >= 0)
-                    colG -= 20;
-                if (colB + 20 <= 255)
-                    colB += 20;
-
-                col = Color.FromArgb(colR, colG, colB);
             }
 
             BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);

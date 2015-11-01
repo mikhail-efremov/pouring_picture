@@ -321,45 +321,36 @@ namespace pouring_picture
         {
             labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
             labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
-            var bar = redWrap.DrawGraph(selectionRangeSlider.SelectedMin,
+            var pd = redWrap.DrawGraph(selectionRangeSlider.SelectedMin,
                 selectionRangeSlider.SelectedMax,
-                new Bitmap(pictureBox1.Image));
+                new Bitmap(pictureBox1.Image),
+                Color.Red);
 
-            pixelDatas.Clear();
-            foreach (var b in bar)
-            {
-                pixelDatas.Add(new PixelData((Byte)b.blue, (Byte)b.green, (Byte)b.red));
-            }
+            pixelDatas = pd;
         }
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
             labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
             labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
-            var bar = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin,
+            var pd = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin,
                 selectionRangeSlider1.SelectedMax,
-                new Bitmap(pictureBox1.Image));
+                new Bitmap(pictureBox1.Image),
+                Color.Green);
 
-            pixelDatas.Clear();
-            foreach (var b in bar)
-            {
-                pixelDatas.Add(new PixelData(b.blue, b.green, b.red));
-            }
+            pixelDatas = pd;
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
         {
             labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
             labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
-            var bar = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin,
+            var pd = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin,
                 selectionRangeSlider2.SelectedMax,
-                new Bitmap(pictureBox1.Image));
+                new Bitmap(pictureBox1.Image),
+                Color.Blue);
 
-            pixelDatas.Clear();
-            foreach (var b in bar)
-            {
-                pixelDatas.Add(new PixelData(b.blue, b.green, b.red));
-            }
+            pixelDatas = pd;
         }
 
         private void buttonSaveGraphColors_Click(object sender, EventArgs e)
