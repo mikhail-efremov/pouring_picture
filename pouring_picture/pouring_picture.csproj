@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackStepItem.cs" />
     <Compile Include="SelectionRangeSlider.cs">
       <SubType>UserControl</SubType>
     </Compile>

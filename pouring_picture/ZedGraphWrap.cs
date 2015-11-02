@@ -51,7 +51,7 @@ namespace pouring_picture
             for (int l = 0; l < count; l++)
             {
                 var points = GraphControl.GraphPane.CurveList[l].Points;
-
+                
                 var successColors = new List<Point>();
                 for (int i = 0; i < 255; i++)
                 {
@@ -93,10 +93,9 @@ namespace pouring_picture
                     var x = successColors[i].X;
                     YValues[x] = successColors[i].Y;
                 }
-
+                pane.CurveList.Clear();
                 barList.Add(new UserBar(Color, XValues, YValues, Color.ToString()));
             }
-            pane.CurveList.Clear();
 
             for (int i = 0; i < barList.Count; i++)
             {

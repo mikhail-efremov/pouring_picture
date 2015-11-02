@@ -11,7 +11,7 @@ namespace pouring_picture
         private int maxHeight = 2510;
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
-        private Bitmap previousBitmap;
+        private List<BackStepItem> previousBitmaps = new List<BackStepItem>();
 
         ZedGraphWrap redWrap;
         ZedGraphWrap greenWrap;
@@ -116,8 +116,9 @@ namespace pouring_picture
             var mouse = (MouseEventArgs)e;
 
             var bmp = new Bitmap(pictureBox1.Image);
-            previousBitmap = bmp;
 
+            SetBackStep(new BackStepItem(bmp, new List<PixelData>(pixelDatas)));
+            
             var ad = new PaintEventArgs(Graphics.FromImage(pictureBox1.Image)
                 , new Rectangle(new Point(mouse.X, mouse.Y), new Size(new Point(0, 0))));
             
@@ -420,7 +421,15 @@ namespace pouring_picture
 
         private void BackStep()
         {
-            pictureBox1.Image = previousBitmap;
+            var item = previousBitmaps[previousBitmaps.Count - 1];
+            pictureBox1.Image = item.Bitmap;
+            pixelDatas = item.PixelData;
+            previousBitmaps.Remove(item);
+        }
+
+        private void SetBackStep(BackStepItem bitmaps)
+        {
+            previousBitmaps.Add(bitmaps);
         }
     }
 
