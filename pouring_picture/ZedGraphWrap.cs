@@ -41,11 +41,11 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public List<PixelData> DrawGraph(int min, int max, Bitmap bitmap, Color color)
+        public List<PixelData> DrawGraph(int min, int max, Bitmap bitmap, List<PixelData> inpLixelData, Color color)
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;
-            var pixelData = new List<PixelData>();
+            var pixelData = CutPixels(max, min, inpLixelData);
 
             var barList = new List<UserBar>();
             for (int l = 0; l < count; l++)
@@ -55,29 +55,11 @@ namespace pouring_picture
                 var successColors = new List<Point>();
                 for (int i = 0; i < 255; i++)
                 {
-                    if (points[i].X >= min && points[i].X <= max)
+                //    if (points[i].X >= min && points[i].X <= max)
                     {
                         successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
                         var pixel = bitmap.GetPixel((int)points[i].X, (int)points[i].Y);
-                        pixelData.Add(new PixelData((byte)pixel.B, (byte)pixel.G, (byte)pixel.R));
                     }
-
-           /*         else
-                    {
-                        if (color == Color.Red)
-                        {
-                            pixelData.Add(new PixelData((byte)pixel.B, (byte)pixel.G, (byte)0));
-                        }
-                        if (color == Color.Green)
-                        {
-                            pixelData.Add(new PixelData((byte)pixel.B, (byte)0, (byte)pixel.R));
-                        }
-                        if (color == Color.Blue)
-                        {
-                            pixelData.Add(new PixelData((byte)0, (byte)pixel.G, (byte)pixel.R));
-                        }
-                    }
-            * */
                 }
 
                 var XValues = new double[255];
@@ -90,8 +72,12 @@ namespace pouring_picture
 
                 for (int i = 0; i < successColors.Count; i++)
                 {
-                    var x = successColors[i].X;
-                    YValues[x] = successColors[i].Y;
+                    try
+                    {
+                        var x = successColors[i].X;
+                        YValues[x] = successColors[i].Y;
+                    }
+                    catch { }
                 }
                 pane.CurveList.Clear();
                 barList.Add(new UserBar(Color, XValues, YValues, Color.ToString()));
@@ -110,6 +96,45 @@ namespace pouring_picture
             GraphControl.Invalidate();
 
             return pixelData;
+        }
+
+        private List<PixelData> CutPixels(int max, int min, List<PixelData> pixelData)
+        {
+            var count = pixelData.Count;
+            var retData = new List<PixelData>();
+
+            if (Color == Color.Red)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (pixelData[i].red >= min && pixelData[i].red <= max)
+                    {
+                        retData.Add(pixelData[i]);
+                    }
+                }
+            }
+            if (Color == Color.Blue)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (pixelData[i].blue >= min && pixelData[i].blue <= max)
+                    {
+                        retData.Add(pixelData[i]);
+                    }
+                }
+            }
+            if (Color == Color.Green)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (pixelData[i].green >= min && pixelData[i].green <= max)
+                    {
+                        retData.Add(pixelData[i]);
+                    }
+                }
+            }
+
+            return retData;
         }
 
         private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelData> datas)

@@ -325,6 +325,7 @@ namespace pouring_picture
             var pd = redWrap.DrawGraph(selectionRangeSlider.SelectedMin,
                 selectionRangeSlider.SelectedMax,
                 new Bitmap(pictureBox1.Image),
+                pixelDatas,
                 Color.Red);
 
             pixelDatas = pd;
@@ -337,6 +338,7 @@ namespace pouring_picture
             var pd = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin,
                 selectionRangeSlider1.SelectedMax,
                 new Bitmap(pictureBox1.Image),
+                pixelDatas,
                 Color.Green);
 
             pixelDatas = pd;
@@ -349,6 +351,7 @@ namespace pouring_picture
             var pd = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin,
                 selectionRangeSlider2.SelectedMax,
                 new Bitmap(pictureBox1.Image),
+                pixelDatas,
                 Color.Blue);
 
             pixelDatas = pd;
