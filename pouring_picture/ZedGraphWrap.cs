@@ -41,60 +41,11 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public List<PixelData> DrawGraph(int min, int max, Bitmap bitmap, List<PixelData> inpLixelData, Color color)
+        public List<PixelData> DrawGraph(int min, int max, List<PixelData> inpLixelData)
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;
             var pixelData = CutPixels(max, min, inpLixelData);
-
-            var barList = new List<UserBar>();
-            for (int l = 0; l < count; l++)
-            {
-                var points = GraphControl.GraphPane.CurveList[l].Points;
-                
-                var successColors = new List<Point>();
-                for (int i = 0; i < 255; i++)
-                {
-                //    if (points[i].X >= min && points[i].X <= max)
-                    {
-                        successColors.Add(new Point((int)points[i].X, (int)points[i].Y));
-                        var pixel = bitmap.GetPixel((int)points[i].X, (int)points[i].Y);
-                    }
-                }
-
-                var XValues = new double[255];
-                var YValues = new double[255];
-
-                for (int i = 0; i < XValues.Length; i++)
-                {
-                    XValues[i] = i;
-                }
-
-                for (int i = 0; i < successColors.Count; i++)
-                {
-                    try
-                    {
-                        var x = successColors[i].X;
-                        YValues[x] = successColors[i].Y;
-                    }
-                    catch { }
-                }
-                pane.CurveList.Clear();
-                barList.Add(new UserBar(Color, XValues, YValues, Color.ToString()));
-            }
-
-            for (int i = 0; i < barList.Count; i++)
-            {
-                var _bar = barList[i];
-                BarItem bar = pane.AddBar(_bar.label, _bar.XValues, _bar.YValues, _bar.color);
-                bar.Bar.Border.Color = _bar.color;
-                GraphControl.GraphPane.CurveList[i] = bar;
-                bar.Label.IsVisible = false;
-            }
-
-            GraphControl.AxisChange();
-            GraphControl.Invalidate();
-
             return pixelData;
         }
 

@@ -55,7 +55,6 @@
             this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
-            this.buttonSaveGraphColors = new System.Windows.Forms.Button();
             this.textBoxMarkerWidth = new System.Windows.Forms.TextBox();
             this.textBoxMarkerHeight = new System.Windows.Forms.TextBox();
             this.labelMarkerInfo = new System.Windows.Forms.Label();
@@ -63,6 +62,7 @@
             this.textBoxMagic = new System.Windows.Forms.TextBox();
             this.buttonBack = new System.Windows.Forms.Button();
             this.labelSensInfo = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -322,16 +322,6 @@
             this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
             this.selectionRangeSlider1.TabIndex = 18;
             // 
-            // buttonSaveGraphColors
-            // 
-            this.buttonSaveGraphColors.Location = new System.Drawing.Point(807, 315);
-            this.buttonSaveGraphColors.Name = "buttonSaveGraphColors";
-            this.buttonSaveGraphColors.Size = new System.Drawing.Size(75, 23);
-            this.buttonSaveGraphColors.TabIndex = 30;
-            this.buttonSaveGraphColors.Text = "Save";
-            this.buttonSaveGraphColors.UseVisualStyleBackColor = true;
-            this.buttonSaveGraphColors.Click += new System.EventHandler(this.buttonSaveGraphColors_Click);
-            // 
             // textBoxMarkerWidth
             // 
             this.textBoxMarkerWidth.Location = new System.Drawing.Point(1036, 450);
@@ -395,11 +385,22 @@
             this.labelSensInfo.TabIndex = 38;
             this.labelSensInfo.Text = "Sens";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1144, 530);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 39;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.labelSensInfo);
             this.Controls.Add(this.buttonBack);
             this.Controls.Add(this.textBoxMagic);
@@ -407,7 +408,6 @@
             this.Controls.Add(this.labelMarkerInfo);
             this.Controls.Add(this.textBoxMarkerHeight);
             this.Controls.Add(this.textBoxMarkerWidth);
-            this.Controls.Add(this.buttonSaveGraphColors);
             this.Controls.Add(this.labelRangeSliderMax2);
             this.Controls.Add(this.labelRangeSliderMin2);
             this.Controls.Add(this.selectionRangeSlider2);
@@ -473,7 +473,6 @@
         private System.Windows.Forms.Label labelRangeSliderMax2;
         private System.Windows.Forms.Label labelRangeSliderMin2;
         private SelectionRangeSlider selectionRangeSlider2;
-        private System.Windows.Forms.Button buttonSaveGraphColors;
         private System.Windows.Forms.TextBox textBoxMarkerWidth;
         private System.Windows.Forms.TextBox textBoxMarkerHeight;
         private System.Windows.Forms.Label labelMarkerInfo;
@@ -481,6 +480,7 @@
         private System.Windows.Forms.TextBox textBoxMagic;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.Label labelSensInfo;
+        private System.Windows.Forms.Button button1;
     }
 }
 

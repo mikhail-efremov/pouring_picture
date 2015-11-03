@@ -11,6 +11,7 @@ namespace pouring_picture
         private int maxHeight = 2510;
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
+        private Bitmap savedBitmap2;
         private List<BackStepItem> previousBitmaps = new List<BackStepItem>();
 
         ZedGraphWrap redWrap;
@@ -105,6 +106,7 @@ namespace pouring_picture
                 {
                     pictureBox1.Image = image;
                     savedBitmap = image;
+                    savedBitmap2 = new Bitmap(image);
                     return true;
                 }
             }
@@ -270,11 +272,72 @@ namespace pouring_picture
                             b, g, r))
                     {
                         pixelDatas.Add(new PixelData(rgbValues[counter],
-                            rgbValues[counter + 1], rgbValues[counter + 2]));
+                            rgbValues[counter + 1], rgbValues[counter + 2], point.X, point.Y));
                         success++;
                         rgbValues[counter] = blue;
                         rgbValues[counter + 1] = green;
                         rgbValues[counter + 2] = red;
+                    }
+                }
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+            bmp.UnlockBits(bmpData);
+
+            pictureBox1.Image = bmp;
+        }
+
+        private unsafe void PouringImage()
+        {
+            var bmp = savedBitmap;
+
+            // Lock the bitmap's bits.  
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            BitmapData bmpData =
+                bmp.LockBits(rect, ImageLockMode.ReadWrite,
+                bmp.PixelFormat);
+
+            // Get the address of the first line.
+            IntPtr ptr = bmpData.Scan0;
+
+            // Declare an array to hold the bytes of the bitmap.
+            int bytes = Math.Abs(bmpData.Stride) * bmp.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy the RGB values into the array.
+            System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+            byte blue = Convert.ToByte(labelBlue.Text);
+            byte green = Convert.ToByte(labelGreen.Text);
+            byte red = Convert.ToByte(labelRed.Text);
+
+            int success = 0;
+
+            lock (pixelDatas)
+            {
+                int count = pixelDatas.Count;
+                for (int i = 0; i < count; i ++ )
+                {
+                    var color = savedBitmap2.GetPixel(pixelDatas[i].X, pixelDatas[i].Y);
+
+                    byte b = color.B;       //rgbValues[marker];
+                    byte g = color.G;       //rgbValues[marker + 1];
+                    byte r = color.R;       //rgbValues[marker + 2];
+
+                    for (int counter = 0; counter < rgbValues.Length; counter += 4)
+                    {
+                        if (PointContains(rgbValues[counter],
+                            rgbValues[counter + 1],
+                            rgbValues[counter + 2],
+                            b, g, r))
+                        {
+                            pixelDatas.Add(new PixelData(rgbValues[counter],
+                                rgbValues[counter + 1], rgbValues[counter + 2], pixelDatas[i].X, pixelDatas[i].Y));
+                            success++;
+                            rgbValues[counter] = blue;
+                            rgbValues[counter + 1] = green;
+                            rgbValues[counter + 2] = red;
+                        }
                     }
                 }
             }
@@ -324,10 +387,10 @@ namespace pouring_picture
             labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
             var pd = redWrap.DrawGraph(selectionRangeSlider.SelectedMin,
                 selectionRangeSlider.SelectedMax,
-                new Bitmap(pictureBox1.Image),
-                pixelDatas,
-                Color.Red);
-
+                pixelDatas);
+            redWrap.DrawGraph(pd);
+            greenWrap.DrawGraph(pd);
+            blueWrap.DrawGraph(pd);
             pixelDatas = pd;
         }
 
@@ -337,10 +400,10 @@ namespace pouring_picture
             labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
             var pd = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin,
                 selectionRangeSlider1.SelectedMax,
-                new Bitmap(pictureBox1.Image),
-                pixelDatas,
-                Color.Green);
-
+                pixelDatas);
+            redWrap.DrawGraph(pd);
+            greenWrap.DrawGraph(pd);
+            blueWrap.DrawGraph(pd);
             pixelDatas = pd;
         }
 
@@ -350,63 +413,11 @@ namespace pouring_picture
             labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
             var pd = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin,
                 selectionRangeSlider2.SelectedMax,
-                new Bitmap(pictureBox1.Image),
-                pixelDatas,
-                Color.Blue);
-
+                pixelDatas);
+            redWrap.DrawGraph(pd);
+            greenWrap.DrawGraph(pd);
+            blueWrap.DrawGraph(pd);
             pixelDatas = pd;
-        }
-
-        private void buttonSaveGraphColors_Click(object sender, EventArgs e)
-        {  
-            double[] XValues = new double[255];
-            double[] RedValues = new double[255];
-            double[] GreenValues = new double[255];
-            double[] BlueValues = new double[255];
-
-            for (int i = 0; i < 255; i++)
-            {
-                XValues[i] = i;
-            }
-
-            var count = zedGraph.GraphPane.CurveList.Count;
-            for (int i = 0; i < count; i++)
-            {
-                var points = zedGraph.GraphPane.CurveList[i].Points;
-
-                for (int j = 0; j < 255; j++)
-                {
-                    RedValues[j] = RedValues[j] + points[j].Y;
-                }
-            }
-
-            var count1 = zedGraph1.GraphPane.CurveList.Count;
-            for (int i = 0; i < count1; i++)
-            {
-                var points = zedGraph1.GraphPane.CurveList[i].Points;
-
-                for (int j = 0; j < 255; j++)
-                {
-                    GreenValues[j] = GreenValues[j] + points[j].Y;
-                }
-            }
-
-            var count2 = zedGraph2.GraphPane.CurveList.Count;
-            for (int i = 0; i < count2; i++)
-            {
-                var points = zedGraph2.GraphPane.CurveList[i].Points;
-
-                for (int j = 0; j < 255; j++)
-                {
-                    BlueValues[j] = BlueValues[j] + points[j].Y;
-                }
-            }
-
-            pixelDatas.Clear();
-            for (int i = 0; i < 255; i++)
-            {
-                pixelDatas.Add(new PixelData((byte)RedValues[i], (byte)GreenValues[i], (byte)BlueValues[i]));
-            }
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)
@@ -433,6 +444,11 @@ namespace pouring_picture
         private void SetBackStep(BackStepItem bitmaps)
         {
             previousBitmaps.Add(bitmaps);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PouringImage();
         }
     }
 
