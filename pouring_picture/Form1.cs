@@ -61,9 +61,7 @@ namespace pouring_picture
 
         private void buttonDrawChart_Click(object sender, EventArgs e)
         {
-            redWrap.DrawGraph(pixelDatas);
-            greenWrap.DrawGraph(pixelDatas);
-            blueWrap.DrawGraph(pixelDatas);
+            PouringImage();
         }
 
         private void buttonBack_Click(object sender, EventArgs e)
@@ -284,6 +282,10 @@ namespace pouring_picture
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             bmp.UnlockBits(bmpData);
 
+            redWrap.DrawGraph(pixelDatas);
+            greenWrap.DrawGraph(pixelDatas);
+            blueWrap.DrawGraph(pixelDatas);
+
             pictureBox1.Image = bmp;
         }
 
@@ -318,27 +320,28 @@ namespace pouring_picture
                 int count = pixelDatas.Count;
                 for (int i = 0; i < count; i ++ )
                 {
-                    var color = savedBitmap2.GetPixel(pixelDatas[i].X, pixelDatas[i].Y);
+                    var color = Color.FromArgb(pixelDatas[i].red, pixelDatas[i].green, pixelDatas[i].blue);
 
                     byte b = color.B;       //rgbValues[marker];
                     byte g = color.G;       //rgbValues[marker + 1];
                     byte r = color.R;       //rgbValues[marker + 2];
-
-                    for (int counter = 0; counter < rgbValues.Length; counter += 4)
+                    try
                     {
-                        if (PointContains(rgbValues[counter],
-                            rgbValues[counter + 1],
-                            rgbValues[counter + 2],
-                            b, g, r))
+                        for (int counter = 0; counter < rgbValues.Length; counter += 1)
                         {
-                            pixelDatas.Add(new PixelData(rgbValues[counter],
-                                rgbValues[counter + 1], rgbValues[counter + 2], pixelDatas[i].X, pixelDatas[i].Y));
-                            success++;
-                            rgbValues[counter] = blue;
-                            rgbValues[counter + 1] = green;
-                            rgbValues[counter + 2] = red;
+                            if (PointContainsWR(rgbValues[counter],
+                                rgbValues[counter + 1],
+                                rgbValues[counter + 2],
+                                b, g, r))
+                            {
+                                success++;
+                                rgbValues[counter] = blue;
+                                rgbValues[counter + 1] = green;
+                                rgbValues[counter + 2] = red;
+                            }
                         }
                     }
+                    catch { }
                 }
             }
 
@@ -353,6 +356,15 @@ namespace pouring_picture
             if (keyb > b - rangeValue && keyb < b + rangeValue
                 && keyg > g - rangeValue && keyg < g + rangeValue 
                 && keyr > r - rangeValue && keyr < r + rangeValue)
+                return true;
+            return false;
+        }
+
+        private bool PointContainsWR(byte keyb, byte keyg, byte keyr, byte b, byte g, byte r)
+        {
+            if (keyb == b
+                && keyg == g
+                && keyr == r)
                 return true;
             return false;
         }
@@ -444,11 +456,6 @@ namespace pouring_picture
         private void SetBackStep(BackStepItem bitmaps)
         {
             previousBitmaps.Add(bitmaps);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            PouringImage();
         }
     }
 
