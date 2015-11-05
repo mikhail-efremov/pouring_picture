@@ -315,36 +315,40 @@ namespace pouring_picture
 
             int success = 0;
 
-            lock (pixelDatas)
-            {
-                int count = pixelDatas.Count;
-                for (int i = 0; i < count; i ++ )
-                {
-                    var color = Color.FromArgb(pixelDatas[i].red, pixelDatas[i].green, pixelDatas[i].blue);
+            var points = new List<Point>();
 
-                    byte b = color.B;       //rgbValues[marker];
-                    byte g = color.G;       //rgbValues[marker + 1];
-                    byte r = color.R;       //rgbValues[marker + 2];
-                    try
-                    {
-                        for (int counter = 0; counter < rgbValues.Length; counter += 1)
-                        {
-                            if (PointContainsWR(rgbValues[counter],
-                                rgbValues[counter + 1],
-                                rgbValues[counter + 2],
-                                b, g, r))
-                            {
-                                success++;
-                                rgbValues[counter] = blue;
-                                rgbValues[counter + 1] = green;
-                                rgbValues[counter + 2] = red;
-                            }
-                        }
-                    }
-                    catch { }
-                }
+            foreach (var pix in pixelDatas)
+            {
+                points.Add(new Point(pix.X, pix.Y));
             }
 
+            int count = pixelDatas.Count;
+            foreach(var point in points)
+            {
+                var color = savedBitmap2.GetPixel(point.X, point.Y);
+                
+                byte b = color.B;       //rgbValues[marker];
+                byte g = color.G;       //rgbValues[marker + 1];
+                byte r = color.R;       //rgbValues[marker + 2];
+                {
+                    for (int counter = 0; counter < rgbValues.Length; counter += 1)
+                    {
+                        if (counter + 2 >= rgbValues.Length)
+                            break;
+                        if (PointContainsWR(rgbValues[counter],
+                            rgbValues[counter + 1],
+                            rgbValues[counter + 2],
+                            b, g, r))
+                        {
+                            success++;
+                            rgbValues[counter] = blue;
+                            rgbValues[counter + 1] = green;
+                            rgbValues[counter + 2] = red;
+                        }
+                    }
+                }
+            }
+        
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             bmp.UnlockBits(bmpData);
 
