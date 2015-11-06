@@ -239,28 +239,13 @@ namespace pouring_picture
             byte green = Convert.ToByte(labelGreen.Text);
             byte red = Convert.ToByte(labelRed.Text);
 
-            var pe = points[0];
-
-            var x = e.ClipRectangle.X;
-            var y = e.ClipRectangle.Y;
-
-            int success = 0;
-
             foreach (var point in points)
             {
-                var marker = point.X * 4 + point.Y * 4;
-
-                //TODO get byte from array lol
-
                 var color = savedBitmap.GetPixel(point.X, point.Y);
 
                 byte b = color.B;       //rgbValues[marker];
                 byte g = color.G;       //rgbValues[marker + 1];
                 byte r = color.R;       //rgbValues[marker + 2];
-
-                byte b1 = rgbValues[marker];
-                byte g1 = rgbValues[marker + 1];
-                byte r1 = rgbValues[marker + 2];
 
                 for (int counter = 0; counter < rgbValues.Length; counter += 4)
                 {
@@ -271,7 +256,6 @@ namespace pouring_picture
                     {
                         pixelDatas.Add(new PixelData(rgbValues[counter],
                             rgbValues[counter + 1], rgbValues[counter + 2], point.X, point.Y));
-                        success++;
                         rgbValues[counter] = blue;
                         rgbValues[counter + 1] = green;
                         rgbValues[counter + 2] = red;
@@ -291,7 +275,8 @@ namespace pouring_picture
 
         private unsafe void PouringImage()
         {
-            var bmp = savedBitmap;
+            pictureBox1.Image = savedBitmap;
+            var bmp = new Bitmap(pictureBox1.Image);
 
             // Lock the bitmap's bits.  
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
@@ -313,34 +298,21 @@ namespace pouring_picture
             byte green = Convert.ToByte(labelGreen.Text);
             byte red = Convert.ToByte(labelRed.Text);
 
-            int success = 0;
-
             var points = new List<Point>();
 
-            foreach (var pix in pixelDatas)
+            for (int i = 0; i < pixelDatas.Count; i++ )
             {
-                points.Add(new Point(pix.X, pix.Y));
-            }
-
-            int count = pixelDatas.Count;
-            foreach(var point in points)
-            {
-                var color = savedBitmap2.GetPixel(point.X, point.Y);
-                
-                byte b = color.B;       //rgbValues[marker];
-                byte g = color.G;       //rgbValues[marker + 1];
-                byte r = color.R;       //rgbValues[marker + 2];
+                byte b = pixelDatas[i].blue;       //rgbValues[marker];
+                byte g = pixelDatas[i].green;       //rgbValues[marker + 1];
+                byte r = pixelDatas[i].red;       //rgbValues[marker + 2];
                 {
-                    for (int counter = 0; counter < rgbValues.Length; counter += 1)
+                    for (int counter = 0; counter < rgbValues.Length; counter += 4)
                     {
-                        if (counter + 2 >= rgbValues.Length)
-                            break;
                         if (PointContainsWR(rgbValues[counter],
                             rgbValues[counter + 1],
                             rgbValues[counter + 2],
                             b, g, r))
                         {
-                            success++;
                             rgbValues[counter] = blue;
                             rgbValues[counter + 1] = green;
                             rgbValues[counter + 2] = red;
