@@ -49,11 +49,6 @@ namespace pouring_picture
             ImageClick(e);
         }
 
-        private void buttonGetColor_Click(object sender, EventArgs e)
-        {
-            GetColor();
-        }
-
         private void buttonSave_Click(object sender, EventArgs e)
         {
             SaveImage();
@@ -114,6 +109,9 @@ namespace pouring_picture
         private void ImageClick(EventArgs e)
         {
             var mouse = (MouseEventArgs)e;
+
+            if (pictureBox1.Image == null)
+                return;
 
             var bmp = new Bitmap(pictureBox1.Image);
 
@@ -432,6 +430,35 @@ namespace pouring_picture
         private void SetBackStep(BackStepItem bitmaps)
         {
             previousBitmaps.Add(bitmaps);
+        }
+
+        private void buttonAddRange_Click(object sender, EventArgs e)
+        {
+            selectionRangeSlider.AddSlider(selectionRangeSlider.Width, selectionRangeSlider.Height,
+                Convert.ToInt32(labelRed.Text),
+                Convert.ToInt32(labelGreen.Text),
+                Convert.ToInt32(labelBlue.Text),
+                labelRangeSliderMin,
+                labelRangeSliderMax);
+
+            selectionRangeSlider1.AddSlider(selectionRangeSlider.Width, selectionRangeSlider.Height,
+                Convert.ToInt32(labelRed.Text),
+                Convert.ToInt32(labelGreen.Text),
+                Convert.ToInt32(labelBlue.Text),
+                labelRangeSliderMin1,
+                labelRangeSliderMax1);
+
+            selectionRangeSlider2.AddSlider(selectionRangeSlider.Width, selectionRangeSlider.Height,
+                Convert.ToInt32(labelRed.Text),
+                Convert.ToInt32(labelGreen.Text),
+                Convert.ToInt32(labelBlue.Text),
+                labelRangeSliderMin2,
+                labelRangeSliderMax2);
+        }
+
+        private void pictureBoxPick_Click(object sender, EventArgs e)
+        {
+            GetColor();
         }
     }
 
