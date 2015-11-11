@@ -434,26 +434,6 @@ namespace pouring_picture
 
         private void buttonAddRange_Click(object sender, EventArgs e)
         {
-            selectionRangeSlider.AddSlider(selectionRangeSlider.Width, selectionRangeSlider.Height,
-                Convert.ToInt32(labelRed.Text),
-                Convert.ToInt32(labelGreen.Text),
-                Convert.ToInt32(labelBlue.Text),
-                labelRangeSliderMin,
-                labelRangeSliderMax);
-
-            selectionRangeSlider1.AddSlider(selectionRangeSlider.Width, selectionRangeSlider.Height,
-                Convert.ToInt32(labelRed.Text),
-                Convert.ToInt32(labelGreen.Text),
-                Convert.ToInt32(labelBlue.Text),
-                labelRangeSliderMin1,
-                labelRangeSliderMax1);
-
-            selectionRangeSlider2.AddSlider(selectionRangeSlider.Width, selectionRangeSlider.Height,
-                Convert.ToInt32(labelRed.Text),
-                Convert.ToInt32(labelGreen.Text),
-                Convert.ToInt32(labelBlue.Text),
-                labelRangeSliderMin2,
-                labelRangeSliderMax2);
         }
 
         private void pictureBoxPick_Click(object sender, EventArgs e)
