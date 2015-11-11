@@ -52,9 +52,6 @@
             this.labelRangeSliderMin = new System.Windows.Forms.Label();
             this.labelRangeSliderMax2 = new System.Windows.Forms.Label();
             this.labelRangeSliderMin2 = new System.Windows.Forms.Label();
-            this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
-            this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
-            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             this.textBoxMarkerWidth = new System.Windows.Forms.TextBox();
             this.textBoxMarkerHeight = new System.Windows.Forms.TextBox();
             this.labelMarkerInfo = new System.Windows.Forms.Label();
@@ -62,6 +59,11 @@
             this.textBoxMagic = new System.Windows.Forms.TextBox();
             this.buttonBack = new System.Windows.Forms.Button();
             this.labelSensInfo = new System.Windows.Forms.Label();
+            this.buttonAddRange = new System.Windows.Forms.Button();
+            this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
+            this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
+            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -147,15 +149,15 @@
             this.buttonGetColor.TabIndex = 8;
             this.buttonGetColor.Text = "Get color";
             this.buttonGetColor.UseVisualStyleBackColor = true;
-            this.buttonGetColor.Click += new System.EventHandler(this.buttonGetColor_Click);
             // 
             // pictureBoxPick
             // 
-            this.pictureBoxPick.Location = new System.Drawing.Point(1230, 587);
+            this.pictureBoxPick.Location = new System.Drawing.Point(1117, 379);
             this.pictureBoxPick.Name = "pictureBoxPick";
             this.pictureBoxPick.Size = new System.Drawing.Size(25, 25);
             this.pictureBoxPick.TabIndex = 9;
             this.pictureBoxPick.TabStop = false;
+            this.pictureBoxPick.Click += new System.EventHandler(this.pictureBoxPick_Click);
             // 
             // buttonSave
             // 
@@ -288,39 +290,6 @@
             this.labelRangeSliderMin2.TabIndex = 27;
             this.labelRangeSliderMin2.Text = "min";
             // 
-            // selectionRangeSlider2
-            // 
-            this.selectionRangeSlider2.Location = new System.Drawing.Point(595, 643);
-            this.selectionRangeSlider2.Max = 255;
-            this.selectionRangeSlider2.Min = 0;
-            this.selectionRangeSlider2.Name = "selectionRangeSlider2";
-            this.selectionRangeSlider2.SelectedMax = 255;
-            this.selectionRangeSlider2.SelectedMin = 0;
-            this.selectionRangeSlider2.Size = new System.Drawing.Size(340, 10);
-            this.selectionRangeSlider2.TabIndex = 26;
-            // 
-            // selectionRangeSlider
-            // 
-            this.selectionRangeSlider.Location = new System.Drawing.Point(595, 299);
-            this.selectionRangeSlider.Max = 255;
-            this.selectionRangeSlider.Min = 0;
-            this.selectionRangeSlider.Name = "selectionRangeSlider";
-            this.selectionRangeSlider.SelectedMax = 255;
-            this.selectionRangeSlider.SelectedMin = 0;
-            this.selectionRangeSlider.Size = new System.Drawing.Size(340, 10);
-            this.selectionRangeSlider.TabIndex = 22;
-            // 
-            // selectionRangeSlider1
-            // 
-            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 300);
-            this.selectionRangeSlider1.Max = 255;
-            this.selectionRangeSlider1.Min = 0;
-            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
-            this.selectionRangeSlider1.SelectedMax = 255;
-            this.selectionRangeSlider1.SelectedMin = 0;
-            this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
-            this.selectionRangeSlider1.TabIndex = 18;
-            // 
             // textBoxMarkerWidth
             // 
             this.textBoxMarkerWidth.Location = new System.Drawing.Point(1036, 450);
@@ -384,11 +353,65 @@
             this.labelSensInfo.TabIndex = 38;
             this.labelSensInfo.Text = "Sens";
             // 
+            // buttonAddRange
+            // 
+            this.buttonAddRange.Location = new System.Drawing.Point(1036, 381);
+            this.buttonAddRange.Name = "buttonAddRange";
+            this.buttonAddRange.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRange.TabIndex = 39;
+            this.buttonAddRange.Text = "Add range";
+            this.buttonAddRange.UseVisualStyleBackColor = true;
+            this.buttonAddRange.Click += new System.EventHandler(this.buttonAddRange_Click);
+            // 
+            // selectionRangeSlider2
+            // 
+            this.selectionRangeSlider2.Location = new System.Drawing.Point(595, 643);
+            this.selectionRangeSlider2.Max = 255;
+            this.selectionRangeSlider2.Min = 0;
+            this.selectionRangeSlider2.Name = "selectionRangeSlider2";
+            this.selectionRangeSlider2.SelectedMax = 255;
+            this.selectionRangeSlider2.SelectedMin = 0;
+            this.selectionRangeSlider2.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider2.TabIndex = 26;
+            // 
+            // selectionRangeSlider
+            // 
+            this.selectionRangeSlider.Location = new System.Drawing.Point(595, 299);
+            this.selectionRangeSlider.Max = 255;
+            this.selectionRangeSlider.Min = 0;
+            this.selectionRangeSlider.Name = "selectionRangeSlider";
+            this.selectionRangeSlider.SelectedMax = 255;
+            this.selectionRangeSlider.SelectedMin = 0;
+            this.selectionRangeSlider.Size = new System.Drawing.Size(340, 10);
+            this.selectionRangeSlider.TabIndex = 22;
+            // 
+            // selectionRangeSlider1
+            // 
+            this.selectionRangeSlider1.Location = new System.Drawing.Point(1003, 300);
+            this.selectionRangeSlider1.Max = 255;
+            this.selectionRangeSlider1.Min = 0;
+            this.selectionRangeSlider1.Name = "selectionRangeSlider1";
+            this.selectionRangeSlider1.SelectedMax = 255;
+            this.selectionRangeSlider1.SelectedMin = 0;
+            this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
+            this.selectionRangeSlider1.TabIndex = 18;
+            // 
+            // elementHost1
+            // 
+            this.elementHost1.Location = new System.Drawing.Point(392, 643);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(8, 8);
+            this.elementHost1.TabIndex = 40;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = null;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.elementHost1);
+            this.Controls.Add(this.buttonAddRange);
             this.Controls.Add(this.labelSensInfo);
             this.Controls.Add(this.buttonBack);
             this.Controls.Add(this.textBoxMagic);
@@ -468,6 +491,8 @@
         private System.Windows.Forms.TextBox textBoxMagic;
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.Label labelSensInfo;
+        private System.Windows.Forms.Button buttonAddRange;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
     }
 }
 
