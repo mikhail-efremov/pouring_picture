@@ -69,18 +69,19 @@ namespace pouring_picture
             //paint background in white
             e.Graphics.FillRectangle(Brushes.White, ClientRectangle);
             //paint selection range in blue
-            Rectangle selectionRect = new Rectangle(
+/*            Rectangle selectionRect = new Rectangle(
                 (selectedMin - Min + 50) * Width / (Max - Min - 50),
                 0,
                 (selectedMax - selectedMin) * Width / (Max - Min),
                 Height);
             e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
+*/
             Rectangle selectionRect1 = new Rectangle(
             (selectedMin - Min) * Width / (Max - Min),
             0,
             (selectedMax - selectedMin) * Width / (Max - Min),
             Height);
-            e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
+//            e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
             e.Graphics.FillRectangle(Brushes.Red, selectionRect1);
             //draw a black frame around our control
             e.Graphics.DrawRectangle(Pens.Black, 0, 0, Width - 1, Height - 1);
