@@ -432,8 +432,22 @@ namespace pouring_picture
             previousBitmaps.Add(bitmaps);
         }
 
+        static int i = 0;
         private void buttonAddRange_Click(object sender, EventArgs e)
         {
+            Brush b = Brushes.Black;
+            if(i == 0)
+                b = Brushes.BlanchedAlmond;
+            if(i == 1)
+                b = Brushes.DarkBlue;
+            if(i == 2)
+                b = Brushes.OrangeRed;
+            i++;
+
+            SelectionRangeSlider.Sliders.Add(new Slider(selectionRangeSlider.Width,
+                selectionRangeSlider.Height,
+                b));
+            selectionRangeSlider.Invalidate();
         }
 
         private void pictureBoxPick_Click(object sender, EventArgs e)

@@ -7,9 +7,6 @@ namespace pouring_picture
 {
     public class Slider
     {
-        [Description("Fired when SelectedMin or SelectedMax changes.")]
-        public event EventHandler SelectionChanged;
-
         private Brush brush;
         public Brush Brush
         {
@@ -31,7 +28,7 @@ namespace pouring_picture
             get { return max; }
             set { max = value; }
         }
-        int max = 100;
+        int max = 255;
 
         [Description("Minimum value of the selection range.")]
         public int SelectedMin
@@ -40,9 +37,6 @@ namespace pouring_picture
             set
             {
                 selectedMin = value;
-                if (SelectionChanged != null)
-                    SelectionChanged(this, null);
-                l_min.Text = Convert.ToString(value);
             }
         }
         int selectedMin = 0;
@@ -54,23 +48,29 @@ namespace pouring_picture
             set
             {
                 selectedMax = value;
-                if (SelectionChanged != null)
-                    SelectionChanged(this, null);
-                l_max.Text = Convert.ToString(value);
             }
         }
-        int selectedMax = 100;
+        int selectedMax = 255;
         private int Width = 0;
         private int Height = 0;
-        Label l_min = new Label();
-        Label l_max = new Label();
-        public Slider(int Width, int Height, Brush brush, Label min, Label max)
+        public Slider(int Width, int Height, Brush brush)
         {
             this.Width = Width;
             this.Height = Height;
             this.brush = brush;
-            l_min = min;
-            l_max = max;
+
+            int m_min = 0;
+            int m_max = 255;
+            foreach (var slider in SelectionRangeSlider.Sliders)
+            {
+                if (slider.selectedMin > 0)
+                {
+                    m_min = 0;
+                    m_max = slider.selectedMin - 1;
+                }
+            }
+            selectedMax = m_max;
+            selectedMin = m_min;
         }
 
         public Rectangle GetRectangle()

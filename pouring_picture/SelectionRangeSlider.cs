@@ -2,11 +2,14 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace pouring_picture
 {
     public partial class SelectionRangeSlider : UserControl
     {
+        public static List<Slider> Sliders = new List<Slider>();
+
         [Description("Minimum value of the slider.")]
         public int Min
         {
@@ -64,31 +67,65 @@ namespace pouring_picture
             MouseMove += new MouseEventHandler(SelectionRangeSlider_MouseMove);
         }
 
+        Slider currentSlider = null;
+
         void SelectionRangeSlider_Paint(object sender, PaintEventArgs e)
         {
+         //   if(currentSlider == null)
+           //     return;
             //paint background in white
             e.Graphics.FillRectangle(Brushes.White, ClientRectangle);
-            //paint selection range in blue
-/*            Rectangle selectionRect = new Rectangle(
-                (selectedMin - Min + 50) * Width / (Max - Min - 50),
-                0,
-                (selectedMax - selectedMin) * Width / (Max - Min),
-                Height);
-            e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
-*/
-            Rectangle selectionRect1 = new Rectangle(
+     /*       Rectangle selectionRect = new Rectangle(
             (selectedMin - Min) * Width / (Max - Min),
             0,
             (selectedMax - selectedMin) * Width / (Max - Min),
             Height);
-//            e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
-            e.Graphics.FillRectangle(Brushes.Red, selectionRect1);
+            e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
+      */
+            if(Sliders.Count > 0)
+            foreach (var slider in Sliders)
+            {
+                Rectangle selectionRect = new Rectangle(
+                (slider.SelectedMin - slider.Min) * Width / (slider.Max - slider.Min),
+                0,
+                (slider.SelectedMax - slider.SelectedMin) * Width / (slider.Max - slider.Min),
+                Height);
+                e.Graphics.FillRectangle(slider.Brush, selectionRect);
+            }
             //draw a black frame around our control
             e.Graphics.DrawRectangle(Pens.Black, 0, 0, Width - 1, Height - 1);
         }
 
         void SelectionRangeSlider_MouseDown(object sender, MouseEventArgs e)
         {
+            if (Sliders.Count < 1)
+                return;
+
+            int contMin = 255;
+            Slider contrSlider = Sliders[0];
+
+            foreach (var slider in Sliders)
+            {
+                int pointedValue = Min + e.X * (Max - Min) / Width;
+                int distMin = Math.Abs(pointedValue - SelectedMin);
+                int distMax = Math.Abs(pointedValue - SelectedMax);
+                int minDist = Math.Min(distMin, distMax);
+                if (minDist < contMin)
+                {
+                    contMin = minDist;
+                    contrSlider = slider;
+                    currentSlider = slider;
+                }
+                else 
+                    return;
+
+                if (minDist == distMin)
+                    movingMode = MovingMode.MovingMin;
+                else
+                    movingMode = MovingMode.MovingMax;
+            }
+
+/*
             int pointedValue = Min + e.X * (Max - Min) / Width;
             int distMin = Math.Abs(pointedValue - SelectedMin);
             int distMax = Math.Abs(pointedValue - SelectedMax);
@@ -97,6 +134,7 @@ namespace pouring_picture
                 movingMode = MovingMode.MovingMin;
             else
                 movingMode = MovingMode.MovingMax;
+ */
             //call this to refreh the position of the selected thumb
             SelectionRangeSlider_MouseMove(sender, e);
         }
@@ -105,17 +143,22 @@ namespace pouring_picture
         {
             if (e.Button != MouseButtons.Left)
                 return;
-            int pointedValue = Min + e.X * (Max - Min) / Width;
+            if (currentSlider == null)
+                return;
+            Slider slider = currentSlider;
+
+            int pointedValue = slider.Min + e.X * (slider.Max - slider.Min) / Width;
             if (movingMode == MovingMode.MovingMin)
             {
-                if (pointedValue >= 0 && pointedValue <= 255 && pointedValue <= SelectedMax)
-                    SelectedMin = pointedValue;
+                if (pointedValue >= 0 && pointedValue <= 255 && pointedValue <= slider.SelectedMax)
+                    slider.SelectedMin = pointedValue;
             }
             else if (movingMode == MovingMode.MovingMax)
             {
-                if(pointedValue >= 0 && pointedValue <= 255 && pointedValue >= SelectedMin)
-                    SelectedMax = pointedValue;
+                if (pointedValue >= 0 && pointedValue <= 255 && pointedValue >= slider.SelectedMin)
+                    slider.SelectedMax = pointedValue;
             }
+            Invalidate();
         }
 
         enum MovingMode { MovingValue, MovingMin, MovingMax }
