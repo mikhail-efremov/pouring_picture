@@ -71,17 +71,8 @@ namespace pouring_picture
 
         void SelectionRangeSlider_Paint(object sender, PaintEventArgs e)
         {
-         //   if(currentSlider == null)
-           //     return;
             //paint background in white
             e.Graphics.FillRectangle(Brushes.White, ClientRectangle);
-     /*       Rectangle selectionRect = new Rectangle(
-            (selectedMin - Min) * Width / (Max - Min),
-            0,
-            (selectedMax - selectedMin) * Width / (Max - Min),
-            Height);
-            e.Graphics.FillRectangle(Brushes.Blue, selectionRect);
-      */
             if(Sliders.Count > 0)
             foreach (var slider in Sliders)
             {
@@ -106,9 +97,9 @@ namespace pouring_picture
 
             foreach (var slider in Sliders)
             {
-                int pointedValue = Min + e.X * (Max - Min) / Width;
-                int distMin = Math.Abs(pointedValue - SelectedMin);
-                int distMax = Math.Abs(pointedValue - SelectedMax);
+                int pointedValue = slider.Min + e.X * (slider.Max - slider.Min) / Width;
+                int distMin = Math.Abs(pointedValue - slider.SelectedMin);
+                int distMax = Math.Abs(pointedValue - slider.SelectedMax);
                 int minDist = Math.Min(distMin, distMax);
                 if (minDist < contMin)
                 {
@@ -116,26 +107,14 @@ namespace pouring_picture
                     contrSlider = slider;
                     currentSlider = slider;
                 }
-                else 
-                    return;
+                else
+                    continue;
 
                 if (minDist == distMin)
                     movingMode = MovingMode.MovingMin;
                 else
                     movingMode = MovingMode.MovingMax;
             }
-
-/*
-            int pointedValue = Min + e.X * (Max - Min) / Width;
-            int distMin = Math.Abs(pointedValue - SelectedMin);
-            int distMax = Math.Abs(pointedValue - SelectedMax);
-            int minDist = Math.Min(distMin, distMax);
-            if (minDist == distMin)
-                movingMode = MovingMode.MovingMin;
-            else
-                movingMode = MovingMode.MovingMax;
- */
-            //call this to refreh the position of the selected thumb
             SelectionRangeSlider_MouseMove(sender, e);
         }
 
