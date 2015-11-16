@@ -66,6 +66,7 @@
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.buttonAddRange1 = new System.Windows.Forms.Button();
             this.buttonAddRange2 = new System.Windows.Forms.Button();
+            this.buttonDraw = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -427,11 +428,22 @@
             this.buttonAddRange2.UseVisualStyleBackColor = true;
             this.buttonAddRange2.Click += new System.EventHandler(this.buttonAddRange2_Click);
             // 
+            // buttonDraw
+            // 
+            this.buttonDraw.Location = new System.Drawing.Point(782, 316);
+            this.buttonDraw.Name = "buttonDraw";
+            this.buttonDraw.Size = new System.Drawing.Size(75, 23);
+            this.buttonDraw.TabIndex = 43;
+            this.buttonDraw.Text = "drow";
+            this.buttonDraw.UseVisualStyleBackColor = true;
+            this.buttonDraw.Click += new System.EventHandler(this.buttonDraw_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.buttonDraw);
             this.Controls.Add(this.buttonAddRange2);
             this.Controls.Add(this.buttonAddRange1);
             this.Controls.Add(this.elementHost1);
@@ -519,6 +531,7 @@
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         private System.Windows.Forms.Button buttonAddRange1;
         private System.Windows.Forms.Button buttonAddRange2;
+        private System.Windows.Forms.Button buttonDraw;
     }
 }
 

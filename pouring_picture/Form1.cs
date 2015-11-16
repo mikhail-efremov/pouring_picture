@@ -370,41 +370,57 @@ namespace pouring_picture
 
         void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
         {
-            labelRangeSliderMin.Text = Convert.ToString(selectionRangeSlider.SelectedMin);
-            labelRangeSliderMax.Text = Convert.ToString(selectionRangeSlider.SelectedMax);
-            var pd = redWrap.DrawGraph(selectionRangeSlider.SelectedMin,
-                selectionRangeSlider.SelectedMax,
-                pixelDatas);
-            redWrap.DrawGraph(pd);
-            greenWrap.DrawGraph(pd);
-            blueWrap.DrawGraph(pd);
-            pixelDatas = pd;
+            var list = new List<PixelData>();
+            foreach (var slider in selectionRangeSlider.Sliders)
+            {
+                var p = redWrap.GetPixelDatas(slider.SelectedMin,
+                    slider.SelectedMax,
+                    pixelDatas);
+                if (p.Count != 0)
+                {
+
+                    list.AddRange(p);
+                }
+            }
+            pixelDatas = list;
         }
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
-            labelRangeSliderMin1.Text = Convert.ToString(selectionRangeSlider1.SelectedMin);
-            labelRangeSliderMax1.Text = Convert.ToString(selectionRangeSlider1.SelectedMax);
-            var pd = greenWrap.DrawGraph(selectionRangeSlider1.SelectedMin,
-                selectionRangeSlider1.SelectedMax,
-                pixelDatas);
-            redWrap.DrawGraph(pd);
-            greenWrap.DrawGraph(pd);
-            blueWrap.DrawGraph(pd);
-            pixelDatas = pd;
+            var list = new List<PixelData>();
+            foreach (var slider in selectionRangeSlider1.Sliders)
+            {
+                var p = redWrap.GetPixelDatas(slider.SelectedMin,
+                    slider.SelectedMax,
+                    pixelDatas);
+                if (p.Count != 0)
+                {
+                    redWrap.DrawGraph(p);
+                    greenWrap.DrawGraph(p);
+                    blueWrap.DrawGraph(p);
+                    list.AddRange(p);
+                }
+            }
+            pixelDatas = list;
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
         {
-            labelRangeSliderMin2.Text = Convert.ToString(selectionRangeSlider2.SelectedMin);
-            labelRangeSliderMax2.Text = Convert.ToString(selectionRangeSlider2.SelectedMax);
-            var pd = blueWrap.DrawGraph(selectionRangeSlider2.SelectedMin,
-                selectionRangeSlider2.SelectedMax,
-                pixelDatas);
-            redWrap.DrawGraph(pd);
-            greenWrap.DrawGraph(pd);
-            blueWrap.DrawGraph(pd);
-            pixelDatas = pd;
+            var list = new List<PixelData>();
+            foreach (var slider in selectionRangeSlider2.Sliders)
+            {
+                var p = redWrap.GetPixelDatas(slider.SelectedMin,
+                    slider.SelectedMax,
+                    pixelDatas);
+                if (p.Count != 0)
+                {
+                    redWrap.DrawGraph(p);
+                    greenWrap.DrawGraph(p);
+                    blueWrap.DrawGraph(p);
+                    list.AddRange(p);
+                }
+            }
+            pixelDatas = list;
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)
@@ -461,11 +477,10 @@ namespace pouring_picture
                         continue;
                     }
             }
-
-            selectionRangeSlider.Sliders.Add(new Slider(selectionRangeSlider.Width,
-                selectionRangeSlider.Height,
-                b,
-                m_max, m_min));
+            var slide = new Slider(selectionRangeSlider.Width, selectionRangeSlider.Height, b,
+                m_max, m_min);
+            slide.SelectionChanged += selectionRangeSlider_SelectionChanged;
+            selectionRangeSlider.Sliders.Add(slide);
             selectionRangeSlider.Invalidate();
         }
 
@@ -492,10 +507,10 @@ namespace pouring_picture
                     }
             }
 
-            selectionRangeSlider1.Sliders.Add(new Slider(selectionRangeSlider1.Width,
-                selectionRangeSlider1.Height,
-                b,
-                m_max, m_min));
+            var slide = new Slider(selectionRangeSlider1.Width, selectionRangeSlider1.Height, b,
+                m_max, m_min);
+            slide.SelectionChanged += selectionRangeSlider1_SelectionChanged;
+            selectionRangeSlider1.Sliders.Add(slide);
             selectionRangeSlider1.Invalidate();
         }
 
@@ -522,10 +537,10 @@ namespace pouring_picture
                     }
             }
 
-            selectionRangeSlider2.Sliders.Add(new Slider(selectionRangeSlider2.Width,
-                selectionRangeSlider2.Height,
-                b,
-                m_max, m_min));
+            var slide = new Slider(selectionRangeSlider2.Width, selectionRangeSlider2.Height, b,
+                m_max, m_min);
+            slide.SelectionChanged += selectionRangeSlider2_SelectionChanged;
+            selectionRangeSlider2.Sliders.Add(slide);
             selectionRangeSlider2.Invalidate();
         }
 
@@ -558,6 +573,17 @@ namespace pouring_picture
             result = (Brush)properties[random].GetValue(null, null);
 
             return result;
+        }
+
+        private void buttonDraw_Click(object sender, EventArgs e)
+        {
+            if (pixelDatas.Count != 0)
+            {
+                redWrap.DrawGraph(pixelDatas);
+                greenWrap.DrawGraph(pixelDatas);
+                blueWrap.DrawGraph(pixelDatas);
+            }
+            else MessageBox.Show("count is zero");
         }
     }
 

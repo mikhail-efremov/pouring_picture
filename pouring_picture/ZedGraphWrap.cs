@@ -41,7 +41,7 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public List<PixelData> DrawGraph(int min, int max, List<PixelData> inpLixelData)
+        public List<PixelData> GetPixelDatas(int min, int max, List<PixelData> inpLixelData)
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;

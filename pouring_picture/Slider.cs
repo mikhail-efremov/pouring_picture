@@ -37,6 +37,7 @@ namespace pouring_picture
             set
             {
                 selectedMin = value;
+                SelectionChanged(this, null);
             }
         }
         int selectedMin = 0;
@@ -48,6 +49,7 @@ namespace pouring_picture
             set
             {
                 selectedMax = value;
+                SelectionChanged(this, null);
             }
         }
         int selectedMax = 255;
@@ -62,6 +64,8 @@ namespace pouring_picture
             selectedMax = m_max;
             selectedMin = m_min;
         }
+        [Description("Fired when SelectedMin or SelectedMax changes.")]
+        public event EventHandler SelectionChanged;
 
         public Rectangle GetRectangle()
         {
