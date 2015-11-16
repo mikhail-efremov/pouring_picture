@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
@@ -435,24 +436,128 @@ namespace pouring_picture
         static int i = 0;
         private void buttonAddRange_Click(object sender, EventArgs e)
         {
-            Brush b = Brushes.Black;
-            if(i == 0)
-                b = Brushes.BlanchedAlmond;
-            if(i == 1)
-                b = Brushes.DarkBlue;
-            if(i == 2)
-                b = Brushes.OrangeRed;
+            AddSlider();
+        }
+
+        private void AddSlider()
+        {
+            Brush b = PickRandomBrush();
             i++;
 
-            SelectionRangeSlider.Sliders.Add(new Slider(selectionRangeSlider.Width,
+            int m_min = 0;
+            int m_max = 255;
+            foreach (var slider in selectionRangeSlider.Sliders)
+            {
+                if (slider.SelectedMax != 255)
+                    if (slider.SelectedMax > m_min)
+                    {
+                        m_min = slider.SelectedMax;
+                        continue;
+                    }
+                if (slider.SelectedMin != 0)
+                    if (slider.SelectedMin < m_max)
+                    {
+                        m_max = slider.SelectedMin;
+                        continue;
+                    }
+            }
+
+            selectionRangeSlider.Sliders.Add(new Slider(selectionRangeSlider.Width,
                 selectionRangeSlider.Height,
-                b));
+                b,
+                m_max, m_min));
             selectionRangeSlider.Invalidate();
+        }
+
+        private void AddSlider1()
+        {
+            Brush b = PickRandomBrush();
+            i++;
+
+            int m_min = 0;
+            int m_max = 255;
+            foreach (var slider in selectionRangeSlider1.Sliders)
+            {
+                if (slider.SelectedMax != 255)
+                    if (slider.SelectedMax > m_min)
+                    {
+                        m_min = slider.SelectedMax;
+                        continue;
+                    }
+                if (slider.SelectedMin != 0)
+                    if (slider.SelectedMin < m_max)
+                    {
+                        m_max = slider.SelectedMin;
+                        continue;
+                    }
+            }
+
+            selectionRangeSlider1.Sliders.Add(new Slider(selectionRangeSlider1.Width,
+                selectionRangeSlider1.Height,
+                b,
+                m_max, m_min));
+            selectionRangeSlider1.Invalidate();
+        }
+
+        private void AddSlider2()
+        {
+            Brush b = PickRandomBrush();
+            i++;
+
+            int m_min = 0;
+            int m_max = 255;
+            foreach (var slider in selectionRangeSlider2.Sliders)
+            {
+                if (slider.SelectedMax != 255)
+                    if (slider.SelectedMax > m_min)
+                    {
+                        m_min = slider.SelectedMax;
+                        continue;
+                    }
+                if (slider.SelectedMin != 0)
+                    if (slider.SelectedMin < m_max)
+                    {
+                        m_max = slider.SelectedMin;
+                        continue;
+                    }
+            }
+
+            selectionRangeSlider2.Sliders.Add(new Slider(selectionRangeSlider2.Width,
+                selectionRangeSlider2.Height,
+                b,
+                m_max, m_min));
+            selectionRangeSlider2.Invalidate();
         }
 
         private void pictureBoxPick_Click(object sender, EventArgs e)
         {
             GetColor();
+        }
+
+        private void buttonAddRange1_Click(object sender, EventArgs e)
+        {
+            AddSlider1();
+        }
+
+        private void buttonAddRange2_Click(object sender, EventArgs e)
+        {
+            AddSlider2();
+        }
+
+        private Brush PickRandomBrush()
+        {
+            Brush result = Brushes.Transparent;
+
+            Random rnd = new Random();
+
+            Type brushesType = typeof(Brushes);
+
+            PropertyInfo[] properties = brushesType.GetProperties();
+
+            int random = rnd.Next(properties.Length);
+            result = (Brush)properties[random].GetValue(null, null);
+
+            return result;
         }
     }
 

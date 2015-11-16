@@ -53,29 +53,12 @@ namespace pouring_picture
         int selectedMax = 255;
         private int Width = 0;
         private int Height = 0;
-        public Slider(int Width, int Height, Brush brush)
+        public Slider(int Width, int Height, Brush brush, int m_max, int m_min)
         {
             this.Width = Width;
             this.Height = Height;
             this.brush = brush;
 
-            int m_min = 0;
-            int m_max = 255;
-            foreach (var slider in SelectionRangeSlider.Sliders)
-            {
-                if (slider.SelectedMin > 0)
-                {
-                    m_min = 0;
-                    m_max = slider.selectedMin - 1;
-                    break;
-                }
-                else if (slider.selectedMax < 255)
-                {
-                    m_min = slider.SelectedMin + 1;
-                    m_max = 255;
-                    break;
-                }
-            }
             selectedMax = m_max;
             selectedMin = m_min;
         }

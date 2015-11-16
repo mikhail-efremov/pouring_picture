@@ -8,7 +8,7 @@ namespace pouring_picture
 {
     public partial class SelectionRangeSlider : UserControl
     {
-        public static List<Slider> Sliders = new List<Slider>();
+        public List<Slider> Sliders = new List<Slider>();
 
         [Description("Minimum value of the slider.")]
         public int Min

@@ -64,6 +64,8 @@
             this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.buttonAddRange1 = new System.Windows.Forms.Button();
+            this.buttonAddRange2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -355,7 +357,7 @@
             // 
             // buttonAddRange
             // 
-            this.buttonAddRange.Location = new System.Drawing.Point(1036, 381);
+            this.buttonAddRange.Location = new System.Drawing.Point(683, 316);
             this.buttonAddRange.Name = "buttonAddRange";
             this.buttonAddRange.Size = new System.Drawing.Size(75, 23);
             this.buttonAddRange.TabIndex = 39;
@@ -405,11 +407,33 @@
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = null;
             // 
+            // buttonAddRange1
+            // 
+            this.buttonAddRange1.Location = new System.Drawing.Point(1090, 317);
+            this.buttonAddRange1.Name = "buttonAddRange1";
+            this.buttonAddRange1.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRange1.TabIndex = 41;
+            this.buttonAddRange1.Text = "Add range";
+            this.buttonAddRange1.UseVisualStyleBackColor = true;
+            this.buttonAddRange1.Click += new System.EventHandler(this.buttonAddRange1_Click);
+            // 
+            // buttonAddRange2
+            // 
+            this.buttonAddRange2.Location = new System.Drawing.Point(683, 660);
+            this.buttonAddRange2.Name = "buttonAddRange2";
+            this.buttonAddRange2.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRange2.TabIndex = 42;
+            this.buttonAddRange2.Text = "Add range";
+            this.buttonAddRange2.UseVisualStyleBackColor = true;
+            this.buttonAddRange2.Click += new System.EventHandler(this.buttonAddRange2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.buttonAddRange2);
+            this.Controls.Add(this.buttonAddRange1);
             this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.buttonAddRange);
             this.Controls.Add(this.labelSensInfo);
@@ -493,6 +517,8 @@
         private System.Windows.Forms.Label labelSensInfo;
         private System.Windows.Forms.Button buttonAddRange;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private System.Windows.Forms.Button buttonAddRange1;
+        private System.Windows.Forms.Button buttonAddRange2;
     }
 }
 
