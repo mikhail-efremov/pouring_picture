@@ -120,9 +120,7 @@ namespace pouring_picture
 
         void SelectionRangeSlider_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
-                return;
-            if (currentSlider == null)
+            if (e.Button != MouseButtons.Left || currentSlider == null)
                 return;
             Slider slider = currentSlider;
 
@@ -130,12 +128,32 @@ namespace pouring_picture
             if (movingMode == MovingMode.MovingMin)
             {
                 if (pointedValue >= 0 && pointedValue <= 255 && pointedValue <= slider.SelectedMax)
-                    slider.SelectedMin = pointedValue;
+                {
+                    bool draw = true;
+                    foreach (var s in Sliders)
+                    {
+                        if (pointedValue >= s.SelectedMin && pointedValue <= s.SelectedMax)
+                            if(s != currentSlider)
+                                draw = false;
+                    }
+                    if(draw)
+                        slider.SelectedMin = pointedValue;
+                }
             }
             else if (movingMode == MovingMode.MovingMax)
             {
                 if (pointedValue >= 0 && pointedValue <= 255 && pointedValue >= slider.SelectedMin)
-                    slider.SelectedMax = pointedValue;
+                {
+                    bool draw = true;
+                    foreach (var s in Sliders)
+                    {
+                        if (pointedValue >= s.SelectedMin && pointedValue <= s.SelectedMax)
+                            if(s != currentSlider)
+                                draw = false;
+                    }
+                    if(draw)
+                        slider.SelectedMax = pointedValue;
+                }
             }
             Invalidate();
         }

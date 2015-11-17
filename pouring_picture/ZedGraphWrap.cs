@@ -45,11 +45,11 @@ namespace pouring_picture
         {
             GraphPane pane = GraphControl.GraphPane;
             var count = GraphControl.GraphPane.CurveList.Count;
-            var pixelData = CutPixels(max, min, inpLixelData);
+            var pixelData = CutPixels(min, max, inpLixelData);
             return pixelData;
         }
 
-        private List<PixelData> CutPixels(int max, int min, List<PixelData> pixelData)
+        private List<PixelData> CutPixels(int min, int max, List<PixelData> pixelData)
         {
             var count = pixelData.Count;
             var retData = new List<PixelData>();

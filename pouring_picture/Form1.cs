@@ -376,11 +376,7 @@ namespace pouring_picture
                 var p = redWrap.GetPixelDatas(slider.SelectedMin,
                     slider.SelectedMax,
                     pixelDatas);
-                if (p.Count != 0)
-                {
-
-                    list.AddRange(p);
-                }
+                list.AddRange(p);
             }
             pixelDatas = list;
         }
@@ -480,6 +476,7 @@ namespace pouring_picture
             var slide = new Slider(selectionRangeSlider.Width, selectionRangeSlider.Height, b,
                 m_max, m_min);
             slide.SelectionChanged += selectionRangeSlider_SelectionChanged;
+            selectionRangeSlider_SelectionChanged(slide, null);
             selectionRangeSlider.Sliders.Add(slide);
             selectionRangeSlider.Invalidate();
         }
@@ -510,6 +507,7 @@ namespace pouring_picture
             var slide = new Slider(selectionRangeSlider1.Width, selectionRangeSlider1.Height, b,
                 m_max, m_min);
             slide.SelectionChanged += selectionRangeSlider1_SelectionChanged;
+            selectionRangeSlider_SelectionChanged(slide, null);
             selectionRangeSlider1.Sliders.Add(slide);
             selectionRangeSlider1.Invalidate();
         }
@@ -540,6 +538,7 @@ namespace pouring_picture
             var slide = new Slider(selectionRangeSlider2.Width, selectionRangeSlider2.Height, b,
                 m_max, m_min);
             slide.SelectionChanged += selectionRangeSlider2_SelectionChanged;
+            selectionRangeSlider_SelectionChanged(slide, null);
             selectionRangeSlider2.Sliders.Add(slide);
             selectionRangeSlider2.Invalidate();
         }
