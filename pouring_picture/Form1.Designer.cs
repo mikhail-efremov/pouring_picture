@@ -60,13 +60,13 @@
             this.buttonBack = new System.Windows.Forms.Button();
             this.labelSensInfo = new System.Windows.Forms.Label();
             this.buttonAddRange = new System.Windows.Forms.Button();
-            this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
-            this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
-            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.buttonAddRange1 = new System.Windows.Forms.Button();
             this.buttonAddRange2 = new System.Windows.Forms.Button();
             this.buttonDraw = new System.Windows.Forms.Button();
+            this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
+            this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
+            this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -366,6 +366,45 @@
             this.buttonAddRange.UseVisualStyleBackColor = true;
             this.buttonAddRange.Click += new System.EventHandler(this.buttonAddRange_Click);
             // 
+            // elementHost1
+            // 
+            this.elementHost1.Location = new System.Drawing.Point(392, 643);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(8, 8);
+            this.elementHost1.TabIndex = 40;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = null;
+            // 
+            // buttonAddRange1
+            // 
+            this.buttonAddRange1.Location = new System.Drawing.Point(1090, 317);
+            this.buttonAddRange1.Name = "buttonAddRange1";
+            this.buttonAddRange1.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRange1.TabIndex = 41;
+            this.buttonAddRange1.Text = "Add range";
+            this.buttonAddRange1.UseVisualStyleBackColor = true;
+            this.buttonAddRange1.Click += new System.EventHandler(this.buttonAddRange1_Click);
+            // 
+            // buttonAddRange2
+            // 
+            this.buttonAddRange2.Location = new System.Drawing.Point(683, 660);
+            this.buttonAddRange2.Name = "buttonAddRange2";
+            this.buttonAddRange2.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddRange2.TabIndex = 42;
+            this.buttonAddRange2.Text = "Add range";
+            this.buttonAddRange2.UseVisualStyleBackColor = true;
+            this.buttonAddRange2.Click += new System.EventHandler(this.buttonAddRange2_Click);
+            // 
+            // buttonDraw
+            // 
+            this.buttonDraw.Location = new System.Drawing.Point(1036, 379);
+            this.buttonDraw.Name = "buttonDraw";
+            this.buttonDraw.Size = new System.Drawing.Size(75, 23);
+            this.buttonDraw.TabIndex = 43;
+            this.buttonDraw.Text = "draw";
+            this.buttonDraw.UseVisualStyleBackColor = true;
+            this.buttonDraw.Click += new System.EventHandler(this.buttonDraw_Click);
+            // 
             // selectionRangeSlider2
             // 
             this.selectionRangeSlider2.Location = new System.Drawing.Point(595, 643);
@@ -398,45 +437,6 @@
             this.selectionRangeSlider1.SelectedMin = 0;
             this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
             this.selectionRangeSlider1.TabIndex = 18;
-            // 
-            // elementHost1
-            // 
-            this.elementHost1.Location = new System.Drawing.Point(392, 643);
-            this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(8, 8);
-            this.elementHost1.TabIndex = 40;
-            this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = null;
-            // 
-            // buttonAddRange1
-            // 
-            this.buttonAddRange1.Location = new System.Drawing.Point(1090, 317);
-            this.buttonAddRange1.Name = "buttonAddRange1";
-            this.buttonAddRange1.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddRange1.TabIndex = 41;
-            this.buttonAddRange1.Text = "Add range";
-            this.buttonAddRange1.UseVisualStyleBackColor = true;
-            this.buttonAddRange1.Click += new System.EventHandler(this.buttonAddRange1_Click);
-            // 
-            // buttonAddRange2
-            // 
-            this.buttonAddRange2.Location = new System.Drawing.Point(683, 660);
-            this.buttonAddRange2.Name = "buttonAddRange2";
-            this.buttonAddRange2.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddRange2.TabIndex = 42;
-            this.buttonAddRange2.Text = "Add range";
-            this.buttonAddRange2.UseVisualStyleBackColor = true;
-            this.buttonAddRange2.Click += new System.EventHandler(this.buttonAddRange2_Click);
-            // 
-            // buttonDraw
-            // 
-            this.buttonDraw.Location = new System.Drawing.Point(782, 316);
-            this.buttonDraw.Name = "buttonDraw";
-            this.buttonDraw.Size = new System.Drawing.Size(75, 23);
-            this.buttonDraw.TabIndex = 43;
-            this.buttonDraw.Text = "drow";
-            this.buttonDraw.UseVisualStyleBackColor = true;
-            this.buttonDraw.Click += new System.EventHandler(this.buttonDraw_Click);
             // 
             // Form1
             // 

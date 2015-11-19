@@ -126,10 +126,12 @@ namespace pouring_picture
                     }
                 }
             }
-
             BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
-            bar.Bar.Border.Color = col;
+
+ //           bar.Bar.Border.IsVisible = false;
             bar.Label.IsVisible = false;
+
+            bar.Bar.Border.Color = col;
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;

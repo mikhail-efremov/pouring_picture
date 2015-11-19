@@ -22,12 +22,16 @@ namespace pouring_picture
         private int rangeValue;
 
         List<PixelData> pixelDatas;
+        List<PixelData> chaPixelDatas;
+        List<PixelInfo> pixelInfo;
 
         public Form1()
         {
             InitializeComponent();
             rangeValue = Convert.ToInt32(textBoxMagic.Text);
             pixelDatas = new List<PixelData>();
+            chaPixelDatas = new List<PixelData>();
+            pixelInfo = new List<PixelInfo>();
             redWrap = new ZedGraphWrap(zedGraph, Color.Red);
             greenWrap = new ZedGraphWrap(zedGraph1, Color.Green);
             blueWrap = new ZedGraphWrap(zedGraph2, Color.Blue);
@@ -293,28 +297,29 @@ namespace pouring_picture
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 
-            byte blue = Convert.ToByte(labelBlue.Text);
-            byte green = Convert.ToByte(labelGreen.Text);
-            byte red = Convert.ToByte(labelRed.Text);
-
-            var points = new List<Point>();
-
-            for (int i = 0; i < pixelDatas.Count; i++ )
+            foreach (var pi in pixelInfo)
             {
-                byte b = pixelDatas[i].blue;       //rgbValues[marker];
-                byte g = pixelDatas[i].green;       //rgbValues[marker + 1];
-                byte r = pixelDatas[i].red;       //rgbValues[marker + 2];
+                byte blue = pi.Color.B;// Convert.ToByte(labelBlue.Text);
+                byte green = pi.Color.G;// Convert.ToByte(labelGreen.Text);
+                byte red = pi.Color.R;// Convert.ToByte(labelRed.Text);
+
+                for (int i = 0; i < pi.PixelData.Count; i++)
                 {
-                    for (int counter = 0; counter < rgbValues.Length; counter += 4)
+                    byte b = pi.PixelData[i].blue;       //rgbValues[marker];
+                    byte g = pi.PixelData[i].green;       //rgbValues[marker + 1];
+                    byte r = pi.PixelData[i].red;       //rgbValues[marker + 2];
                     {
-                        if (PointContainsWR(rgbValues[counter],
-                            rgbValues[counter + 1],
-                            rgbValues[counter + 2],
-                            b, g, r))
+                        for (int counter = 0; counter < rgbValues.Length; counter += 4)
                         {
-                            rgbValues[counter] = blue;
-                            rgbValues[counter + 1] = green;
-                            rgbValues[counter + 2] = red;
+                            if (PointContainsWR(rgbValues[counter],
+                                rgbValues[counter + 1],
+                                rgbValues[counter + 2],
+                                b, g, r))
+                            {
+                                rgbValues[counter] = blue;
+                                rgbValues[counter + 1] = green;
+                                rgbValues[counter + 2] = red;
+                            }
                         }
                     }
                 }
@@ -370,15 +375,23 @@ namespace pouring_picture
 
         void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
         {
+            var wr = new List<PixelInfo>();
             var list = new List<PixelData>();
             foreach (var slider in selectionRangeSlider.Sliders)
             {
+                Color color = Color.Red;
+                if (slider.Brush is SolidBrush)
+                {
+                    color = (slider.Brush as SolidBrush).Color;
+                }
                 var p = redWrap.GetPixelDatas(slider.SelectedMin,
                     slider.SelectedMax,
                     pixelDatas);
+                wr.Add(new PixelInfo(p, color));
                 list.AddRange(p);
             }
-            pixelDatas = list;
+            pixelInfo = wr;
+            chaPixelDatas = list;
         }
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
@@ -386,18 +399,17 @@ namespace pouring_picture
             var list = new List<PixelData>();
             foreach (var slider in selectionRangeSlider1.Sliders)
             {
-                var p = redWrap.GetPixelDatas(slider.SelectedMin,
+                Color color = Color.Green;
+                if (slider.Brush is SolidBrush)
+                {
+                    color = (slider.Brush as SolidBrush).Color;
+                }
+                var p = greenWrap.GetPixelDatas(slider.SelectedMin,
                     slider.SelectedMax,
                     pixelDatas);
-                if (p.Count != 0)
-                {
-                    redWrap.DrawGraph(p);
-                    greenWrap.DrawGraph(p);
-                    blueWrap.DrawGraph(p);
-                    list.AddRange(p);
-                }
+                list.AddRange(p);
             }
-            pixelDatas = list;
+            chaPixelDatas = list;
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
@@ -405,18 +417,17 @@ namespace pouring_picture
             var list = new List<PixelData>();
             foreach (var slider in selectionRangeSlider2.Sliders)
             {
-                var p = redWrap.GetPixelDatas(slider.SelectedMin,
+                Color color = Color.Blue;
+                if (slider.Brush is SolidBrush)
+                {
+                    color = (slider.Brush as SolidBrush).Color;
+                }
+                var p = blueWrap.GetPixelDatas(slider.SelectedMin,
                     slider.SelectedMax,
                     pixelDatas);
-                if (p.Count != 0)
-                {
-                    redWrap.DrawGraph(p);
-                    greenWrap.DrawGraph(p);
-                    blueWrap.DrawGraph(p);
-                    list.AddRange(p);
-                }
+                list.AddRange(p);
             }
-            pixelDatas = list;
+            chaPixelDatas = list;
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)
@@ -475,9 +486,9 @@ namespace pouring_picture
             }
             var slide = new Slider(selectionRangeSlider.Width, selectionRangeSlider.Height, b,
                 m_max, m_min);
+            selectionRangeSlider.Sliders.Add(slide);
             slide.SelectionChanged += selectionRangeSlider_SelectionChanged;
             selectionRangeSlider_SelectionChanged(slide, null);
-            selectionRangeSlider.Sliders.Add(slide);
             selectionRangeSlider.Invalidate();
         }
 
@@ -506,9 +517,9 @@ namespace pouring_picture
 
             var slide = new Slider(selectionRangeSlider1.Width, selectionRangeSlider1.Height, b,
                 m_max, m_min);
-            slide.SelectionChanged += selectionRangeSlider1_SelectionChanged;
-            selectionRangeSlider_SelectionChanged(slide, null);
             selectionRangeSlider1.Sliders.Add(slide);
+            slide.SelectionChanged += selectionRangeSlider1_SelectionChanged;
+            selectionRangeSlider1_SelectionChanged(slide, null);
             selectionRangeSlider1.Invalidate();
         }
 
@@ -537,9 +548,9 @@ namespace pouring_picture
 
             var slide = new Slider(selectionRangeSlider2.Width, selectionRangeSlider2.Height, b,
                 m_max, m_min);
-            slide.SelectionChanged += selectionRangeSlider2_SelectionChanged;
-            selectionRangeSlider_SelectionChanged(slide, null);
             selectionRangeSlider2.Sliders.Add(slide);
+            slide.SelectionChanged += selectionRangeSlider2_SelectionChanged;
+            selectionRangeSlider2_SelectionChanged(slide, null);
             selectionRangeSlider2.Invalidate();
         }
 
@@ -576,6 +587,7 @@ namespace pouring_picture
 
         private void buttonDraw_Click(object sender, EventArgs e)
         {
+            pixelDatas = chaPixelDatas;
             if (pixelDatas.Count != 0)
             {
                 redWrap.DrawGraph(pixelDatas);
@@ -585,20 +597,15 @@ namespace pouring_picture
             else MessageBox.Show("count is zero");
         }
     }
-
-    public class UserBar
+    public class PixelInfo
     {
-        public Color color;
-        public double[] XValues;
-        public double[] YValues;
-        public string label;
+        public List<PixelData> PixelData;
+        public Color Color;
 
-        public UserBar(Color color, double[] XValues, double[] YValues, string label)
+        public PixelInfo(List<PixelData> PixelData, Color Color)
         {
-            this.color = color;
-            this.XValues = XValues;
-            this.YValues = YValues;
-            this.label = label;
+            this.PixelData = PixelData;
+            this.Color = Color;
         }
     }
 }
