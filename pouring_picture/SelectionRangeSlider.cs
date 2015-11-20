@@ -10,53 +10,6 @@ namespace pouring_picture
     {
         public List<Slider> Sliders = new List<Slider>();
 
-        [Description("Minimum value of the slider.")]
-        public int Min
-        {
-            get { return min; }
-            set { min = value; Invalidate(); }
-        }
-        int min = 0;
-
-        [Description("Maximum value of the slider.")]
-        public int Max
-        {
-            get { return max; }
-            set { max = value; Invalidate(); }
-        }
-        int max = 100;
-
-        [Description("Minimum value of the selection range.")]
-        public int SelectedMin
-        {
-            get { return selectedMin; }
-            set
-            {
-                selectedMin = value;
-                if (SelectionChanged != null)
-                    SelectionChanged(this, null);
-                Invalidate();
-            }
-        }
-        int selectedMin = 0;
-
-        [Description("Maximum value of the selection range.")]
-        public int SelectedMax
-        {
-            get { return selectedMax; }
-            set
-            {
-                selectedMax = value;
-                if (SelectionChanged != null)
-                    SelectionChanged(this, null);
-                Invalidate();
-            }
-        }
-        int selectedMax = 100;
-
-        [Description("Fired when SelectedMin or SelectedMax changes.")]
-        public event EventHandler SelectionChanged;
-
         public SelectionRangeSlider()
         {
             //    InitializeComponent();

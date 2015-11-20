@@ -66,48 +66,5 @@ namespace pouring_picture
         }
         [Description("Fired when SelectedMin or SelectedMax changes.")]
         public event EventHandler SelectionChanged;
-
-        public Rectangle GetRectangle()
-        {
-            return new Rectangle(
-                (selectedMin - Min) * Width / (Max - Min),
-                0,
-                (selectedMax - selectedMin) * Width / (Max - Min),
-                Height);
-        }        
-        
-        void SelectionRangeSlider_MouseDown(object sender, MouseEventArgs e)
-        {
-            int pointedValue = Min + e.X * (Max - Min) / Width;
-            int distMin = Math.Abs(pointedValue - SelectedMin);
-            int distMax = Math.Abs(pointedValue - SelectedMax);
-            int minDist = Math.Min(distMin, distMax);
-            if (minDist == distMin)
-                movingMode = MovingMode.MovingMin;
-            else
-                movingMode = MovingMode.MovingMax;
-            //call this to refreh the position of the selected thumb
-            SelectionRangeSlider_MouseMove(sender, e);
-        }
-        
-        void SelectionRangeSlider_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Left)
-                return;
-            int pointedValue = Min + e.X * (Max - Min) / Width;
-            if (movingMode == MovingMode.MovingMin)
-            {
-                if (pointedValue >= 0 && pointedValue <= 255 && pointedValue <= SelectedMax)
-                    SelectedMin = pointedValue;
-            }
-            else if (movingMode == MovingMode.MovingMax)
-            {
-                if(pointedValue >= 0 && pointedValue <= 255 && pointedValue >= SelectedMin)
-                    SelectedMax = pointedValue;
-            }
-        }
-
-        enum MovingMode { MovingValue, MovingMin, MovingMax }
-        MovingMode movingMode;
     }
 }

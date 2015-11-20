@@ -12,7 +12,6 @@ namespace pouring_picture
         private int maxHeight = 2510;
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
-        private Bitmap savedBitmap2;
         private List<BackStepItem> previousBitmaps = new List<BackStepItem>();
 
         ZedGraphWrap redWrap;
@@ -28,7 +27,7 @@ namespace pouring_picture
         public Form1()
         {
             InitializeComponent();
-            rangeValue = Convert.ToInt32(textBoxMagic.Text);
+            rangeValue = Convert.ToInt32(textBoxSensivity.Text);
             pixelDatas = new List<PixelData>();
             chaPixelDatas = new List<PixelData>();
             pixelInfo = new List<PixelInfo>();
@@ -41,7 +40,6 @@ namespace pouring_picture
         {
             FillColorPickRegion();
             PrepareGraph();
-            Subscribe();
         }
 
         private void imegeUploadButton_Click(object sender, EventArgs e)
@@ -67,13 +65,6 @@ namespace pouring_picture
         private void buttonBack_Click(object sender, EventArgs e)
         {
             BackStep();
-        }
-
-        private void Subscribe()
-        {
-            selectionRangeSlider.SelectionChanged += selectionRangeSlider_SelectionChanged;
-            selectionRangeSlider1.SelectionChanged += selectionRangeSlider1_SelectionChanged;
-            selectionRangeSlider2.SelectionChanged += selectionRangeSlider2_SelectionChanged;
         }
 
         private void FillColorPickRegion()
@@ -104,7 +95,6 @@ namespace pouring_picture
                 {
                     pictureBox1.Image = image;
                     savedBitmap = image;
-                    savedBitmap2 = new Bitmap(image);
                     return true;
                 }
             }
@@ -153,10 +143,7 @@ namespace pouring_picture
                 iterator++;
             }
             pictureBoxPick.Image = flag;
-
-            labelRed.Text = color.Color.R.ToString();
-            labelGreen.Text = color.Color.G.ToString();
-            labelBlue.Text = color.Color.B.ToString();
+            pictureBoxPick.BackColor = Color.Black; //костыль for color pick
         }
 
         private void SaveImage()
@@ -238,9 +225,10 @@ namespace pouring_picture
             // Copy the RGB values into the array.
             System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
 
-            byte blue = Convert.ToByte(labelBlue.Text);
-            byte green = Convert.ToByte(labelGreen.Text);
-            byte red = Convert.ToByte(labelRed.Text);
+            var pickColor = pictureBoxPick.BackColor;
+            byte blue = Convert.ToByte(pictureBoxPick.BackColor.B);
+            byte green = Convert.ToByte(pictureBoxPick.BackColor.G);
+            byte red = Convert.ToByte(pictureBoxPick.BackColor.R);
 
             foreach (var point in points)
             {
@@ -299,14 +287,14 @@ namespace pouring_picture
 
             foreach (var pi in pixelInfo)
             {
-                byte blue = pi.Color.B;// Convert.ToByte(labelBlue.Text);
-                byte green = pi.Color.G;// Convert.ToByte(labelGreen.Text);
-                byte red = pi.Color.R;// Convert.ToByte(labelRed.Text);
+                byte blue = pi.Color.B;
+                byte green = pi.Color.G;
+                byte red = pi.Color.R;
 
                 for (int i = 0; i < pi.PixelData.Count; i++)
                 {
-                    byte b = pi.PixelData[i].blue;       //rgbValues[marker];
-                    byte g = pi.PixelData[i].green;       //rgbValues[marker + 1];
+                    byte b = pi.PixelData[i].blue;      //rgbValues[marker];
+                    byte g = pi.PixelData[i].green;     //rgbValues[marker + 1];
                     byte r = pi.PixelData[i].red;       //rgbValues[marker + 2];
                     {
                         for (int counter = 0; counter < rgbValues.Length; counter += 4)
@@ -396,6 +384,7 @@ namespace pouring_picture
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
+            var wr = new List<PixelInfo>();
             var list = new List<PixelData>();
             foreach (var slider in selectionRangeSlider1.Sliders)
             {
@@ -407,13 +396,16 @@ namespace pouring_picture
                 var p = greenWrap.GetPixelDatas(slider.SelectedMin,
                     slider.SelectedMax,
                     pixelDatas);
+                wr.Add(new PixelInfo(p, color));
                 list.AddRange(p);
             }
+            pixelInfo = wr;
             chaPixelDatas = list;
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
         {
+            var wr = new List<PixelInfo>();
             var list = new List<PixelData>();
             foreach (var slider in selectionRangeSlider2.Sliders)
             {
@@ -425,8 +417,10 @@ namespace pouring_picture
                 var p = blueWrap.GetPixelDatas(slider.SelectedMin,
                     slider.SelectedMax,
                     pixelDatas);
+                wr.Add(new PixelInfo(p, color));
                 list.AddRange(p);
             }
+            pixelInfo = wr;
             chaPixelDatas = list;
         }
 
@@ -439,7 +433,7 @@ namespace pouring_picture
         private void textBoxMagic_TextChanged(object sender, EventArgs e)
         {
             int value = 0;
-            if(Int32.TryParse(textBoxMagic.Text, out value))
+            if(Int32.TryParse(textBoxSensivity.Text, out value))
                 rangeValue = value;
         }
 
@@ -456,117 +450,71 @@ namespace pouring_picture
             previousBitmaps.Add(bitmaps);
         }
 
-        static int i = 0;
         private void buttonAddRange_Click(object sender, EventArgs e)
         {
-            AddSlider();
+            SuperSliderAddeder(selectionRangeSlider, 0);
         }
 
-        private void AddSlider()
+        private void buttonAddRange1_Click(object sender, EventArgs e)
+        {
+            SuperSliderAddeder(selectionRangeSlider1, 1);
+        }
+
+        private void buttonAddRange2_Click(object sender, EventArgs e)
+        {
+            SuperSliderAddeder(selectionRangeSlider2, 2);
+        }
+        private void SuperSliderAddeder(SelectionRangeSlider Slider, Int32 SliderNumber)
         {
             Brush b = PickRandomBrush();
-            i++;
 
             int m_min = 0;
             int m_max = 255;
-            foreach (var slider in selectionRangeSlider.Sliders)
+            foreach (var sli in Slider.Sliders)
             {
-                if (slider.SelectedMax != 255)
-                    if (slider.SelectedMax > m_min)
+                if (sli.SelectedMin == 0 && sli.SelectedMax == 255)
+                {
+                    MessageBox.Show("You wonna add slider to full slider's range, realy?", "Error");
+                }
+                if (sli.SelectedMax != 255)
+                    if (sli.SelectedMax > m_min)
                     {
-                        m_min = slider.SelectedMax;
+                        m_min = sli.SelectedMax;
                         continue;
                     }
-                if (slider.SelectedMin != 0)
-                    if (slider.SelectedMin < m_max)
+                if (sli.SelectedMin != 0)
+                    if (sli.SelectedMin < m_max)
                     {
-                        m_max = slider.SelectedMin;
+                        m_max = sli.SelectedMin;
                         continue;
                     }
             }
-            var slide = new Slider(selectionRangeSlider.Width, selectionRangeSlider.Height, b,
+            var slide = new Slider(Slider.Width, Slider.Height, b,
                 m_max, m_min);
-            selectionRangeSlider.Sliders.Add(slide);
-            slide.SelectionChanged += selectionRangeSlider_SelectionChanged;
-            selectionRangeSlider_SelectionChanged(slide, null);
-            selectionRangeSlider.Invalidate();
-        }
-
-        private void AddSlider1()
-        {
-            Brush b = PickRandomBrush();
-            i++;
-
-            int m_min = 0;
-            int m_max = 255;
-            foreach (var slider in selectionRangeSlider1.Sliders)
+            Slider.Sliders.Add(slide);
+            if (SliderNumber == 0)
             {
-                if (slider.SelectedMax != 255)
-                    if (slider.SelectedMax > m_min)
-                    {
-                        m_min = slider.SelectedMax;
-                        continue;
-                    }
-                if (slider.SelectedMin != 0)
-                    if (slider.SelectedMin < m_max)
-                    {
-                        m_max = slider.SelectedMin;
-                        continue;
-                    }
+                slide.SelectionChanged += selectionRangeSlider_SelectionChanged;
+                selectionRangeSlider_SelectionChanged(slide, null);
+                selectionRangeSlider.Invalidate();
             }
-
-            var slide = new Slider(selectionRangeSlider1.Width, selectionRangeSlider1.Height, b,
-                m_max, m_min);
-            selectionRangeSlider1.Sliders.Add(slide);
-            slide.SelectionChanged += selectionRangeSlider1_SelectionChanged;
-            selectionRangeSlider1_SelectionChanged(slide, null);
-            selectionRangeSlider1.Invalidate();
-        }
-
-        private void AddSlider2()
-        {
-            Brush b = PickRandomBrush();
-            i++;
-
-            int m_min = 0;
-            int m_max = 255;
-            foreach (var slider in selectionRangeSlider2.Sliders)
+            if (SliderNumber == 1)
             {
-                if (slider.SelectedMax != 255)
-                    if (slider.SelectedMax > m_min)
-                    {
-                        m_min = slider.SelectedMax;
-                        continue;
-                    }
-                if (slider.SelectedMin != 0)
-                    if (slider.SelectedMin < m_max)
-                    {
-                        m_max = slider.SelectedMin;
-                        continue;
-                    }
+                slide.SelectionChanged += selectionRangeSlider1_SelectionChanged;
+                selectionRangeSlider1_SelectionChanged(slide, null);
+                selectionRangeSlider1.Invalidate();
             }
-
-            var slide = new Slider(selectionRangeSlider2.Width, selectionRangeSlider2.Height, b,
-                m_max, m_min);
-            selectionRangeSlider2.Sliders.Add(slide);
-            slide.SelectionChanged += selectionRangeSlider2_SelectionChanged;
-            selectionRangeSlider2_SelectionChanged(slide, null);
-            selectionRangeSlider2.Invalidate();
+            if (SliderNumber == 2)
+            {
+                slide.SelectionChanged += selectionRangeSlider2_SelectionChanged;
+                selectionRangeSlider2_SelectionChanged(slide, null);
+                selectionRangeSlider2.Invalidate();
+            }
         }
 
         private void pictureBoxPick_Click(object sender, EventArgs e)
         {
             GetColor();
-        }
-
-        private void buttonAddRange1_Click(object sender, EventArgs e)
-        {
-            AddSlider1();
-        }
-
-        private void buttonAddRange2_Click(object sender, EventArgs e)
-        {
-            AddSlider2();
         }
 
         private Brush PickRandomBrush()
