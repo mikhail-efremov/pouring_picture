@@ -479,13 +479,13 @@ namespace pouring_picture
                 if (sli.SelectedMax != 255)
                     if (sli.SelectedMax > m_min)
                     {
-                        m_min = sli.SelectedMax;
+                        m_min = sli.SelectedMax + 1;
                         continue;
                     }
                 if (sli.SelectedMin != 0)
                     if (sli.SelectedMin < m_max)
                     {
-                        m_max = sli.SelectedMin;
+                        m_max = sli.SelectedMin - 1;
                         continue;
                     }
             }
