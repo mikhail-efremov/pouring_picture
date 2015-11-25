@@ -16,7 +16,7 @@ namespace pouring_picture
             Color = color;
         }
 
-        public unsafe void DrawGraph(List<PixelData> datas)
+        public unsafe void DrawGraph(List<PixelInfo> pixelInfo)
         {
             const int TINT_COUNT = 255;
 
@@ -27,7 +27,7 @@ namespace pouring_picture
             GraphPane pane = GraphControl.GraphPane;
             pane.CurveList.Clear();
 
-            DrowRGB(TINT_COUNT, GraphControl, datas);
+            DrowRGB(TINT_COUNT, GraphControl, pixelInfo);
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
@@ -88,7 +88,7 @@ namespace pouring_picture
             return retData;
         }
 
-        private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelData> datas)
+        private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelInfo> pixelInfo)
         {
             double[] YValues = new double[tintCount];
             double[] XValues = new double[tintCount];
@@ -103,35 +103,40 @@ namespace pouring_picture
             GraphPane pane = izedGraph.GraphPane;
 
             Array.Clear(XValues, 0, XValues.Length);
-            foreach (var data in datas)
+            foreach (var data in pixelInfo)
             {
-                for (int i = 0; i < tintCount; i++)
+                foreach (var pixData in data.PixelData)
                 {
-                    XValues[i] = i + 1;
+                    for (int i = 0; i < tintCount; i++)
+                    {
+                        XValues[i] = i + 1;
 
-                    if (color == Color.Red)
-                    {
-                        if (data.red == i && data.blue != blue && data.green != green)
-                            YValues[i]++;
-                    }
-                    if (color == Color.Blue)
-                    {
-                        if (data.blue == i && data.red != red && data.green != green)
-                            YValues[i]++;
-                    }
-                    if (color == Color.Green)
-                    {
-                        if (data.green == i && data.red != red && data.blue != blue)
-                            YValues[i]++;
+                        if (color == Color.Red)
+                        {
+                            if (pixData.red == i && pixData.blue != blue && pixData.green != green)
+                                YValues[i]++;
+                        }
+                        if (color == Color.Blue)
+                        {
+                            if (pixData.blue == i && pixData.red != red && pixData.green != green)
+                                YValues[i]++;
+                        }
+                        if (color == Color.Green)
+                        {
+                            if (pixData.green == i && pixData.red != red && pixData.blue != blue)
+                                YValues[i]++;
+                        }
                     }
                 }
+
+                BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, data.Color);
+
+                //           bar.Bar.Border.IsVisible = false;
+                bar.Label.IsVisible = false;
+
+                bar.Bar.Border.Color = data.Color;
             }
-            BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, col);
 
- //           bar.Bar.Border.IsVisible = false;
-            bar.Label.IsVisible = false;
-
-            bar.Bar.Border.Color = col;
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;

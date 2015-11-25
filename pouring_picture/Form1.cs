@@ -34,6 +34,7 @@ namespace pouring_picture
             redWrap = new ZedGraphWrap(zedGraph, Color.Red);
             greenWrap = new ZedGraphWrap(zedGraph1, Color.Green);
             blueWrap = new ZedGraphWrap(zedGraph2, Color.Blue);
+            pictureBoxPick.BackColor = Color.Black; //костыль for color pick
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -257,9 +258,10 @@ namespace pouring_picture
             System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
             bmp.UnlockBits(bmpData);
 
-            redWrap.DrawGraph(pixelDatas);
-            greenWrap.DrawGraph(pixelDatas);
-            blueWrap.DrawGraph(pixelDatas);
+            pixelInfo.Add(new PixelInfo(pixelDatas, pickColor));
+            redWrap.DrawGraph(pixelInfo);
+            greenWrap.DrawGraph(pixelInfo);
+            blueWrap.DrawGraph(pixelInfo);
 
             pictureBox1.Image = bmp;
         }
@@ -535,12 +537,11 @@ namespace pouring_picture
 
         private void buttonDraw_Click(object sender, EventArgs e)
         {
-            pixelDatas = chaPixelDatas;
             if (pixelDatas.Count != 0)
             {
-                redWrap.DrawGraph(pixelDatas);
-                greenWrap.DrawGraph(pixelDatas);
-                blueWrap.DrawGraph(pixelDatas);
+                redWrap.DrawGraph(pixelInfo);
+                greenWrap.DrawGraph(pixelInfo);
+                blueWrap.DrawGraph(pixelInfo);
             }
             else MessageBox.Show("count is zero");
         }
