@@ -54,6 +54,7 @@
             this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
+            this.buttonLab = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -296,11 +297,22 @@
             this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
             this.selectionRangeSlider1.TabIndex = 18;
             // 
+            // buttonLab
+            // 
+            this.buttonLab.Location = new System.Drawing.Point(860, 316);
+            this.buttonLab.Name = "buttonLab";
+            this.buttonLab.Size = new System.Drawing.Size(75, 23);
+            this.buttonLab.TabIndex = 44;
+            this.buttonLab.Text = "LAB";
+            this.buttonLab.UseVisualStyleBackColor = true;
+            this.buttonLab.Click += new System.EventHandler(this.buttonLab_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
+            this.Controls.Add(this.buttonLab);
             this.Controls.Add(this.buttonDraw);
             this.Controls.Add(this.buttonAddRange2);
             this.Controls.Add(this.buttonAddRange1);
@@ -364,6 +376,7 @@
         private System.Windows.Forms.Button buttonAddRange1;
         private System.Windows.Forms.Button buttonAddRange2;
         private System.Windows.Forms.Button buttonDraw;
+        private System.Windows.Forms.Button buttonLab;
     }
 }
 

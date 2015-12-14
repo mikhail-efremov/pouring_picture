@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using ColorMine.ColorSpaces;
 
 namespace pouring_picture
 {
@@ -13,7 +14,6 @@ namespace pouring_picture
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
         private List<BackStepItem> previousBitmaps = new List<BackStepItem>();
-
         ZedGraphWrap redWrap;
         ZedGraphWrap greenWrap;
         ZedGraphWrap blueWrap;
@@ -144,7 +144,7 @@ namespace pouring_picture
                 iterator++;
             }
             pictureBoxPick.Image = flag;
-            pictureBoxPick.BackColor = Color.Black; //костыль for color pick
+            pictureBoxPick.BackColor = color.Color;
         }
 
         private void SaveImage()
@@ -266,6 +266,7 @@ namespace pouring_picture
             pictureBox1.Image = bmp;
         }
 
+#warning need hard optimize this methode. it slow all work
         private unsafe void PouringImage()
         {
             pictureBox1.Image = savedBitmap;
@@ -468,8 +469,8 @@ namespace pouring_picture
         }
         private void SuperSliderAddeder(SelectionRangeSlider Slider, Int32 SliderNumber)
         {
-            Brush b = PickRandomBrush();
-
+            Brush b = new SolidBrush(pictureBoxPick.BackColor);
+            
             int m_min = 0;
             int m_max = 255;
             foreach (var sli in Slider.Sliders)
@@ -545,7 +546,54 @@ namespace pouring_picture
             }
             else MessageBox.Show("count is zero");
         }
+
+        private void buttonLab_Click(object sender, EventArgs e)
+        {
+            var labInfo = new List<LabInfo>();
+
+            var labList = new List<Lab>();
+
+            var listColors = new List<Color>();
+            var listLabLists = new List<List<Lab>>();
+
+            foreach(var pixInfo in pixelInfo)
+            {
+                foreach (var pix in pixInfo.PixelData)
+                {
+                    var rgb = new Rgb();
+                    rgb.R = pix.red;
+                    rgb.G = pix.green;
+                    rgb.B = pix.blue;
+                    labList.Add(rgb.To<Lab>());
+                }
+                listLabLists.Add(new List<Lab>(labList));
+                listColors.Add(pixInfo.Color);
+                labList.Clear();
+            }
+
+            for(int i = 0; i < listColors.Count; i++)
+            {
+                labInfo.Add(new LabInfo(listLabLists[i], listColors[i]));
+            }
+            System.Threading.Thread.Sleep(1);
+//#error ok. We konwerted rgb to equal lab. Let's implement system to use this.
+        }
     }
+
+    public class LabInfo
+    {
+        public List<Lab> LabData;
+        public Color Color;
+
+        public LabInfo(List<Lab> LabData, Color Color)
+        {
+            this.LabData = LabData;
+            this.Color = Color;
+        }
+
+        public LabInfo(){}
+    }
+
     public class PixelInfo
     {
         public List<PixelData> PixelData;
