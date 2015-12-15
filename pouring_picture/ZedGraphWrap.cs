@@ -27,7 +27,32 @@ namespace pouring_picture
             GraphPane pane = GraphControl.GraphPane;
             pane.CurveList.Clear();
 
-            DrowRGB(TINT_COUNT, GraphControl, pixelInfo);
+            DrawRGB(TINT_COUNT, GraphControl, pixelInfo);
+
+            pane.BarSettings.MinBarGap = 0.0f;
+            pane.BarSettings.MinClusterGap = 0.0f;
+
+            pane.Border.DashOff = 0.0f;
+            pane.Border.DashOn = 0.0f;
+
+            GraphControl.GraphPane.XAxis.Scale.Min = 0;
+            GraphControl.GraphPane.XAxis.Scale.Max = 255;
+            GraphControl.AxisChange();
+            GraphControl.Refresh();
+        }
+
+        public unsafe void DrawLABGraph(List<LabInfo> labInfo)
+        {
+            const int TINT_COUNT = 255;
+
+            GraphControl.Refresh();
+            GraphControl.GraphPane.CurveList.Clear();
+            GraphControl.GraphPane.GraphObjList.Clear();
+
+            GraphPane pane = GraphControl.GraphPane;
+            pane.CurveList.Clear();
+
+            DrawLAB(TINT_COUNT, GraphControl, labInfo);
 
             pane.BarSettings.MinBarGap = 0.0f;
             pane.BarSettings.MinClusterGap = 0.0f;
@@ -88,7 +113,7 @@ namespace pouring_picture
             return retData;
         }
 
-        private unsafe void DrowRGB(int tintCount, ZedGraphControl izedGraph, List<PixelInfo> pixelInfo)
+        private unsafe void DrawRGB(int tintCount, ZedGraphControl izedGraph, List<PixelInfo> pixelInfo)
         {
             double[] YValues = new double[tintCount];
             double[] XValues = new double[tintCount];
@@ -125,6 +150,70 @@ namespace pouring_picture
                         {
                             if (pixData.green == i && pixData.red != red && pixData.blue != blue)
                                 YValues[i]++;
+                        }
+                    }
+                }
+
+                BarItem bar = pane.AddBar(col.ToString(), XValues, YValues, data.Color);
+
+                //           bar.Bar.Border.IsVisible = false;
+                bar.Label.IsVisible = false;
+
+                bar.Bar.Border.Color = data.Color;
+            }
+
+
+            pane.BarSettings.MinBarGap = 0.0f;
+            pane.BarSettings.MinClusterGap = 0.0f;
+
+            pane.Border.DashOff = 0.0f;
+            pane.Border.DashOn = 0.0f;
+
+            izedGraph.AxisChange();
+            izedGraph.Invalidate();
+        }
+
+        private unsafe void DrawLAB(int tintCount, ZedGraphControl izedGraph, List<LabInfo> labInfo)
+        {
+            //L = 100
+            //A = -128 127
+            //B = -128 127
+
+            double[] YValues = new double[tintCount];
+            double[] XValues = new double[tintCount];
+
+            var col = Color;
+            var color = Color;
+
+            int lightness = Color.R;
+            int greenToRed = Color.G;
+            int blueToYelow = Color.B;
+
+            GraphPane pane = izedGraph.GraphPane;
+
+            Array.Clear(XValues, 0, XValues.Length);
+            foreach (var data in labInfo)
+            {
+                foreach (var pixData in data.LabData)
+                {
+                    for (int i = -128; i < 127; i++)
+                    {
+                        XValues[i + 128] = i + 129;
+
+                        if (color == Color.Red)
+                        {
+                            if ((int)pixData.L == i && (int)pixData.A != blueToYelow && (int)pixData.B != greenToRed)
+                                YValues[i + 128]++;
+                        }
+                        if (color == Color.Blue)
+                        {
+                            if ((int)pixData.A == i && (int)pixData.L != lightness && (int)pixData.B != greenToRed)
+                                YValues[i + 128]++;
+                        }
+                        if (color == Color.Green)
+                        {
+                            if ((int)pixData.B == i && (int)pixData.L != lightness && (int)pixData.A != blueToYelow)
+                                YValues[i + 128]++;
                         }
                     }
                 }

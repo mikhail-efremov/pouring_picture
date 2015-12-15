@@ -559,6 +559,11 @@ namespace pouring_picture
             {
                 labInfo.Add(new LabInfo(listLabLists[i], listColors[i]));
             }
+
+            redWrap.DrawLABGraph(labInfo);
+            greenWrap.DrawLABGraph(labInfo);
+            blueWrap.DrawLABGraph(labInfo);
+
             System.Threading.Thread.Sleep(1);
 //#error ok. We konwerted rgb to equal lab. Let's implement system to use this.
         }
