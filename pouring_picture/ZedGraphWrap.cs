@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using ZedGraph;
+using ColorMine.ColorSpaces;
 
 namespace pouring_picture
 {
@@ -9,11 +10,13 @@ namespace pouring_picture
     {
         public ZedGraphControl GraphControl { get; private set; }
         public Color Color { get; private set; }
+        public Lab Lab { get; private set; }
 
-        public ZedGraphWrap(ZedGraphControl graphControl, Color color)
+        public ZedGraphWrap(ZedGraphControl graphControl, Color color, Lab lab)
         {
             GraphControl = graphControl;
             Color = color;
+            Lab = lab;
         }
 
         public unsafe void DrawGraph(List<PixelInfo> pixelInfo)
@@ -179,16 +182,28 @@ namespace pouring_picture
             //A = -128 127
             //B = -128 127
 
-            double[] YValues = new double[tintCount];
-            double[] XValues = new double[tintCount];
+            var lab = Lab;
+
+            double[] YValues = null;
+            double[] XValues = null;
+
+            if (lab.L == 100)
+            {
+                YValues = new double[100];
+                XValues = new double[100];
+            }
+            else
+            {
+                YValues = new double[tintCount];
+                XValues = new double[tintCount];
+            }
 
             var col = Color;
-            var color = Color;
 
             int lightness = Color.R;
             int greenToRed = Color.G;
             int blueToYelow = Color.B;
-
+            
             GraphPane pane = izedGraph.GraphPane;
 
             Array.Clear(XValues, 0, XValues.Length);
@@ -196,24 +211,31 @@ namespace pouring_picture
             {
                 foreach (var pixData in data.LabData)
                 {
-                    for (int i = -128; i < 127; i++)
+                    if (lab.L == 100)
                     {
-                        XValues[i + 128] = i + 129;
-
-                        if (color == Color.Red)
+                        for (int i = 0; i < 100; i++)
                         {
+                            XValues[i] = i;
                             if ((int)pixData.L == i && (int)pixData.A != blueToYelow && (int)pixData.B != greenToRed)
-                                YValues[i + 128]++;
+                                YValues[i]++;
                         }
-                        if (color == Color.Blue)
+                    }
+                    else
+                    {
+                        for (int i = -128; i < 127; i++)
                         {
-                            if ((int)pixData.A == i && (int)pixData.L != lightness && (int)pixData.B != greenToRed)
-                                YValues[i + 128]++;
-                        }
-                        if (color == Color.Green)
-                        {
-                            if ((int)pixData.B == i && (int)pixData.L != lightness && (int)pixData.A != blueToYelow)
-                                YValues[i + 128]++;
+                            XValues[i + 128] = i + 129;
+
+                            if (lab.A == 127)
+                            {
+                                if ((int)pixData.A == i && (int)pixData.L != lightness && (int)pixData.B != greenToRed)
+                                    YValues[i + 128]++;
+                            }
+                            if (lab.B == 127)
+                            {
+                                if ((int)pixData.B == i && (int)pixData.L != lightness && (int)pixData.A != blueToYelow)
+                                    YValues[i + 128]++;
+                            }
                         }
                     }
                 }

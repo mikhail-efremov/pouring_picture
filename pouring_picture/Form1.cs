@@ -31,9 +31,17 @@ namespace pouring_picture
             pixelDatas = new List<PixelData>();
             chaPixelDatas = new List<PixelData>();
             pixelInfo = new List<PixelInfo>();
-            redWrap = new ZedGraphWrap(zedGraph, Color.Red);
-            greenWrap = new ZedGraphWrap(zedGraph1, Color.Green);
-            blueWrap = new ZedGraphWrap(zedGraph2, Color.Blue);
+
+            var lLab = new Lab();
+            lLab.L = 100;
+            var aLab = new Lab();
+            aLab.A = 127;
+            var bLab = new Lab();
+            bLab.B = 127;
+
+            redWrap = new ZedGraphWrap(zedGraph, Color.Red, lLab);
+            greenWrap = new ZedGraphWrap(zedGraph1, Color.Green, aLab);
+            blueWrap = new ZedGraphWrap(zedGraph2, Color.Blue, bLab);
             pictureBoxPick.BackColor = Color.Black; //костыль for color pick
         }
 
