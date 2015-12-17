@@ -214,7 +214,7 @@ namespace pouring_picture
                         for (int i = 0; i < 100; i++)
                         {
                             XValues[i] = i;
-                            if ((int)pixData.L == i && (int)pixData.A != blueToYelow && (int)pixData.B != greenToRed)
+                            if ((int)pixData.L == i)// && (int)pixData.A != blueToYelow && (int)pixData.B != greenToRed)
                                 YValues[i]++;
                         }
                         GraphControl.GraphPane.XAxis.Scale.Min = 0;

@@ -53,7 +53,6 @@
             this.selectionRangeSlider2 = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider = new pouring_picture.SelectionRangeSlider();
             this.selectionRangeSlider1 = new pouring_picture.SelectionRangeSlider();
-            this.buttonLab = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPick)).BeginInit();
             this.SuspendLayout();
@@ -150,8 +149,8 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.comboBox1.FormattingEnabled = true;
             this.comboBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.comboBox1.Items.AddRange(new object[] {
             "RGB",
@@ -161,7 +160,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(102, 21);
             this.comboBox1.TabIndex = 17;
-            this.comboBox1.Text = "RGB";
+            this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
             // 
             // textBoxMarkerWidth
             // 
@@ -262,7 +261,7 @@
             this.buttonDraw.Name = "buttonDraw";
             this.buttonDraw.Size = new System.Drawing.Size(75, 23);
             this.buttonDraw.TabIndex = 43;
-            this.buttonDraw.Text = "draw";
+            this.buttonDraw.Text = "Cut graph";
             this.buttonDraw.UseVisualStyleBackColor = true;
             this.buttonDraw.Click += new System.EventHandler(this.buttonDraw_Click);
             // 
@@ -287,22 +286,11 @@
             this.selectionRangeSlider1.Size = new System.Drawing.Size(337, 10);
             this.selectionRangeSlider1.TabIndex = 18;
             // 
-            // buttonLab
-            // 
-            this.buttonLab.Location = new System.Drawing.Point(1036, 559);
-            this.buttonLab.Name = "buttonLab";
-            this.buttonLab.Size = new System.Drawing.Size(102, 23);
-            this.buttonLab.TabIndex = 44;
-            this.buttonLab.Text = "To LAB";
-            this.buttonLab.UseVisualStyleBackColor = true;
-            this.buttonLab.Click += new System.EventHandler(this.buttonLab_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1367, 693);
-            this.Controls.Add(this.buttonLab);
             this.Controls.Add(this.buttonDraw);
             this.Controls.Add(this.buttonAddRange2);
             this.Controls.Add(this.buttonAddRange1);
@@ -364,7 +352,6 @@
         private System.Windows.Forms.Button buttonAddRange1;
         private System.Windows.Forms.Button buttonAddRange2;
         private System.Windows.Forms.Button buttonDraw;
-        private System.Windows.Forms.Button buttonLab;
     }
 }
 

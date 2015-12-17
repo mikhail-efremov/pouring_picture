@@ -10,6 +10,8 @@ namespace pouring_picture
 {
     public partial class Form1 : Form
     {
+        private ColorSystem CurrentColorSystem = ColorSystem.RGB;
+
         private int maxHeight = 2510;
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
@@ -42,7 +44,7 @@ namespace pouring_picture
             redWrap = new ZedGraphWrap(zedGraph, Color.Red, lLab);
             greenWrap = new ZedGraphWrap(zedGraph1, Color.Green, aLab);
             blueWrap = new ZedGraphWrap(zedGraph2, Color.Blue, bLab);
-            pictureBoxPick.BackColor = Color.Black; //костыль for color pick
+            pictureBoxPick.BackColor = Color.Black;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -541,6 +543,11 @@ namespace pouring_picture
 
         private void buttonLab_Click(object sender, EventArgs e)
         {
+            ToLab();
+        }
+
+        private void ToLab()
+        {
             var labInfo = new List<LabInfo>();
 
             var labList = new List<Lab>();
@@ -548,7 +555,7 @@ namespace pouring_picture
             var listColors = new List<Color>();
             var listLabLists = new List<List<Lab>>();
 
-            foreach(var pixInfo in pixelInfo)
+            foreach (var pixInfo in pixelInfo)
             {
                 foreach (var pix in pixInfo.PixelData)
                 {
@@ -563,7 +570,7 @@ namespace pouring_picture
                 labList.Clear();
             }
 
-            for(int i = 0; i < listColors.Count; i++)
+            for (int i = 0; i < listColors.Count; i++)
             {
                 labInfo.Add(new LabInfo(listLabLists[i], listColors[i]));
             }
@@ -571,9 +578,27 @@ namespace pouring_picture
             redWrap.DrawLABGraph(labInfo);
             greenWrap.DrawLABGraph(labInfo);
             blueWrap.DrawLABGraph(labInfo);
+        }
 
-            System.Threading.Thread.Sleep(1);
-//#error ok. We konwerted rgb to equal lab. Let's implement system to use this.
+        private void ToRgb()
+        {
+            redWrap.DrawGraph(pixelInfo);
+            greenWrap.DrawGraph(pixelInfo);
+            blueWrap.DrawGraph(pixelInfo);
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem == "RGB")
+            {
+                CurrentColorSystem = ColorSystem.RGB;
+                ToRgb();
+            }
+            if (comboBox1.SelectedItem == "LAB")
+            {
+                CurrentColorSystem = ColorSystem.LAB;
+                ToLab();
+            }
         }
     }
 
@@ -601,5 +626,11 @@ namespace pouring_picture
             this.PixelData = PixelData;
             this.Color = Color;
         }
+    }
+
+    public enum ColorSystem
+    {
+        RGB,
+        LAB
     }
 }
