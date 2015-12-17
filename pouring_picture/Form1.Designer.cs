@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imegeUploadButton = new System.Windows.Forms.Button();
-            this.buttonGetColor = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.pictureBoxPick = new System.Windows.Forms.PictureBox();
             this.buttonSave = new System.Windows.Forms.Button();
@@ -77,15 +76,6 @@
             this.imegeUploadButton.Text = "Upload image";
             this.imegeUploadButton.UseVisualStyleBackColor = true;
             this.imegeUploadButton.Click += new System.EventHandler(this.imegeUploadButton_Click);
-            // 
-            // buttonGetColor
-            // 
-            this.buttonGetColor.Location = new System.Drawing.Point(1036, 558);
-            this.buttonGetColor.Name = "buttonGetColor";
-            this.buttonGetColor.Size = new System.Drawing.Size(102, 23);
-            this.buttonGetColor.TabIndex = 8;
-            this.buttonGetColor.Text = "Get color";
-            this.buttonGetColor.UseVisualStyleBackColor = true;
             // 
             // pictureBoxPick
             // 
@@ -299,11 +289,11 @@
             // 
             // buttonLab
             // 
-            this.buttonLab.Location = new System.Drawing.Point(860, 316);
+            this.buttonLab.Location = new System.Drawing.Point(1036, 559);
             this.buttonLab.Name = "buttonLab";
-            this.buttonLab.Size = new System.Drawing.Size(75, 23);
+            this.buttonLab.Size = new System.Drawing.Size(102, 23);
             this.buttonLab.TabIndex = 44;
-            this.buttonLab.Text = "LAB";
+            this.buttonLab.Text = "To LAB";
             this.buttonLab.UseVisualStyleBackColor = true;
             this.buttonLab.Click += new System.EventHandler(this.buttonLab_Click);
             // 
@@ -334,7 +324,6 @@
             this.Controls.Add(this.zedGraph);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.pictureBoxPick);
-            this.Controls.Add(this.buttonGetColor);
             this.Controls.Add(this.imegeUploadButton);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -353,7 +342,6 @@
 
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button imegeUploadButton;
-        private System.Windows.Forms.Button buttonGetColor;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.PictureBox pictureBoxPick;
         private System.Windows.Forms.Button buttonSave;

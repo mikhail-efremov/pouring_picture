@@ -63,8 +63,6 @@ namespace pouring_picture
             pane.Border.DashOff = 0.0f;
             pane.Border.DashOn = 0.0f;
 
-            GraphControl.GraphPane.XAxis.Scale.Min = 0;
-            GraphControl.GraphPane.XAxis.Scale.Max = 255;
             GraphControl.AxisChange();
             GraphControl.Refresh();
         }
@@ -219,6 +217,8 @@ namespace pouring_picture
                             if ((int)pixData.L == i && (int)pixData.A != blueToYelow && (int)pixData.B != greenToRed)
                                 YValues[i]++;
                         }
+                        GraphControl.GraphPane.XAxis.Scale.Min = 0;
+                        GraphControl.GraphPane.XAxis.Scale.Max = 100;
                     }
                     else
                     {
@@ -228,15 +228,17 @@ namespace pouring_picture
 
                             if (lab.A == 127)
                             {
-                                if ((int)pixData.A == i && (int)pixData.L != lightness && (int)pixData.B != greenToRed)
+                                if ((int)pixData.A == i)// && (int)pixData.L != lightness && (int)pixData.B != greenToRed)
                                     YValues[i + 128]++;
                             }
                             if (lab.B == 127)
                             {
-                                if ((int)pixData.B == i && (int)pixData.L != lightness && (int)pixData.A != blueToYelow)
+                                if ((int)pixData.B == i)// && (int)pixData.L != lightness && (int)pixData.A != blueToYelow)
                                     YValues[i + 128]++;
                             }
                         }
+                        GraphControl.GraphPane.XAxis.Scale.Min = 0;
+                        GraphControl.GraphPane.XAxis.Scale.Max = 255;
                     }
                 }
 
