@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using ZedGraph;
 using ColorMine.ColorSpaces;
+using pouring_picture.ColorClasses;
 
 namespace pouring_picture
 {
@@ -19,7 +20,7 @@ namespace pouring_picture
             Lab = lab;
         }
 
-        public unsafe void DrawGraph(List<PixelInfo> pixelInfo)
+        public unsafe void DrawRGBGraph(List<PixelInfo> pixelInfo)
         {
             const int TINT_COUNT = 255;
 

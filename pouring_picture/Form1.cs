@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using ColorMine.ColorSpaces;
+using pouring_picture.ColorClasses;
 
 namespace pouring_picture
 {
     public partial class Form1 : Form
     {
-        private ColorSystem CurrentColorSystem = ColorSystem.RGB;
-
         private int maxHeight = 2510;
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
@@ -270,9 +268,9 @@ namespace pouring_picture
             bmp.UnlockBits(bmpData);
 
             pixelInfo.Add(new PixelInfo(pixelDatas, pickColor));
-            redWrap.DrawGraph(pixelInfo);
-            greenWrap.DrawGraph(pixelInfo);
-            blueWrap.DrawGraph(pixelInfo);
+            redWrap.DrawRGBGraph(pixelInfo);
+            greenWrap.DrawRGBGraph(pixelInfo);
+            blueWrap.DrawRGBGraph(pixelInfo);
 
             pictureBox1.Image = bmp;
         }
@@ -535,103 +533,43 @@ namespace pouring_picture
         {
             if (pixelDatas.Count != 0)
             {
-                redWrap.DrawGraph(pixelInfo);
-                greenWrap.DrawGraph(pixelInfo);
-                blueWrap.DrawGraph(pixelInfo);
+                if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
+                {
+                    ToRgb();
+                }
+                if (Convert.ToString(comboBox1.SelectedItem) == "LAB")
+                {
+                    ToLab();
+                }
             }
             else MessageBox.Show("count is zero");
         }
 
-        private void buttonLab_Click(object sender, EventArgs e)
+        private void ToRgb()
         {
-            ToLab();
+            redWrap.DrawRGBGraph(pixelInfo);
+            greenWrap.DrawRGBGraph(pixelInfo);
+            blueWrap.DrawRGBGraph(pixelInfo);
         }
 
         private void ToLab()
         {
-            var labInfo = new List<LabInfo>();
-
-            var labList = new List<Lab>();
-
-            var listColors = new List<Color>();
-            var listLabLists = new List<List<Lab>>();
-
-            foreach (var pixInfo in pixelInfo)
-            {
-                foreach (var pix in pixInfo.PixelData)
-                {
-                    var rgb = new Rgb();
-                    rgb.R = pix.red;
-                    rgb.G = pix.green;
-                    rgb.B = pix.blue;
-                    labList.Add(rgb.To<Lab>());
-                }
-                listLabLists.Add(new List<Lab>(labList));
-                listColors.Add(pixInfo.Color);
-                labList.Clear();
-            }
-
-            for (int i = 0; i < listColors.Count; i++)
-            {
-                labInfo.Add(new LabInfo(listLabLists[i], listColors[i]));
-            }
-
+            var labInfo = LabInfo.ToListLabInfo(pixelInfo);
             redWrap.DrawLABGraph(labInfo);
             greenWrap.DrawLABGraph(labInfo);
             blueWrap.DrawLABGraph(labInfo);
         }
 
-        private void ToRgb()
-        {
-            redWrap.DrawGraph(pixelInfo);
-            greenWrap.DrawGraph(pixelInfo);
-            blueWrap.DrawGraph(pixelInfo);
-        }
-
         private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem == "RGB")
+            if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
             {
-                CurrentColorSystem = ColorSystem.RGB;
                 ToRgb();
             }
-            if (comboBox1.SelectedItem == "LAB")
+            if (Convert.ToString(comboBox1.SelectedItem) == "LAB")
             {
-                CurrentColorSystem = ColorSystem.LAB;
                 ToLab();
             }
         }
-    }
-
-    public class LabInfo
-    {
-        public List<Lab> LabData;
-        public Color Color;
-
-        public LabInfo(List<Lab> LabData, Color Color)
-        {
-            this.LabData = LabData;
-            this.Color = Color;
-        }
-
-        public LabInfo(){}
-    }
-
-    public class PixelInfo
-    {
-        public List<PixelData> PixelData;
-        public Color Color;
-
-        public PixelInfo(List<PixelData> PixelData, Color Color)
-        {
-            this.PixelData = PixelData;
-            this.Color = Color;
-        }
-    }
-
-    public enum ColorSystem
-    {
-        RGB,
-        LAB
     }
 }
