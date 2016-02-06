@@ -47,14 +47,14 @@ namespace pouring_picture
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            FillColorPickRegion();
-            PrepareGraph();
+            FillColorPickRegion(null);
+            FormMethods.PrepareGraph(zedGraph, zedGraph1, zedGraph2);
             comboBox1.Text = "RGB";
         }
 
         private void imegeUploadButton_Click(object sender, EventArgs e)
         {
-            UploadImage();
+            FormMethods.UploadImage(pictureBox1, maxHeight, maxWidth, out savedBitmap);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -64,7 +64,7 @@ namespace pouring_picture
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            SaveImage();
+            FormMethods.SaveImage(pictureBox1);
         }
 
         private void buttonDrawChart_Click(object sender, EventArgs e)
@@ -77,7 +77,14 @@ namespace pouring_picture
             BackStep();
         }
 
-        private void FillColorPickRegion()
+        private void GetColor()
+        {
+            colorDialog1.ShowDialog();
+            var colorDiag = colorDialog1;
+            FillColorPickRegion(colorDiag);
+        }
+
+        private void FillColorPickRegion(ColorDialog colorDiag)
         {
             Bitmap flag = new Bitmap(30, 30);
             Graphics flagGraphics = Graphics.FromImage(flag);
@@ -89,26 +96,8 @@ namespace pouring_picture
                 iterator++;
             }
             pictureBoxPick.Image = flag;
-        }
-
-        private bool UploadImage()
-        {
-            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            OpenFileDialog open = new OpenFileDialog();
-
-            open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
-            if (open.ShowDialog() == DialogResult.OK)
-            {
-                var image = new Bitmap(open.FileName);
-
-                if (VerifyImage(image))
-                {
-                    pictureBox1.Image = image;
-                    savedBitmap = image;
-                    return true;
-                }
-            }
-            return false;
+            if(colorDiag != null)
+                pictureBoxPick.BackColor = colorDiag.Color;
         }
 
         private void ImageClick(EventArgs e)
@@ -136,65 +125,6 @@ namespace pouring_picture
                 Convert.ToInt32(textBoxMarkerHeight.Text));
 
             PouringImage(ad);
-        }
-
-        private void GetColor()
-        {
-            colorDialog1.ShowDialog();
-            var color = colorDialog1;
-
-            Bitmap flag = new Bitmap(30, 30);
-            Graphics flagGraphics = Graphics.FromImage(flag);
-            int iterator = 0;
-            while (iterator <= 30)
-            {
-                var myBrush = new SolidBrush(colorDialog1.Color);
-                flagGraphics.FillRectangle(myBrush, 0, iterator, 30, 30);
-                iterator++;
-            }
-            pictureBoxPick.Image = flag;
-            pictureBoxPick.BackColor = color.Color;
-        }
-
-        private void SaveImage()
-        {
-            try
-            {
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
-                saveFileDialog1.Title = "Save an Image File";
-                saveFileDialog1.ShowDialog();
-
-                if (saveFileDialog1.FileName != "")
-                {
-                    System.IO.FileStream fs =
-                       (System.IO.FileStream)saveFileDialog1.OpenFile();
-                    switch (saveFileDialog1.FilterIndex)
-                    {
-                        case 1:
-                            pictureBox1.Image.Save(fs,
-                               ImageFormat.Jpeg);
-                            break;
-
-                        case 2:
-                            pictureBox1.Image.Save(fs,
-                               ImageFormat.Bmp);
-                            break;
-
-                        case 3:
-                            pictureBox1.Image.Save(fs,
-                               ImageFormat.Gif);
-                            break;
-                    }
-
-                    fs.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Error in SaveImage()",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private unsafe void PouringImage(PaintEventArgs e)
@@ -347,30 +277,6 @@ namespace pouring_picture
                 && keyr == r)
                 return true;
             return false;
-        }
-
-        private bool VerifyImage(Bitmap image)
-        {
-            var result = image.Size.Height < maxHeight && image.Size.Width < maxWidth;
-            if (!result)
-            MessageBox.Show("Size of your image have to be smaller then " + maxHeight + "/" + maxWidth, "Huge size error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return result;
-        }
-
-        private void PrepareGraph()
-        {
-            zedGraph.IsEnableZoom = false;
-            zedGraph.IsEnableVPan = false;
-            zedGraph.IsEnableHPan = false;
-
-            zedGraph1.IsEnableZoom = false;
-            zedGraph1.IsEnableVPan = false;
-            zedGraph1.IsEnableHPan = false;
-
-            zedGraph2.IsEnableZoom = false;
-            zedGraph2.IsEnableVPan = false;
-            zedGraph2.IsEnableHPan = false;
         }
 
         void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)

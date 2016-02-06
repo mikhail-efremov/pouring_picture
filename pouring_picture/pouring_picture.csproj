@@ -68,6 +68,7 @@
     <Compile Include="BackStepItem.cs" />
     <Compile Include="ColorClasses\LabInfo.cs" />
     <Compile Include="ColorClasses\PixelInfo.cs" />
+    <Compile Include="FormMethods.cs" />
     <Compile Include="SelectionRangeSlider.cs">
       <SubType>UserControl</SubType>
     </Compile>
