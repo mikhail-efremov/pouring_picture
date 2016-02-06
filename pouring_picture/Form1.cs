@@ -51,6 +51,7 @@ namespace pouring_picture
         {
             FillColorPickRegion();
             PrepareGraph();
+            comboBox1.Text = "RGB";
         }
 
         private void imegeUploadButton_Click(object sender, EventArgs e)
