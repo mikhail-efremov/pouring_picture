@@ -13,7 +13,7 @@ namespace pouring_picture
         private int maxHeight = 2510;
         private int maxWidth = 2455;
         private Bitmap savedBitmap;
-        private List<BackStepItem> previousBitmaps = new List<BackStepItem>();
+        private List<BackStepItem> previousBitmaps;
         ZedGraphWrap redWrap;
         ZedGraphWrap greenWrap;
         ZedGraphWrap blueWrap;
@@ -21,16 +21,17 @@ namespace pouring_picture
         private int rangeValue;
 
         List<PixelData> pixelDatas;
-        List<PixelData> chaPixelDatas;
         List<PixelInfo> pixelInfo;
+        List<LabInfo> labInfo;
 
         public Form1()
         {
             InitializeComponent();
             rangeValue = Convert.ToInt32(textBoxSensivity.Text);
+            previousBitmaps = new List<BackStepItem>();
             pixelDatas = new List<PixelData>();
-            chaPixelDatas = new List<PixelData>();
             pixelInfo = new List<PixelInfo>();
+            labInfo = new List<LabInfo>();
 
             var lLab = new Lab();
             lLab.L = 100;
@@ -282,49 +283,47 @@ namespace pouring_picture
         void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
         {
             var wr = new List<PixelInfo>();
-            var list = new List<PixelData>();
-            foreach (var slider in selectionRangeSlider.Sliders)
+            if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
             {
-                Color color = Color.Red;
-                if (slider.Brush is SolidBrush)
+                foreach (var slider in selectionRangeSlider.Sliders)
                 {
-                    color = (slider.Brush as SolidBrush).Color;
+                    Color color = Color.Red;
+                    if (slider.Brush is SolidBrush)
+                    {
+                        color = (slider.Brush as SolidBrush).Color;
+                    }
+                    var p = redWrap.GetPixelDatas(slider.SelectedMin,
+                        slider.SelectedMax,
+                        pixelDatas);
+                    wr.Add(new PixelInfo(p, color));
                 }
-                var p = redWrap.GetPixelDatas(slider.SelectedMin,
-                    slider.SelectedMax,
-                    pixelDatas);
-                wr.Add(new PixelInfo(p, color));
-                list.AddRange(p);
             }
             pixelInfo = wr;
-            chaPixelDatas = list;
         }
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
             var wr = new List<PixelInfo>();
-            var list = new List<PixelData>();
-            foreach (var slider in selectionRangeSlider1.Sliders)
             {
-                Color color = Color.Green;
-                if (slider.Brush is SolidBrush)
+                foreach (var slider in selectionRangeSlider1.Sliders)
                 {
-                    color = (slider.Brush as SolidBrush).Color;
+                    Color color = Color.Green;
+                    if (slider.Brush is SolidBrush)
+                    {
+                        color = (slider.Brush as SolidBrush).Color;
+                    }
+                    var p = greenWrap.GetPixelDatas(slider.SelectedMin,
+                        slider.SelectedMax,
+                        pixelDatas);
+                    wr.Add(new PixelInfo(p, color));
                 }
-                var p = greenWrap.GetPixelDatas(slider.SelectedMin,
-                    slider.SelectedMax,
-                    pixelDatas);
-                wr.Add(new PixelInfo(p, color));
-                list.AddRange(p);
             }
             pixelInfo = wr;
-            chaPixelDatas = list;
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
         {
             var wr = new List<PixelInfo>();
-            var list = new List<PixelData>();
             foreach (var slider in selectionRangeSlider2.Sliders)
             {
                 Color color = Color.Blue;
@@ -336,10 +335,8 @@ namespace pouring_picture
                     slider.SelectedMax,
                     pixelDatas);
                 wr.Add(new PixelInfo(p, color));
-                list.AddRange(p);
             }
             pixelInfo = wr;
-            chaPixelDatas = list;
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)
@@ -460,7 +457,7 @@ namespace pouring_picture
 
         private void ToLab()
         {
-            var labInfo = LabInfo.ToListLabInfo(pixelInfo);
+            labInfo = LabInfo.ToListLabInfo(pixelInfo);
             redWrap.DrawLABGraph(labInfo);
             greenWrap.DrawLABGraph(labInfo);
             blueWrap.DrawLABGraph(labInfo);

@@ -68,10 +68,16 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
+        public List<Lab> GetLabDatas(int min, int max, List<PixelData> inpLixelData)
+        {
+            GraphPane pane = GraphControl.GraphPane;
+            var pixelData = CutPixels(min, max, inpLixelData);
+            return null;
+        }
+
         public List<PixelData> GetPixelDatas(int min, int max, List<PixelData> inpLixelData)
         {
             GraphPane pane = GraphControl.GraphPane;
-            var count = GraphControl.GraphPane.CurveList.Count;
             var pixelData = CutPixels(min, max, inpLixelData);
             return pixelData;
         }
