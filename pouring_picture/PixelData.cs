@@ -7,21 +7,16 @@ namespace pouring_picture
         public byte green;
         public byte blue;
 
-        public int X;
-        public int Y;
-
-        public PixelData(byte blue, byte green, byte red, int X, int Y)
+        public PixelData(byte blue, byte green, byte red)
         {
             this.blue = blue;
             this.green = green;
             this.red = red;
-            this.X = X;
-            this.Y = Y;
         }
 
         public override string ToString()
         {
-            return string.Format("[{0}:{1}] R:{2} G:{3} B:{4}", X, Y, red, green, blue);
+            return string.Format("[PixelData] R:{2} G:{3} B:{4}", red, green, blue);
         }
     }
 }

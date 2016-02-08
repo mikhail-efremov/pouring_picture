@@ -68,11 +68,11 @@ namespace pouring_picture
             GraphControl.Refresh();
         }
 
-        public List<Lab> GetLabDatas(int min, int max, List<PixelData> inpLixelData)
+        public List<Lab> GetLabDatas(int min, int max, List<Lab> inpLixelData)
         {
             GraphPane pane = GraphControl.GraphPane;
-            var pixelData = CutPixels(min, max, inpLixelData);
-            return null;
+            var labDatas = CutLabPixels(min, max, inpLixelData);
+            return labDatas;
         }
 
         public List<PixelData> GetPixelDatas(int min, int max, List<PixelData> inpLixelData)
@@ -112,6 +112,45 @@ namespace pouring_picture
                 for (int i = 0; i < count; i++)
                 {
                     if (pixelData[i].green >= min && pixelData[i].green <= max)
+                    {
+                        retData.Add(pixelData[i]);
+                    }
+                }
+            }
+
+            return retData;
+        }
+
+        private List<Lab> CutLabPixels(int min, int max, List<Lab> pixelData)
+        {
+            var count = pixelData.Count;
+            var retData = new List<Lab>();
+
+            if (Color == Color.Red)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (pixelData[i].L >= min && pixelData[i].L <= max)
+                    {
+                        retData.Add(pixelData[i]);
+                    }
+                }
+            }
+            if (Color == Color.Blue)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (pixelData[i].A >= min && pixelData[i].A <= max)
+                    {
+                        retData.Add(pixelData[i]);
+                    }
+                }
+            }
+            if (Color == Color.Green)
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    if (pixelData[i].B >= min && pixelData[i].B <= max)
                     {
                         retData.Add(pixelData[i]);
                     }

@@ -49,5 +49,20 @@ namespace pouring_picture.ColorClasses
 
             return labInfo;
         }
+
+        public static List<Lab> ToLabData(List<PixelData> pixelData)
+        {
+            var labData = new List<Lab>();
+            
+            foreach (var pix in pixelData)
+            {
+                var rgb = new Rgb();
+                rgb.R = pix.red;
+                rgb.G = pix.green;
+                rgb.B = pix.blue;
+                labData.Add(rgb.To<Lab>());
+            }
+            return labData;
+        }
     }
 }

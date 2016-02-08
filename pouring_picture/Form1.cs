@@ -19,10 +19,12 @@ namespace pouring_picture
         ZedGraphWrap blueWrap;
 
         private int rangeValue;
+        private bool Cuted = false;
 
         List<PixelData> pixelDatas;
         List<PixelInfo> pixelInfo;
         List<LabInfo> labInfo;
+        List<Lab> labDatas;
 
         public Form1()
         {
@@ -32,6 +34,7 @@ namespace pouring_picture
             pixelDatas = new List<PixelData>();
             pixelInfo = new List<PixelInfo>();
             labInfo = new List<LabInfo>();
+            labDatas = new List<Lab>();
 
             var lLab = new Lab();
             lLab.L = 100;
@@ -187,7 +190,7 @@ namespace pouring_picture
                             b, g, r))
                     {
                         pixelDatas.Add(new PixelData(rgbValues[counter],
-                            rgbValues[counter + 1], rgbValues[counter + 2], point.X, point.Y));
+                            rgbValues[counter + 1], rgbValues[counter + 2]));
                         rgbValues[counter] = blue;
                         rgbValues[counter + 1] = green;
                         rgbValues[counter + 2] = red;
@@ -282,7 +285,9 @@ namespace pouring_picture
 
         void selectionRangeSlider_SelectionChanged(object sender, EventArgs e)
         {
-            var wr = new List<PixelInfo>();
+            var pixelInfo = new List<PixelInfo>();
+            var labInfo = new List<LabInfo>();
+
             if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
             {
                 foreach (var slider in selectionRangeSlider.Sliders)
@@ -295,15 +300,36 @@ namespace pouring_picture
                     var p = redWrap.GetPixelDatas(slider.SelectedMin,
                         slider.SelectedMax,
                         pixelDatas);
-                    wr.Add(new PixelInfo(p, color));
+                    pixelInfo.Add(new PixelInfo(p, color));
                 }
+                this.pixelInfo = pixelInfo;
             }
-            pixelInfo = wr;
+            if (Convert.ToString(comboBox1.SelectedItem) == "LAB")
+            {
+                labDatas = LabInfo.ToLabData(pixelDatas);
+
+                foreach (var slider in selectionRangeSlider.Sliders)
+                {
+                    Color color = Color.Red;
+                    if (slider.Brush is SolidBrush)
+                    {
+                        color = (slider.Brush as SolidBrush).Color;
+                    }
+                    var p = redWrap.GetLabDatas(slider.SelectedMin,
+                        slider.SelectedMax,
+                        labDatas);
+                    labInfo.Add(new LabInfo(p, color));
+                }
+                this.labInfo = labInfo;
+            }
         }
 
         private void selectionRangeSlider1_SelectionChanged(object sender, EventArgs e)
         {
-            var wr = new List<PixelInfo>();
+            var pixelInfo = new List<PixelInfo>();
+            var labInfo = new List<LabInfo>();
+
+            if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
             {
                 foreach (var slider in selectionRangeSlider1.Sliders)
                 {
@@ -315,28 +341,69 @@ namespace pouring_picture
                     var p = greenWrap.GetPixelDatas(slider.SelectedMin,
                         slider.SelectedMax,
                         pixelDatas);
-                    wr.Add(new PixelInfo(p, color));
+                    pixelInfo.Add(new PixelInfo(p, color));
                 }
+                this.pixelInfo = pixelInfo;
             }
-            pixelInfo = wr;
+            if (Convert.ToString(comboBox1.SelectedItem) == "LAB")
+            {
+                labDatas = LabInfo.ToLabData(pixelDatas);
+
+                foreach (var slider in selectionRangeSlider1.Sliders)
+                {
+                    Color color = Color.Green;
+                    if (slider.Brush is SolidBrush)
+                    {
+                        color = (slider.Brush as SolidBrush).Color;
+                    }
+                    var p = redWrap.GetLabDatas(slider.SelectedMin,
+                        slider.SelectedMax,
+                        labDatas);
+                    labInfo.Add(new LabInfo(p, color));
+                }
+                this.labInfo = labInfo;
+            }
         }
 
         void selectionRangeSlider2_SelectionChanged(object sender, EventArgs e)
         {
-            var wr = new List<PixelInfo>();
-            foreach (var slider in selectionRangeSlider2.Sliders)
+            var pixelInfo = new List<PixelInfo>();
+            var labInfo = new List<LabInfo>();
+
+            if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
             {
-                Color color = Color.Blue;
-                if (slider.Brush is SolidBrush)
+                foreach (var slider in selectionRangeSlider2.Sliders)
                 {
-                    color = (slider.Brush as SolidBrush).Color;
+                    Color color = Color.Blue;
+                    if (slider.Brush is SolidBrush)
+                    {
+                        color = (slider.Brush as SolidBrush).Color;
+                    }
+                    var p = blueWrap.GetPixelDatas(slider.SelectedMin,
+                        slider.SelectedMax,
+                        pixelDatas);
+                    pixelInfo.Add(new PixelInfo(p, color));
                 }
-                var p = blueWrap.GetPixelDatas(slider.SelectedMin,
-                    slider.SelectedMax,
-                    pixelDatas);
-                wr.Add(new PixelInfo(p, color));
+                this.pixelInfo = pixelInfo;
             }
-            pixelInfo = wr;
+            if (Convert.ToString(comboBox1.SelectedItem) == "LAB")
+            {
+                labDatas = LabInfo.ToLabData(pixelDatas);
+
+                foreach (var slider in selectionRangeSlider2.Sliders)
+                {
+                    Color color = Color.Blue;
+                    if (slider.Brush is SolidBrush)
+                    {
+                        color = (slider.Brush as SolidBrush).Color;
+                    }
+                    var p = redWrap.GetLabDatas(slider.SelectedMin,
+                        slider.SelectedMax,
+                        labDatas);
+                    labInfo.Add(new LabInfo(p, color));
+                }
+                this.labInfo = labInfo;
+            }
         }
 
         private void buttonLoadBackup_Click(object sender, EventArgs e)
@@ -404,8 +471,7 @@ namespace pouring_picture
                         continue;
                     }
             }
-            var slide = new Slider(Slider.Width, Slider.Height, b,
-                m_max, m_min);
+            var slide = new Slider(Slider.Width, Slider.Height, b, m_max, m_min);
             Slider.Sliders.Add(slide);
             if (SliderNumber == 0)
             {
@@ -436,6 +502,7 @@ namespace pouring_picture
         {
             if (pixelDatas.Count != 0)
             {
+                Cuted = true;
                 if (Convert.ToString(comboBox1.SelectedItem) == "RGB")
                 {
                     ToRgb();
@@ -457,7 +524,13 @@ namespace pouring_picture
 
         private void ToLab()
         {
-            labInfo = LabInfo.ToListLabInfo(pixelInfo);
+    //        if (pixelInfo.Count != 0 && Cuted)
+    //        {
+    //            labInfo = LabInfo.ToListLabInfo(pixelInfo);
+    //            Cuted = false;
+    //        }
+            if(labInfo.Count == 0)
+                labInfo = LabInfo.ToListLabInfo(pixelInfo);
             redWrap.DrawLABGraph(labInfo);
             greenWrap.DrawLABGraph(labInfo);
             blueWrap.DrawLABGraph(labInfo);
